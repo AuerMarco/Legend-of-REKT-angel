@@ -7,92 +7,89 @@ import javax.swing.ImageIcon;
 
 public class Dialog {
 
-    private String dialogZeile1, dialogZeile2, npcname;
-    private boolean dialogSichtbarkeit;
+    private String dialogLine1, dialogLine2, npcName;
+    private boolean dialogVisible;
     private int dialogCounter;
-    private String[] dialogSeite;
+    private String[] dialogPage;
     private ImageIcon npc;
 
     public Dialog() {
-        dialogZeile1 = "";
-        dialogZeile2 = "";
-        npcname = "";
-        dialogSichtbarkeit = false;
+        dialogLine1 = "";
+        dialogLine2 = "";
+        npcName = "";
+        dialogVisible = false;
         dialogCounter = 0;
-        dialogSeite = new String[]{""};
+        dialogPage = new String[]{""};
     }
 
-//    public NPCDialog(Koordinaten objektPosition, int breite, int hoehe) {
-//        super(objektPosition, breite, hoehe);
-//    }
-    public String getDialogZeile1() {
-        return dialogZeile1;
+    public String getDialogLine1() {
+        return dialogLine1;
     }
 
-    public void setDialogZeile1(String dialog) {
-        dialogZeile1 = dialog;
+    public void setDialogLine1(String dialog) {
+        dialogLine1 = dialog;
     }
 
-    public String getDialogZeile2() {
-        return dialogZeile2;
+    public String getDialogLine2() {
+        return dialogLine2;
     }
 
-    public void setDialogZeile2(String dialog) {
-        dialogZeile2 = dialog;
+    public void setDialogLine2(String dialog) {
+        dialogLine2 = dialog;
     }
 
     public String getNPCname() {
-        return npcname;
+        return npcName;
     }
 
     public void setNPCname(String npcname) {
-        this.npcname = npcname;
+        this.npcName = npcname;
     }
 
-    public boolean getDialogSichtbarkeit() {
-        return dialogSichtbarkeit;
+    public boolean getDialogVisible() {
+        return dialogVisible;
     }
 
-    public void setDialogSichtbarkeit(boolean dialogSichtbarkeit) {
-        this.dialogSichtbarkeit = dialogSichtbarkeit;
+    public void setDialogVisible(boolean dialogVisible) {
+        this.dialogVisible = dialogVisible;
     }
 
     public ImageIcon getNPCsprite() {
         return npc;
     }
 
-    public void dialogSunbro(Spieler spieler, Figur npc) {
-        dialogSichtbarkeit = true;
+    public void dialogSunbro(Player player, Character npc) {
+        dialogVisible = true;
         this.npc = npc.getSprite();
-        npcname = npc.getName();
-        dialogSeite = new String[]{"Praise the sun!"};
-        dialogLogik();
+        npcName = npc.getName();
+        dialogPage = new String[]{"Praise the sun!"};
+        dialogLogic();
     }
 
-    public void dialogSchurke(Spieler spieler, Figur npc) {
-        dialogSichtbarkeit = true;
+    public void dialogSchurke(Player player, Character npc) {
+        dialogVisible = true;
         this.npc = npc.getSprite();
-        npcname = npc.getName();
-        dialogSeite = new String[]{"Langer blabla Text Zeile 1.1", "Zeile 2.1", "Zeile 3"};
-        dialogLogik();
+        npcName = npc.getName();
+        dialogPage = new String[]{"blabla long text line 1.1", "line 2.1", "line 3"};
+        dialogLogic();
     }
 
-    public void dialogLogik() {
-        if ((dialogCounter + 1) < dialogSeite.length) {
-            dialogZeile1 = dialogSeite[dialogCounter];
-            dialogZeile2 = dialogSeite[dialogCounter + 1];
+    public void dialogLogic() {
+        if ((dialogCounter + 1) < dialogPage.length) {
+            dialogLine1 = dialogPage[dialogCounter];
+            dialogLine2 = dialogPage[dialogCounter + 1];
             dialogCounter += 2;
-        } else if (dialogCounter < dialogSeite.length) {
-            dialogZeile1 = dialogSeite[dialogCounter];
-            dialogZeile2 = "";
+        } else if (dialogCounter < dialogPage.length) {
+            dialogLine1 = dialogPage[dialogCounter];
+            dialogLine2 = "";
             dialogCounter++;
         } else {
             dialogCounter = 0;
-            dialogSichtbarkeit = false;
+            dialogVisible = false;
         }
     }
 //    @Override
-//    protected void zeichneObjekte(Graphics g) {
+//    protected void drawObjects(Graphics g) {
 //        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
 //        g.setColor(Color.RED);
 //        g.drawString("PRAISE THE SUN!", 400, 400);

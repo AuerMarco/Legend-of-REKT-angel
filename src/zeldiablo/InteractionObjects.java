@@ -10,38 +10,38 @@ import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public class Gegenstand extends SpielObjekt {
+public class InteractionObjects extends GameObjects {
 
-    public final String bilderVerzeichnis;
+    public final String imageDirectory;
     private ImageIcon sprite;
     private final String[] spriteList;
     private final String id;
 
-    public Gegenstand(Koordinaten position, int breite, int hoehe, String gegenstand, String id) {
-        super(position, breite, hoehe);
-        bilderVerzeichnis = "bilder/gegenstand/";
-        spriteList = new String[]{gegenstand + "_inaktiv.png", gegenstand + "_aktiv.png"};
+    public InteractionObjects(Coordinates position, int width, int height, String thing, String id) {
+        super(position, width, height);
+        imageDirectory = "images/objects/";
+        spriteList = new String[]{thing + "_deactivated.png", thing + "_activated.png"};
         setSprite(0);
         this.id = id;
     }
 
     public void setSprite(int imageNumber) {
-        String imagePath = bilderVerzeichnis + spriteList[imageNumber];
+        String imagePath = imageDirectory + spriteList[imageNumber];
         URL imageURL = getClass().getResource(imagePath);
         sprite = new ImageIcon(imageURL);
     }
 
     @Override
-    public void zeichneObjekte(java.awt.Graphics g) {
+    public void drawObjects(java.awt.Graphics g) {
 
 //        Graphics2D g2d = (Graphics2D) g;
 //        g2d.setColor(Color.BLUE);
 //        RoundRectangle2D spieler = new RoundRectangle2D.Double(getObjektPosition().getX(),
 //                getObjektPosition().getY(),
-//                getBreite(), getHoehe(), 3, 3);
+//                getWidth(), getHeight(), 3, 3);
 //        g2d.fill(spieler);
         
-        sprite.paintIcon(null, g, getObjektPosition().getX(), getObjektPosition().getY());
+        sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }
 
 }

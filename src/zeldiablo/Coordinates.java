@@ -3,12 +3,12 @@
  */
 package zeldiablo;
 
-public class Koordinaten {
+public class Coordinates {
 
     private int posX;
     private int posY;
 
-    public Koordinaten(int x, int y) {
+    public Coordinates(int x, int y) {
         posX = x;
         posY = y;
     }
