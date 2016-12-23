@@ -3,14 +3,14 @@
  */
 package zeldiablo;
 
-public class NPC extends Figur {
+public class NPC extends Character {
     
-    public NPC(Koordinaten position, int breite, int hoehe, int winkel, String klasse, String name, int level, int schaden) {
+    public NPC(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int schaden) {
         super(position, breite, hoehe, winkel, klasse, name, level, schaden);
     }  
     
-    public NPC(Koordinaten position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
-        super(position, breite, hoehe, winkel, klasse, name, level);
-    }  
+//    public NPC(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
+//        super(position, breite, hoehe, winkel, klasse, name, level);
+//    }  
     
 }
