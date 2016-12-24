@@ -56,7 +56,7 @@ public class Character extends GameObjects {
         this.level = level;
         xp = 0;
         xpNeeded = 100;
-        stats = new Stats(characterClass, level);
+        stats = new Stats(characterClass, level, name);
         weapon = new Weapon(damage);
         arrowActive = false;        
         inviFrames = 0;
@@ -102,7 +102,7 @@ public class Character extends GameObjects {
 
     public void setCharacterClass(String characterClass) {
         this.characterClass = characterClass;
-        stats.statAdjustment(this.characterClass, level);
+        stats.statAdjustment(this.characterClass, level, name);
     }
 
     public String getName() {
@@ -139,13 +139,13 @@ public class Character extends GameObjects {
 
     public void setLevel(int level) {
         this.level = level;
-        stats.statAdjustment(characterClass, level);
+        stats.statAdjustment(characterClass, level, name);
         adjustXPneeded();
     }
 
     public void levelUp() {
         level++;
-        stats.statAdjustment(characterClass, level);
+        stats.statAdjustment(characterClass, level, name);
         adjustXPneeded();
     }
 

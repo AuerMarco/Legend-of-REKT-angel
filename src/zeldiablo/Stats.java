@@ -15,13 +15,13 @@ public class Stats {
     private String statSummary;
     private boolean visible;
 
-    public Stats(String characterClass, int level) {
+    public Stats(String characterClass, int level, String name) {
         attack = 0;
         dexterity = 0;
         stamina = 0;
         defence = 0;
         this.level = level;
-        statAdjustment(characterClass, level);
+        statAdjustment(characterClass, level, name);
         hp = stamina * 15;
         maxHP = hp;
         statSummary = "";
@@ -91,7 +91,7 @@ public class Stats {
         this.visible = visible;
     }
 
-    public void statAdjustment(String characterClass, int level) {
+    public void statAdjustment(String characterClass, int level, String name) {
         switch (characterClass) {
             case "Knight":
                 attack = 10;
@@ -122,9 +122,20 @@ public class Stats {
                 attack = 20;
                 stamina = 30;
                 defence = 10;
+                break;            
+            default:
+                break;
+        }
+        
+        switch (name) {
+            case "Osl":
+                attack *= 2;
+                stamina *= 2;
+                defence *= 2;
                 break;
             case "debug":
                 attack = 666;
+                dexterity = 666;
                 stamina = 666;
                 defence = 666;
                 break;
