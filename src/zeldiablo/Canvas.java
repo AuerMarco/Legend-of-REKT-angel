@@ -173,7 +173,7 @@ public class Canvas extends JPanel {
                                 angle7 = false;
 //                                arrowLock = false;
                                 player.setArrowActive(true);
-                                arrowCounter = 0;                                
+                                arrowCounter = 0;
                                 switch (player.getAngle()) {
                                     case 1:
                                         angle1 = true;
@@ -213,7 +213,7 @@ public class Canvas extends JPanel {
     }
 
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 400), 35, 80, 1, "Berserker", "Osl", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
+        player = new Player(new Coordinates(460, 400), 35, 80, 1, "Berserker", "Kyle", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
@@ -310,9 +310,6 @@ public class Canvas extends JPanel {
         if (!mob1.getAlive()) {
             mob1 = toterMob;
         }
-//        if (!npc2.getAlive()) {
-//            npc2 = toterMob;
-//        }
     }
 
 //    public void arrow() {
@@ -352,7 +349,7 @@ public class Canvas extends JPanel {
             if (angle1) {
                 player.setAttackHitbox(new AttackAnimation(new Coordinates(player.getObjectPosition().getX(), (player.getObjectPosition().getY() + (int) player.getHeight()) + (arrowCounter * 5)), 13, 50, "Arrow1"));
 //                if (!arrowLock) {
-                    weaponDirection();
+                weaponDirection();
 //                    arrowLock = true;
 //                }
 
@@ -360,33 +357,36 @@ public class Canvas extends JPanel {
             if (angle3) {
                 player.setAttackHitbox(new AttackAnimation(new Coordinates(player.getObjectPosition().getX() - (arrowCounter * 5), (player.getObjectPosition().getY() + (int) player.getHeight() / 2)), 50, 13, "Arrow1"));
 //                if (!arrowLock) {
-                    weaponDirection();
+                weaponDirection();
 //                    arrowLock = true;
 //                }
             }
             if (angle5) {
                 player.setAttackHitbox(new AttackAnimation(new Coordinates(player.getObjectPosition().getX(), (player.getObjectPosition().getY() + (int) player.getHeight()) - (arrowCounter * 5)), 13, 50, "Arrow1"));
 //                if (!arrowLock) {
-                    weaponDirection();
+                weaponDirection();
 //                    arrowLock = true;
 //                }
             }
             if (angle7) {
                 player.setAttackHitbox(new AttackAnimation(new Coordinates(player.getObjectPosition().getX() + (arrowCounter * 5), (player.getObjectPosition().getY() + (int) player.getHeight() / 2)), 50, 13, "Arrow1"));
 //                if (!arrowLock) {
-                    weaponDirection();
+                weaponDirection();
 //                    arrowLock = true;
 //                }
             }
         }
-        arrowCounter++;
-        if (arrowCounter >= 250) {
-            player.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1")); 
-            angle1 = false;
-            angle3 = false;
-            angle5 = false;
-            angle7 = false;
+        if (player.getArrowActive()) {
+            arrowCounter++;
+            if (arrowCounter >= 250) {
+                player.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1"));
+                angle1 = false;
+                angle3 = false;
+                angle5 = false;
+                angle7 = false;
+            }
         }
+
     }
 
     private void doOnTick() {
