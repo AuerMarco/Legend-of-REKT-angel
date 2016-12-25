@@ -11,6 +11,7 @@ public class Stats {
     private double defence;
     private double hp;
     private double maxHP;
+    private double critChance;
     private int level;
     private String statSummary;
     private boolean visible;
@@ -75,12 +76,16 @@ public class Stats {
         this.maxHP = maxHP;
     }
 
+    public double getCritChance() {
+        return critChance;
+    }
+
     public String getStatSummary1() {
         return statSummary = "Attack: " + (int) attack + ". Dexterity: " + (int) dexterity + ". Stamina: " + (int) stamina + ". Defence: " + (int) defence;
     }
 
     public String getStatSummary2() {
-        return statSummary = "HP: " + (int) hp + ". Max HP: " + (int) maxHP + ". Level: " + level;
+        return statSummary = "HP: " + (int) hp + ". Max HP: " + (int) maxHP + ". Level: " + level + ". Crit: " + critChance;
     }
 
     public boolean getVisible() {
@@ -122,11 +127,11 @@ public class Stats {
                 attack = 20;
                 stamina = 30;
                 defence = 10;
-                break;            
+                break;
             default:
                 break;
         }
-        
+
         switch (name) {
             case "Osl":
                 attack *= 2;
@@ -149,8 +154,25 @@ public class Stats {
             attack = attack + ((attack * 20) / 100);
             stamina = stamina + ((stamina * 20) / 100);
             defence = defence + ((defence * 20) / 100);
-            dexterity = dexterity + ((dexterity * 5) / 100);
+
+            switch (characterClass) {
+                case "Knight":
+                    dexterity += 1;
+                    break;
+                case "Berserker":
+                    dexterity += 1.5;
+                    break;
+                case "Hunter":
+                    dexterity += 1.25;
+                    break;
+                default:
+                    break;
+            }
+
         }
+
+        Chance chanceCalc = new Chance(level, dexterity, characterClass);
+        critChance = chanceCalc.calculateCritChance();
 
         this.hp = this.stamina * 15;
         this.maxHP = this.hp;

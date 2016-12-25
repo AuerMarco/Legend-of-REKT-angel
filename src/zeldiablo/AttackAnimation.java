@@ -78,10 +78,15 @@ public class AttackAnimation extends GameObjects {
 
     public void hitDetect(Player player, NPC mob) {
         if (player.getAttackHitbox().getHitbox().intersects(mob.getHitbox())) {
-            DamageCalculation damage = new DamageCalculation();
-            mob.getStats().setHP(mob.getStats().getHP() - damage.damageCalculation(player, mob));
-            
-            System.out.println(damage.damageCalculation(player, mob));
+
+//            Chance chance = new Chance(player.getStats().getCritChance());
+//            boolean crit = chance.getSuccess();
+            DamageCalculation damageCalc = new DamageCalculation();
+//            double damage = damageCalc.damageCalculation(player, mob, crit);
+            double damage = damageCalc.damageCalculation(player, mob);
+            mob.getStats().setHP(mob.getStats().getHP() - damage);
+
+            System.out.println(damage);
             mob.setInviFrames(50);
         }
 

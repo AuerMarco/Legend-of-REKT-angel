@@ -194,7 +194,17 @@ public class Canvas extends JPanel {
                         }
                         break;
                     case VK_ENTER:
-                        player.getStats().setHP(player.getStats().getHP() - 10);
+//                        player.getStats().setHP(player.getStats().getHP() - 10);
+//                        int x = 0;
+//                        for (int i = 0; i < 100; i++) {
+//                            Chance chance = new Chance(player.getStats().getCritChance());
+//                            boolean success = chance.getSuccess();
+//                            System.out.println(success);
+//                            if (success) {
+//                                x++;
+//                            }      
+//                        }
+//                        System.out.println("Erfolge: " + x);
                         break;
                     case VK_C:
                         if (!player.getStats().getVisible()) {
