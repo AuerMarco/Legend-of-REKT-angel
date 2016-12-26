@@ -54,11 +54,11 @@ public class Character extends GameObjects {
         alive = true;
 
         this.level = level;
-        xp = 0;
+        adjustXP();
         xpNeeded = 100;
         stats = new Stats(characterClass, level, name);
         weapon = new Weapon(damage);
-        arrowActive = false;        
+        arrowActive = false;
         inviFrames = 0;
     }
 
@@ -140,12 +140,14 @@ public class Character extends GameObjects {
     public void setLevel(int level) {
         this.level = level;
         stats.statAdjustment(characterClass, level, name);
+        adjustXP();
         adjustXPneeded();
     }
 
     public void levelUp() {
         level++;
         stats.statAdjustment(characterClass, level, name);
+        adjustXP();
         adjustXPneeded();
     }
 
@@ -156,14 +158,28 @@ public class Character extends GameObjects {
     public void setXP(int xp) {
         this.xp = xp;
     }
-    
+
     public void increaseXP(double xp) {
         this.xp = this.xp + xp;
     }
-    
+
     public void adjustXP() {
-        for (int x = level; x > 1; x--) {
-            xp *= 1.01;
+        if (characterClass == "Mob") {
+//            if (level == 1) {
+//                xp = 10;
+//            } else {
+//                xp += 1;
+//            }   
+            xp = 10;
+            for (int x = level; x > 1; x--) {
+                xp += 1;
+            }
+//            for (int x = level; x > 1; x--) {
+//                xp *= 1.10;
+//            }
+//            xp = xpNeeded / 10;
+        } else {
+            xp = 0;
         }
     }
 
@@ -172,9 +188,11 @@ public class Character extends GameObjects {
     }
 
     public void adjustXPneeded() {
+        xpNeeded = 100;
         for (int x = level; x > 1; x--) {
-            xpNeeded = xpNeeded + ((xpNeeded * 10) / 100);
+            xpNeeded += 25;
         }
+        
     }
 
     public Weapon getWeapon() {
@@ -192,11 +210,11 @@ public class Character extends GameObjects {
     public void setArrowActive(boolean active) {
         arrowActive = active;
     }
-    
+
     public int getInviFrames() {
         return inviFrames;
     }
-    
+
     public void setInviFrames(int frames) {
         inviFrames = frames;
     }
@@ -354,18 +372,17 @@ public class Character extends GameObjects {
                 break;
         }
     }
-    
+
     //Zeichnung für das originale, 1. blaue Viereck :)
     @Override
     public void drawObjects(java.awt.Graphics g) {
 
-        Graphics2D g2d = (Graphics2D) g;   
-        g2d.setColor(Color.BLUE);        
-        
-              
-        RoundRectangle2D spieler = new RoundRectangle2D.Double(getObjectPosition().getX(), 
-                                                               getObjectPosition().getY(), 
-                                                               getWidth(), getHeight(), 3, 3); 
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+
+        RoundRectangle2D spieler = new RoundRectangle2D.Double(getObjectPosition().getX(),
+                getObjectPosition().getY(),
+                getWidth(), getHeight(), 3, 3);
 //        
 ////        AffineTransform transform = new AffineTransform();          
 ////        transform.rotate(getAngle(), spieler.getCenterX(), spieler.getCenterY());
