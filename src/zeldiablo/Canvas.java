@@ -205,6 +205,8 @@ public class Canvas extends JPanel {
 //                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
 
                         player.getStats().setHP(player.getStats().getHP() - 10);
+                        player.increaseXP(1);
+//                        System.out.println(player.getXP());
 
 //                        int x = 0;
 //                        for (int i = 0; i < 100; i++) {
@@ -510,36 +512,56 @@ public class Canvas extends JPanel {
     }
 
     public void drawHealthbar(Graphics g) {
+        //This part draws the players HP bar (how much health the player has)
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 30, 250, 30, 3, 3);
         g2d.fill(hpBar);
 
-        int currentHPpercent = (int) (player.getStats().getHP() / player.getStats().getMaxHP() * 250);
+        double currentHPpercent = (player.getStats().getHP() / player.getStats().getMaxHP());
 
         g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(30, 30, currentHPpercent, 30, 3, 3);
+        hpBar = new RoundRectangle2D.Double(30, 30, 250 * currentHPpercent, 30, 3, 3);
         g2d.fill(hpBar);
 
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
         g.drawString(player.getName(), 40, 22);
-        g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent / 2.5) + "%", 40, 52);
+        g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
 
+        //This part is the mob HP bar
         g2d.setColor(Color.RED);
         hpBar = new RoundRectangle2D.Double(400, 30, 250, 30, 3, 3);
         g2d.fill(hpBar);
 
-        currentHPpercent = (int) (mob1.getStats().getHP() / mob1.getStats().getMaxHP() * 250);
+        currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
 
         g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(400, 30, currentHPpercent, 30, 3, 3);
+        hpBar = new RoundRectangle2D.Double(400, 30, 250 * currentHPpercent, 30, 3, 3);
         g2d.fill(hpBar);
 
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
         g.drawString(mob1.getName(), 410, 22);
-        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent / 2.5) + "%", 410, 52);
+        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
+    }
+
+    public void drawXPbar(Graphics g) {
+        //This part draws the players XP bar (how much experience he has and needs to level up)
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.LIGHT_GRAY);
+        RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
+        g2d.fill(hpBar);
+
+        double currentXPpercent = ((player.getXP() / player.getXPneeded()));
+
+        g2d.setColor(new Color(135, 0, 135));
+        hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
+        g2d.fill(hpBar);
+
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
     }
 
     @Override
@@ -555,6 +577,7 @@ public class Canvas extends JPanel {
 
         player.drawObjects(g);
         drawHealthbar(g);
+        drawXPbar(g);
         drawAttacks(g);
 
         characterStats(g);

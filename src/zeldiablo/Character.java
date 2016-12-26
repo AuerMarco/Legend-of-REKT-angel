@@ -27,8 +27,8 @@ public class Character extends GameObjects {
     private boolean alive;
 
     private int level;
-    private int xp;
-    private int xpNeeded;
+    private double xp;
+    private double xpNeeded;
     private Stats stats;
     private Weapon weapon;
 
@@ -149,15 +149,25 @@ public class Character extends GameObjects {
         adjustXPneeded();
     }
 
-    public int getXP() {
+    public double getXP() {
         return xp;
     }
 
     public void setXP(int xp) {
         this.xp = xp;
     }
+    
+    public void increaseXP(double xp) {
+        this.xp = this.xp + xp;
+    }
+    
+    public void adjustXP() {
+        for (int x = level; x > 1; x--) {
+            xp *= 1.01;
+        }
+    }
 
-    public int getXPneeded() {
+    public double getXPneeded() {
         return xpNeeded;
     }
 
