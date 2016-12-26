@@ -30,7 +30,7 @@ public class Canvas extends JPanel {
     private ImageIcon dialogBox;
 
     private boolean gameOver;
-    private int demoCounter;
+    private int demoCounter, hpTimer;
 
     private Timer t;
     private NPC npc1, npc2;
@@ -194,7 +194,18 @@ public class Canvas extends JPanel {
                         }
                         break;
                     case VK_ENTER:
-//                        player.getStats().setHP(player.getStats().getHP() - 10);
+//                        System.out.println("---");
+//                        DamageCalculation damage = new DamageCalculation();
+//                        double dmg = damage.damageCalculation(player, mob1, false);
+//                        double hits = mob1.getStats().getHP() / dmg;
+//                        System.out.println("Player to mob DMG: " + dmg + ". Hits: " + hits);
+//                        
+//                        dmg = damage.damageCalculation(mob1, player, false);
+//                        hits = player.getStats().getHP() / dmg;
+//                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
+
+                        player.getStats().setHP(player.getStats().getHP() - 10);
+
 //                        int x = 0;
 //                        for (int i = 0; i < 100; i++) {
 //                            Chance chance = new Chance(player.getStats().getCritChance());
@@ -215,6 +226,13 @@ public class Canvas extends JPanel {
                         break;
                     case VK_L:
                         player.levelUp();
+                        break;
+                    case VK_M:
+                        mob1.levelUp();
+                        break;
+                    case VK_B:
+                        player.levelUp();
+                        mob1.levelUp();
                         break;
                 }
             }
@@ -399,6 +417,19 @@ public class Canvas extends JPanel {
 
     }
 
+    private void hpRegeneration() {
+        hpTimer++;
+        if (hpTimer == 100) {
+            if (player.getStats().getHP() < player.getStats().getMaxHP()) {
+                player.getStats().setHP(player.getStats().getHP() + player.getStats().getMaxHP() * 0.01);
+                if (player.getStats().getHP() > player.getStats().getMaxHP()) {
+                    player.getStats().setHP(player.getStats().getMaxHP());
+                }
+            }
+            hpTimer = 0;
+        }
+    }
+
     private void doOnTick() {
 
         youShallNotPass();
@@ -406,6 +437,7 @@ public class Canvas extends JPanel {
         deadMobs();
         weaponDirection();
         weaponCD();
+        hpRegeneration();
 
         if (mob1.getInviFrames() <= 0) {
             hitDetect();

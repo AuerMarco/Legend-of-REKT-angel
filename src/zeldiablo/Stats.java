@@ -132,6 +132,70 @@ public class Stats {
                 break;
         }
 
+        this.level = level;
+
+        for (int x = level; x > 1; x--) {
+            if (x <= 20) {
+                attack = attack * 1.20;
+                stamina = stamina * 1.20;
+                defence = defence * 1.20;
+            } else if (x <= 25) {
+                attack = attack * 1.15;
+                stamina = stamina * 1.15;
+                defence = defence * 1.15;
+            } else if (x <= 30) {
+                attack = attack * 1.10;
+                stamina = stamina * 1.10;
+                defence = defence * 1.10;
+            } else if (x <= 40) {
+                attack = attack * 1.05;
+                stamina = stamina * 1.05;
+                defence = defence * 1.05;
+            } else if (x <= 50) {
+                attack = attack * 1.025;
+                stamina = stamina * 1.025;
+                defence = defence * 1.025;
+            } else if (x > 50) {
+                attack = attack * 1.01;
+                stamina = stamina * 1.01;
+                defence = defence * 1.01;
+            }
+
+            switch (characterClass) {
+                case "Knight":
+                    dexterity += 1;
+//                    attack += 1;                    
+//                    stamina += 3;
+//                    defence += 2;
+                    break;
+                case "Berserker":
+                    dexterity += 1.5;
+//                    attack += 3;                    
+//                    stamina += 1;
+//                    defence += 1;
+                    break;
+                case "Hunter":
+                    dexterity += 1.25;
+//                    attack += 1;                    
+//                    stamina += 1;
+//                    defence += 1;
+                    break;
+//                case "Mob":
+//                    attack += 2;
+//                    stamina += 1;
+//                    defence += 1;
+//                    break;
+//                case "Boss1":
+//                    attack += 3;
+//                    stamina += 3;
+//                    defence += 2;
+//                    break;
+                default:
+                    break;
+            }
+
+        }
+
         switch (name) {
             case "Osl":
                 attack *= 2;
@@ -148,33 +212,11 @@ public class Stats {
                 break;
         }
 
-        this.level = level;
-
-        for (int x = level; x > 1; x--) {
-            attack = attack + ((attack * 20) / 100);
-            stamina = stamina + ((stamina * 20) / 100);
-            defence = defence + ((defence * 20) / 100);
-
-            switch (characterClass) {
-                case "Knight":
-                    dexterity += 1;
-                    break;
-                case "Berserker":
-                    dexterity += 1.5;
-                    break;
-                case "Hunter":
-                    dexterity += 1.25;
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
         Chance chanceCalc = new Chance(level, dexterity, characterClass);
         critChance = chanceCalc.calculateCritChance();
 
         this.hp = this.stamina * 15;
+
         this.maxHP = this.hp;
     }
 
