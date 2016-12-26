@@ -155,7 +155,7 @@ public class Character extends GameObjects {
         return xp;
     }
 
-    public void setXP(int xp) {
+    public void setXP(double xp) {
         this.xp = xp;
     }
 

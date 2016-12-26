@@ -236,6 +236,15 @@ public class Canvas extends JPanel {
                         player.levelUp();
                         mob1.levelUp();
                         break;
+                    case VK_R:
+                        int n = 0;
+                        if (player.getLevel() == 1) {
+                           n = 1;
+                        } else {
+                            n = player.getLevel() - 1;
+                        }                            
+                        setMob1(new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", n, 10));
+                        break;
                 }
             }
         });
@@ -243,13 +252,13 @@ public class Canvas extends JPanel {
     }
 
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 400), 35, 80, 1, "Knight", "debug", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
+        player = new Player(new Coordinates(460, 400), 35, 80, 1, "Knight", "Kyle", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
 //        chest2 = new InteractionObjects(new Coordinates(650, 400), 37, 35, "Kiste1", "Kiste 2");
 //        chest3 = new InteractionObjects(new Coordinates(700, 400), 37, 35, "Kiste1", "Kiste 3");
-        mob1 = new NPC(new Coordinates(400, 200), 200, 159, 1, "Mob", "Asylum demon", 1, 10);
+        mob1 = new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", 1, 10);
 
     }
 
@@ -332,6 +341,7 @@ public class Canvas extends JPanel {
         }
         if (mob1.getStats().getHP() <= 0) {
             mob1.setAlive(false);
+            player.increaseXP(mob1.getXP());
         }
     }
 
@@ -341,7 +351,7 @@ public class Canvas extends JPanel {
             mob1 = toterMob;
         }
     }
-    
+
     public void arrow() {
         if (player.getArrowActive()) {
             if (angle1) {
@@ -399,16 +409,22 @@ public class Canvas extends JPanel {
             hpTimer = 0;
         }
     }
-    
-//    private void checkXP() {
-//        if (player.getXP() >= player.getXPneeded()) {
-//            player.levelUp();
-//        }
-//    }
+
+    private void checkXP() {
+        if (player.getXP() >= player.getXPneeded()) {
+            double xpDelta = 0;
+            if (player.getXP() > player.getXPneeded()) {
+                xpDelta = player.getXP() - player.getXPneeded();
+            }
+            player.levelUp();
+            player.setXP(player.getXP() + xpDelta);
+        }
+    }
 
     private void doOnTick() {
 
         youShallNotPass();
+        checkXP();
         checkHP();
         deadMobs();
         weaponDirection();
@@ -539,7 +555,7 @@ public class Canvas extends JPanel {
             g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
         }
     }
-    
+
     public void drawXPstatus(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));

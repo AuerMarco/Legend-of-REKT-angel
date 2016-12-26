@@ -13,4 +13,8 @@ public class NPC extends Character {
 //        super(position, breite, hoehe, winkel, klasse, name, level);
 //    }  
     
+//    public void checkPlayerInReach() {
+//        
+//    }
+    
 }

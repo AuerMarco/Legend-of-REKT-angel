@@ -109,7 +109,7 @@ public class AttackAnimation extends GameObjects {
 //        AffineTransform transform = new AffineTransform();        
 //        transform.rotate(1, hitbox.getCenterX(), hitbox.getCenterY());
 //        Shape trans = transform.createTransformedShape(hitbox);
-        g2d.fill(hitbox);
+//        g2d.fill(hitbox);
 
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }
