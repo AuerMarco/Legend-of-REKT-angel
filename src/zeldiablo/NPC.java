@@ -13,8 +13,14 @@ public class NPC extends Character {
 //        super(position, breite, hoehe, winkel, klasse, name, level);
 //    }  
     
-//    public void checkPlayerInReach() {
-//        
-//    }
+    public void checkPlayerInReach() {
+        
+    }
     
+    public void attack() {
+         if (attackCD == 0) {
+            attackCD = 20;
+            getAttackHitbox().melee(this);
+        }
+    }
 }

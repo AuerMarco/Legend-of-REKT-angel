@@ -75,19 +75,51 @@ public class AttackAnimation extends GameObjects {
                 break;
         }
     }
+    
+    public void melee(NPC mob) {
+        switch (mob.getAngle()) {
+            case 1:
+                mob.setAttackHitbox(new AttackAnimation(new Coordinates(mob.getObjectPosition().getX() - 30, (mob.getObjectPosition().getY() + (int) mob.getHeight())), 100, 55, animation));
+                break;
+            case 2:
+                mob.setAttackHitbox(new AttackAnimation(new Coordinates(mob.getObjectPosition().getX() - 30, (mob.getObjectPosition().getY() + (int) mob.getHeight())), 100, 55, animation));
+                break;
+            case 3:
+                mob.setAttackHitbox(new AttackAnimation(new Coordinates((mob.getObjectPosition().getX() - (int) mob.getWidth() - 10), mob.getObjectPosition().getY()), 55, 100, animation));
+                break;
+            case 5:
+                mob.setAttackHitbox(new AttackAnimation(new Coordinates(mob.getObjectPosition().getX() - 30, (mob.getObjectPosition().getY() - ((int) mob.getHeight() / 2))), 100, 55, animation));
+                break;
+            case 7:
+                mob.setAttackHitbox(new AttackAnimation(new Coordinates((mob.getObjectPosition().getX() + (int) mob.getWidth() - 10), mob.getObjectPosition().getY()), 55, 100, animation));
+                break;
+            default:
+                break;
+        }
+    }
 
     public void hitDetect(Player player, NPC mob) {
         if (player.getAttackHitbox().getHitbox().intersects(mob.getHitbox())) {
-
-//            Chance chance = new Chance(player.getStats().getCritChance());
-//            boolean crit = chance.getSuccess();
+            
             DamageCalculation damageCalc = new DamageCalculation();
-//            double damage = damageCalc.damageCalculation(player, mob, crit);
             double damage = damageCalc.damageCalculation(player, mob);
             mob.getStats().setHP(mob.getStats().getHP() - damage);
 
-            System.out.println(damage);
+            System.out.println("Player to mob: " + damage);
             mob.setInviFrames(50);
+        }
+
+    }
+    
+    public void hitDetect(NPC mob, Player player) {
+        if (mob.getAttackHitbox().getHitbox().intersects(player.getHitbox())) {
+            
+            DamageCalculation damageCalc = new DamageCalculation();
+            double damage = damageCalc.damageCalculation(mob, player);
+            player.getStats().setHP(player.getStats().getHP() - damage);
+
+            System.out.println("Mob to player: " + damage);
+            player.setInviFrames(50);
         }
 
     }
@@ -96,6 +128,13 @@ public class AttackAnimation extends GameObjects {
         weaponFrames++;
         if (weaponFrames > 10) {
             player.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1"));
+        }
+    }
+    
+    public void weaponFramesFunction(NPC mob) {
+        weaponFrames++;
+        if (weaponFrames > 10) {
+            mob.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1"));
         }
     }
 
@@ -109,7 +148,7 @@ public class AttackAnimation extends GameObjects {
 //        AffineTransform transform = new AffineTransform();        
 //        transform.rotate(1, hitbox.getCenterX(), hitbox.getCenterY());
 //        Shape trans = transform.createTransformedShape(hitbox);
-//        g2d.fill(hitbox);
+        g2d.fill(hitbox);
 
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }

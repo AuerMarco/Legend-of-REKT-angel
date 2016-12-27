@@ -23,7 +23,7 @@ public class Character extends GameObjects {
     private String name;
     private AttackAnimation attackHitbox;
     private boolean arrowActive;
-    int inviFrames;
+    int inviFrames, attackCD;
     private boolean alive;
 
     private int level;
@@ -60,6 +60,7 @@ public class Character extends GameObjects {
         weapon = new Weapon(damage);
         arrowActive = false;
         inviFrames = 0;
+        attackCD = 0;
     }
 
     public boolean getMoving() {
@@ -217,6 +218,14 @@ public class Character extends GameObjects {
 
     public void setInviFrames(int frames) {
         inviFrames = frames;
+    }
+    
+    public int getAttackCD() {
+        return attackCD;
+    }
+    
+    public void setAttackCD(int cd) {
+        attackCD = cd;
     }
 
     public void moveDown() {               //Winkel: 1
@@ -388,7 +397,7 @@ public class Character extends GameObjects {
 ////        transform.rotate(getAngle(), spieler.getCenterX(), spieler.getCenterY());
 ////        Shape transformedMissileShape = transform.createTransformedShape(spieler);
 ////        
-//        g2d.fill(spieler);  
+        g2d.fill(spieler);  
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }
 }

@@ -36,7 +36,7 @@ public class Canvas extends JPanel {
     private NPC npc1, npc2;
     private NPC mob1;
     private InteractionObjects chest1, chest2, chest3;
-    private int attackCD, arrowCounter;
+    private int arrowCounter;
     private boolean arrowLock;
     public boolean wKey, aKey, sKey, dKey;
 
@@ -50,7 +50,6 @@ public class Canvas extends JPanel {
         bgPictureList = new String[]{"dialogbox.png", "bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
         gameOver = false;
         demoCounter = 0;
-        attackCD = 0;
         wKey = false;
         aKey = false;
         sKey = false;
@@ -161,8 +160,8 @@ public class Canvas extends JPanel {
                         player.objectInteraction(player, npc2);
                         break;
                     case VK_K:
-                        if (attackCD == 0) {
-                            attackCD = 15;
+                        if (player.getAttackCD() == 0) {
+                            player.setAttackCD(20);
                             if (player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker") {
                                 player.getAttackHitbox().setWeaponFrames(0);
                                 player.getAttackHitbox().melee(player);
@@ -239,10 +238,10 @@ public class Canvas extends JPanel {
                     case VK_R:
                         int n = 0;
                         if (player.getLevel() == 1) {
-                           n = 1;
+                            n = 1;
                         } else {
                             n = player.getLevel() - 1;
-                        }                            
+                        }
                         setMob1(new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", n, 10));
                         break;
                 }
@@ -258,7 +257,7 @@ public class Canvas extends JPanel {
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
 //        chest2 = new InteractionObjects(new Coordinates(650, 400), 37, 35, "Kiste1", "Kiste 2");
 //        chest3 = new InteractionObjects(new Coordinates(700, 400), 37, 35, "Kiste1", "Kiste 3");
-        mob1 = new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", 1, 10);
+        mob1 = new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", 1, 10);
 
     }
 
@@ -302,8 +301,14 @@ public class Canvas extends JPanel {
     }
 
     public void hitDetect() {
-        player.getAttackHitbox().hitDetect(player, mob1);
+        if (mob1.getInviFrames() <= 0) {
+            player.getAttackHitbox().hitDetect(player, mob1);
+        }
 //        player.getAttackHitbox().hitDetect(player, npc2);
+        if (player.getInviFrames() <= 0) {
+            mob1.getAttackHitbox().hitDetect(mob1, player);
+        }
+
     }
 
     public void weaponDirection() {
@@ -325,12 +330,19 @@ public class Canvas extends JPanel {
         }
     }
 
-    public void weaponCD() {
-        if (attackCD > 0) {
-            attackCD--;
+    public void attackCD() {
+        if (player.getAttackCD() > 0) {
+            player.setAttackCD(player.getAttackCD() - 1);
         }
+        if (mob1.getAttackCD() > 0) {
+            mob1.setAttackCD(mob1.getAttackCD() - 1);
+        }
+
         if (mob1.getInviFrames() > 0) {
             mob1.setInviFrames(mob1.getInviFrames() - 1);
+        }
+        if (player.getInviFrames() > 0) {
+            player.setInviFrames(player.getInviFrames() - 1);
         }
     }
 
@@ -421,6 +433,17 @@ public class Canvas extends JPanel {
         }
     }
 
+    private void mobAttack() {
+        mob1.attack();
+//        if (mob1.getAttackCD() == 0) {
+//            mob1.setAttackCD(20);
+//            mob1.getAttackHitbox().melee(mob1);
+//        }
+
+//        mob1.getAttackHitbox().setWeaponFrames(0);
+        
+    }
+
     private void doOnTick() {
 
         youShallNotPass();
@@ -428,12 +451,10 @@ public class Canvas extends JPanel {
         checkHP();
         deadMobs();
         weaponDirection();
-        weaponCD();
+        attackCD();
         hpRegeneration();
-
-        if (mob1.getInviFrames() <= 0) {
-            hitDetect();
-        }
+        mobAttack();
+        hitDetect();
 
         arrow();
 
@@ -445,6 +466,7 @@ public class Canvas extends JPanel {
 
         player.walkingAnimation();
         player.getAttackHitbox().weaponFramesFunction(player);
+        mob1.getAttackHitbox().weaponFramesFunction(mob1);
 
         repaint();
     }
@@ -480,6 +502,7 @@ public class Canvas extends JPanel {
 
     public void drawAttacks(Graphics g) {
         player.getAttackHitbox().drawObjects(g);
+        mob1.getAttackHitbox().drawObjects(g);
     }
 
     public void drawDialog(Graphics g) {

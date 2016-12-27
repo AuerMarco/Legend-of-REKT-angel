@@ -41,19 +41,11 @@ public class DamageCalculation {
         return ((weapon + attack) * 2 - defence) * critMulti;
     }
     
-    public double damageCalculation(NPC mob, Player player, boolean crit) {
+    public double damageCalculation(NPC mob, Player player) {
         double weapon = mob.getWeapon().getDamage();
         double attack = mob.getStats().getAttack();
         double defence = player.getStats().getDefence();
-        double critMulti = 1;
 
-        if (crit) {
-            critMulti = 2;
-            System.out.println("CRIT!");
-        } else {
-//            System.out.println("No crit");
-        }
-
-        return ((weapon + attack) * 2 - defence) * critMulti;
+        return ((weapon + attack) * 2 - defence);
     }
 }
