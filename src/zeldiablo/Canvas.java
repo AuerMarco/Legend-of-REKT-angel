@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -203,8 +204,9 @@ public class Canvas extends JPanel {
 //                        hits = player.getStats().getHP() / dmg;
 //                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
 
-                        player.getStats().setHP(player.getStats().getHP() - 10);
+//                        player.getStats().setHP(player.getStats().getHP() - 10);
                         player.increaseXP(10);
+//                        System.out.println(mob1.getAttackHitbox().getObjectPosition().getX());
 //                        System.out.println(player.getXP());
 
 //                        int x = 0;
@@ -258,7 +260,6 @@ public class Canvas extends JPanel {
 //        chest2 = new InteractionObjects(new Coordinates(650, 400), 37, 35, "Kiste1", "Kiste 2");
 //        chest3 = new InteractionObjects(new Coordinates(700, 400), 37, 35, "Kiste1", "Kiste 3");
         mob1 = new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", 1, 10);
-
     }
 
     public void setBackground(int imageNumber) {
@@ -434,18 +435,28 @@ public class Canvas extends JPanel {
     }
 
     private void mobAttack() {
-        mob1.attack();
+//        demoCounter++;
+//        if (demoCounter >= 50) {
+        mob1.aggroRange(player);
+//            mob1.attack();
+        demoCounter = 0;
+//        }
+
 //        if (mob1.getAttackCD() == 0) {
 //            mob1.setAttackCD(20);
 //            mob1.getAttackHitbox().melee(mob1);
 //        }
-
 //        mob1.getAttackHitbox().setWeaponFrames(0);
-        
+    }
+
+    private void hitboxUpdate() {
+        player.hitboxUpdate();
+        mob1.hitboxUpdate();
     }
 
     private void doOnTick() {
 
+        hitboxUpdate();
         youShallNotPass();
         checkXP();
         checkHP();
@@ -561,22 +572,22 @@ public class Canvas extends JPanel {
 
     public void drawXPbar(Graphics g) {
         //This part draws the players XP bar (how much experience he has and needs to level up)
-        if (player.getStats().getVisible()) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(Color.LIGHT_GRAY);
-            RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
-            g2d.fill(hpBar);
+//        if (player.getStats().getVisible()) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.LIGHT_GRAY);
+        RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
+        g2d.fill(hpBar);
 
-            double currentXPpercent = ((player.getXP() / player.getXPneeded()));
+        double currentXPpercent = ((player.getXP() / player.getXPneeded()));
 
-            g2d.setColor(new Color(135, 0, 135));
-            hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
-            g2d.fill(hpBar);
+        g2d.setColor(new Color(135, 0, 135));
+        hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
+        g2d.fill(hpBar);
 
-            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-            g.setColor(Color.WHITE);
-            g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
-        }
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
+//        }
     }
 
     public void drawXPstatus(Graphics g) {

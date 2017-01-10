@@ -92,9 +92,13 @@ public abstract class GameObjects {
     public boolean isBelow(GameObjects that) {
         return this.getObjectPosition().getY() + this.getHeight() > that.getObjectPosition().getY();
     }
+    
+    public void hitboxUpdate() {
+        hitbox = new Rectangle(objectPosition.getX(), objectPosition.getY() + (1 * getSpeed()), width - 5, height - 5);
+    }
 
     public boolean touches(GameObjects that) {
-        hitbox = new Rectangle(objectPosition.getX(), objectPosition.getY() + (1 * getSpeed()), width - 5, height - 5);  //
+//        hitbox = new Rectangle(objectPosition.getX(), objectPosition.getY() + (1 * getSpeed()), width - 5, height - 5);  //
         return this.hitbox.intersects(that.hitbox);
     }
 
