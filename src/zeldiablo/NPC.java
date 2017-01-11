@@ -22,13 +22,21 @@ public class NPC extends Character {
         if (mobX - playerX >= 40) {
             setSprite(6);
             moveLeft();
-            checkPlayerInReach(player);
+//            checkPlayerInReach(player);
+        }
+        else if (mobX - playerX <= 10) {
+            setSprite(18);
+            moveRight();
         }
         
-        if (mobY - playerY <= -70) {
+        if (mobY < playerY - player.getHeight()) {
             setSprite(0);
             moveDown();
-            checkPlayerInReach(player);
+//            checkPlayerInReach(player);
+        }
+        else if (mobY > playerY + player.getHeight()) {      // + player.getHeight()*1.8
+            setSprite(12);
+            moveUp();
         }
 
     }

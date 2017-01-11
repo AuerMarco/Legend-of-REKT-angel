@@ -103,6 +103,9 @@ public class AttackAnimation extends GameObjects {
             
             DamageCalculation damageCalc = new DamageCalculation();
             double damage = damageCalc.damageCalculation(player, mob);
+            if (damage < 1) {
+                damage = 0;
+            }
             mob.getStats().setHP(mob.getStats().getHP() - damage);
 
             System.out.println("Player to mob: " + damage);
@@ -116,6 +119,9 @@ public class AttackAnimation extends GameObjects {
             
             DamageCalculation damageCalc = new DamageCalculation();
             double damage = damageCalc.damageCalculation(mob, player);
+            if (damage < 1) {
+                damage = 0;
+            }
             player.getStats().setHP(player.getStats().getHP() - damage);
 
             System.out.println("Mob to player: " + damage);
