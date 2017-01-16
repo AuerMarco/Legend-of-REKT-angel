@@ -75,7 +75,7 @@ public class AttackAnimation extends GameObjects {
                 break;
         }
     }
-    
+
     public void melee(NPC mob) {
         switch (mob.getAngle()) {
             case 1:
@@ -100,7 +100,7 @@ public class AttackAnimation extends GameObjects {
 
     public void hitDetect(Player player, NPC mob) {
         if (player.getAttackHitbox().getHitbox().intersects(mob.getHitbox())) {
-            
+
             DamageCalculation damageCalc = new DamageCalculation();
             double damage = damageCalc.damageCalculation(player, mob);
             if (damage < 1) {
@@ -108,21 +108,25 @@ public class AttackAnimation extends GameObjects {
             }
             mob.getStats().setHP(mob.getStats().getHP() - damage);
 
+            pushBack(player, mob);
+
             System.out.println("Player to mob: " + damage);
             mob.setInviFrames(50);
         }
 
     }
-    
+
     public void hitDetect(NPC mob, Player player) {
-        if (mob.getAttackHitbox().getHitbox().intersects(player.getHitbox())) {
-            
+        if (mob.getHitbox().intersects(player.getHitbox())) {           //getAttackHitbox().
+
             DamageCalculation damageCalc = new DamageCalculation();
             double damage = damageCalc.damageCalculation(mob, player);
             if (damage < 1) {
                 damage = 0;
             }
             player.getStats().setHP(player.getStats().getHP() - damage);
+
+            pushBack(mob, player);
 
             System.out.println("Mob to player: " + damage);
             player.setInviFrames(50);
@@ -136,11 +140,80 @@ public class AttackAnimation extends GameObjects {
             player.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1"));
         }
     }
-    
+
     public void weaponFramesFunction(NPC mob) {
         weaponFrames++;
         if (weaponFrames > 10) {
             mob.setAttackHitbox(new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1"));
+        }
+    }
+
+    public void pushBack(Player player, NPC mob) {
+        int n = 0;
+        switch (player.getCharacterClass()) {
+            case "Knight":
+                n = 5;
+                break;
+            case "Berserker":
+                n = 10;
+                break;
+            case "Hunter":
+                n = 5;
+                break;
+            default:
+                break;
+        }
+        switch (mob.getAngle()) {
+            case 1:
+                for (int i = 0; i < n; i++) {
+                    mob.moveUp();
+                }
+                break;
+            case 3:
+                for (int i = 0; i < n; i++) {
+                    mob.moveRight();
+                }
+                break;
+            case 5:
+                for (int i = 0; i < n; i++) {
+                    mob.moveDown();
+                }
+                break;
+            case 7:
+                for (int i = 0; i < n; i++) {
+                    mob.moveLeft();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void pushBack(NPC mob, Player player) {
+        switch (mob.getAngle()) {
+            case 1:
+                for (int i = 0; i < 10; i++) {
+                    player.moveDown();
+
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 10; i++) {
+                    player.moveLeft();
+                }
+                break;
+            case 5:
+                for (int i = 0; i < 10; i++) {
+                    player.moveUp();
+                }
+                break;
+            case 7:
+                for (int i = 0; i < 10; i++) {
+                    player.moveRight();
+                }
+                break;
+            default:
+                break;
         }
     }
 

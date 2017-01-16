@@ -66,7 +66,7 @@ public class Dialog {
         dialogLogic();
     }
 
-    public void dialogSchurke(Player player, Character npc) {
+    public void dialogRogue(Player player, Character npc) {
         dialogVisible = true;
         this.npc = npc.getSprite();
         npcName = npc.getName();

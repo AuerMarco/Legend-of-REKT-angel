@@ -50,7 +50,7 @@ public class Player extends Character {
                     super.getNPCdialog().dialogSunbro(this, npc);
                     break;
                 case "Unknown rogue":
-                    super.getNPCdialog().dialogSchurke(this, npc);
+                    super.getNPCdialog().dialogRogue(this, npc);
                 default:
                     break;
             }

@@ -194,6 +194,7 @@ public class Canvas extends JPanel {
                         }
                         break;
                     case VK_ENTER:
+                        System.out.println(mob1.getAngle());
 //                        System.out.println("---");
 //                        DamageCalculation damage = new DamageCalculation();
 //                        double dmg = damage.damageCalculation(player, mob1, false);
@@ -205,9 +206,9 @@ public class Canvas extends JPanel {
 //                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
 
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
-                        player.increaseXP(10);
+//                        player.increaseXP(10);
+                        
 //                        System.out.println(mob1.getAttackHitbox().getObjectPosition().getX());
-//                        System.out.println(player.getXP());
 
 //                        int x = 0;
 //                        for (int i = 0; i < 100; i++) {
@@ -244,7 +245,7 @@ public class Canvas extends JPanel {
                         } else {
                             n = player.getLevel() - 1;
                         }
-                        setMob1(new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", n, 10));
+                        setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n, 10));
                         break;
                 }
             }
@@ -253,7 +254,7 @@ public class Canvas extends JPanel {
     }
 
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "debug", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
+        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
@@ -435,18 +436,9 @@ public class Canvas extends JPanel {
     }
 
     private void mobAttack() {
-//        demoCounter++;
-//        if (demoCounter >= 50) {
-        mob1.aggroRange(player);
+        mob1.moveToPlayer(player);
 //            mob1.attack();
         demoCounter = 0;
-//        }
-
-//        if (mob1.getAttackCD() == 0) {
-//            mob1.setAttackCD(20);
-//            mob1.getAttackHitbox().melee(mob1);
-//        }
-//        mob1.getAttackHitbox().setWeaponFrames(0);
     }
 
     private void hitboxUpdate() {
@@ -550,7 +542,7 @@ public class Canvas extends JPanel {
 
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
-        g.drawString(player.getName(), 40, 22);
+        g.drawString(player.getName() + " Level " + player.getLevel(), 40, 22);         // ", " + player.getCharacterClass() + 
         g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
 
         //This part is the mob HP bar
@@ -566,7 +558,7 @@ public class Canvas extends JPanel {
 
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
-        g.drawString(mob1.getName(), 410, 22);
+        g.drawString(mob1.getName() + " Level " + mob1.getLevel(), 410, 22);
         g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
     }
 

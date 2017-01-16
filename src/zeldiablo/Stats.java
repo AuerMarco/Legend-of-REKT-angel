@@ -114,7 +114,7 @@ public class Stats {
                 attack = 10;
                 dexterity = 10;
                 stamina = 10;
-                defence = 5;
+                defence = 5;                
                 break;
             case "REKTangel":
                 stamina = 1;
@@ -203,10 +203,10 @@ public class Stats {
                 defence *= 2;
                 break;
             case "debug":
-                attack = 666;
-                dexterity = 666;
-                stamina = 666;
-                defence = 666;
+                attack = 666 * level;
+                dexterity = 666 * level;
+                stamina = 666 * level;
+                defence = 666 * level;
                 break;
             default:
                 break;
