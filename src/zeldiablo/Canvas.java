@@ -205,6 +205,8 @@ public class Canvas extends JPanel {
 //                        hits = player.getStats().getHP() / dmg;
 //                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
 
+                        player.getMoney().changeValue(10);
+                        
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
 //                        player.increaseXP(10);
                         
@@ -254,7 +256,7 @@ public class Canvas extends JPanel {
     }
 
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
+        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "debug", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
@@ -356,6 +358,7 @@ public class Canvas extends JPanel {
         if (mob1.getStats().getHP() <= 0) {
             mob1.setAlive(false);
             player.increaseXP(mob1.getXP());
+            player.getMoney().mobdrop(mob1.getLevel());
         }
     }
 
@@ -587,7 +590,7 @@ public class Canvas extends JPanel {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.BLACK);
             double mobsNeeded = player.getXPneeded() / mob1.getXP();
-            g.drawString("XP: " + (int) player.getXP() + ". XP needed: " + (int) player.getXPneeded() + ". Mobs needed: " + mobsNeeded, 50, 600);
+            g.drawString("Silverserpents: " + player.getMoney().getSilverserpents() + " XP: " + (int) player.getXP() + ". XP needed: " + (int) player.getXPneeded() + ". Mobs needed: " + mobsNeeded, 50, 600);
 
             g.setColor(Color.RED);
             g.drawString("XP: " + (int) mob1.getXP(), 50, 700);

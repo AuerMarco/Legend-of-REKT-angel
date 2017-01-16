@@ -3,15 +3,18 @@ package zeldiablo;
 import java.awt.Rectangle;
 
 public class Player extends Character {
+    
+    public Currency money;
 
     public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int weapon) {
         super(position, breite, hoehe, winkel, klasse, name, level, weapon);
+        money = new Currency();
     }
     
-//    public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int schaden) {
-//        super(position, breite, hoehe, winkel, klasse, name, level, schaden);
-//    }
-
+    public Currency getMoney() {
+        return money;
+    }
+    
     public boolean isInReachOf(GameObjects that) {
         switch (super.getAngle()) {
             case 1:
