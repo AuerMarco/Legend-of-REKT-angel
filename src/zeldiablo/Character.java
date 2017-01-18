@@ -27,10 +27,14 @@ public class Character extends GameObjects {
     private boolean alive;
 
     private int level;
+    private int levelUpAnimationFrames;
+    private boolean levelUpAnimationVisible;
     private double xp;
     private double xpNeeded;
+    
     private Stats stats;
     private Weapon weapon;
+    
 
     public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, int damage) {
         super(position, width, height);
@@ -60,7 +64,9 @@ public class Character extends GameObjects {
         weapon = new Weapon(damage);
         arrowActive = false;
         inviFrames = 0;
-        attackCD = 0;
+        attackCD = 0;        
+        levelUpAnimationFrames = 0;
+        levelUpAnimationVisible = false;
     }
 
     public boolean getMoving() {
@@ -139,6 +145,7 @@ public class Character extends GameObjects {
     }
 
     public void setLevel(int level) {
+        showLevelUpAnimation();
         this.level = level;
         stats.statAdjustment(characterClass, level, name);
         adjustXP();
@@ -146,10 +153,16 @@ public class Character extends GameObjects {
     }
 
     public void levelUp() {
+        showLevelUpAnimation();
         level++;
         stats.statAdjustment(characterClass, level, name);
         adjustXP();
         adjustXPneeded();
+    }
+    
+    public void showLevelUpAnimation() {
+        levelUpAnimationFrames = 0;
+        levelUpAnimationVisible = true;
     }
 
     public double getXP() {
@@ -226,6 +239,10 @@ public class Character extends GameObjects {
     
     public void setAttackCD(int cd) {
         attackCD = cd;
+    }
+    
+    public boolean getLevelUpAnimationVisible() {
+        return levelUpAnimationVisible;
     }
 
     public void moveDown() {               //Winkel: 1
@@ -382,6 +399,13 @@ public class Character extends GameObjects {
         }
     }
 
+    public void levelUpAnimationFunction(Player player) {
+        levelUpAnimationFrames++;
+        if (levelUpAnimationFrames > 50) {
+            levelUpAnimationVisible = false;
+        }
+    }
+    
     //Zeichnung für das originale, 1. blaue Viereck :)
     @Override
     public void drawObjects(java.awt.Graphics g) {
