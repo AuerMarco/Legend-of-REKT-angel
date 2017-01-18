@@ -27,6 +27,14 @@ public class Stats {
         maxHP = hp;
         statSummary = "";
     }
+    
+    public Stats() {
+        attack = 0;
+        dexterity = 0;
+        stamina = 0;
+        defence = 0;
+    }
+    
 
     public double getAttack() {
         return attack;
