@@ -86,7 +86,7 @@ public class Canvas extends JPanel {
     }
 
     private void initGame() {
-        setBackground(4);
+        setBackground(3);
         createGameObjects();
 
         t = new Timer(20, new ActionListener() {
@@ -262,7 +262,7 @@ public class Canvas extends JPanel {
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
-        mob1 = new NPC(new Coordinates(460, 100), 80, 70, 1, "Mob", "Orc", 1, 10);
+        mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1, 10);
     }
 
     public void setBackground(int imageNumber) {
@@ -302,17 +302,18 @@ public class Canvas extends JPanel {
 
     private void youShallNotPass() {
         player.youShallNotPass(player, chest1);
-        player.youShallNotPass(player, npc1);
-        player.youShallNotPass(player, npc2);
 //        player.youShallNotPass(player, chest2);
 //        player.youShallNotPass(player, chest3);
+
+        player.youShallNotPass(player, npc1);
+        player.youShallNotPass(player, npc2);
     }
 
     public void hitDetect() {
         if (mob1.getInviFrames() <= 0) {
             player.getAttackHitbox().hitDetect(player, mob1);
         }
-//        player.getAttackHitbox().hitDetect(player, npc2);
+
         if (player.getInviFrames() <= 0) {
             mob1.getAttackHitbox().hitDetect(mob1, player);
         }
@@ -502,6 +503,7 @@ public class Canvas extends JPanel {
 
     public void drawMobs(Graphics g) {
         mob1.drawObjects(g);
+        drawMobHealthbar(g, mob1);
     }
 
     public void drawNPCs(Graphics g) {
@@ -551,21 +553,43 @@ public class Canvas extends JPanel {
         g.drawString(player.getName() + " Level " + player.getLevel(), 40, 22);         // ", " + player.getCharacterClass() + 
         g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
 
-        //This part is the mob HP bar
+//        //This part is the OLD mob HP bar on top of the screen; left in just for memory's sake
+//        g2d.setColor(Color.RED);
+//        hpBar = new RoundRectangle2D.Double(400, 30, 250, 30, 3, 3);
+//        g2d.fill(hpBar);
+//
+//        currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
+//
+//        g2d.setColor(Color.GREEN);
+//        hpBar = new RoundRectangle2D.Double(400, 30, 250 * currentHPpercent, 30, 3, 3);
+//        g2d.fill(hpBar);
+//
+//        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+//        g.setColor(Color.BLACK);
+//        g.drawString(mob1.getName() + " Level " + mob1.getLevel(), 410, 22);
+//        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
+    }
+    
+    public void drawMobHealthbar(Graphics g, NPC mob) {
+        //This part is the new mob HP bar (above the individual mobs)
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
-        hpBar = new RoundRectangle2D.Double(400, 30, 250, 30, 3, 3);
+        RoundRectangle2D hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-15, 75, 7, 3, 3);
         g2d.fill(hpBar);
 
-        currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
+        double currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
 
         g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(400, 30, 250 * currentHPpercent, 30, 3, 3);
+        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-15, 75 * currentHPpercent, 7, 3, 3);
         g2d.fill(hpBar);
-
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        
+//        g2d.setColor(Color.WHITE);
+//        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-27, 75, 11, 3, 3);
+//        g2d.fill(hpBar);
+        
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
         g.setColor(Color.BLACK);
-        g.drawString(mob1.getName() + " Level " + mob1.getLevel(), 410, 22);
-        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
+        g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY()-17);
     }
 
     public void drawXPbar(Graphics g) {
