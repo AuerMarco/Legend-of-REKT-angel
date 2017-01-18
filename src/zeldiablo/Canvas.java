@@ -21,19 +21,19 @@ import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
 
 public class Canvas extends JPanel {
-
+    
     private Player player;
-
+    
     private final Dimension size;
     public final String imageDirectory;
     private final String[] bgPictureList;
     private ImageIcon backgroundPicture;
     private ImageIcon dialogBox;
     private ImageIcon levelUp;
-
+    
     private boolean gameOver;
     private int demoCounter, hpTimer;
-
+    
     private Timer t;
     private NPC npc1, npc2;
     private NPC mob1;
@@ -41,9 +41,9 @@ public class Canvas extends JPanel {
     private int arrowCounter;
     private boolean arrowLock;
     public boolean wKey, aKey, sKey, dKey;
-
+    
     boolean angle1 = false, angle3 = false, angle5 = false, angle7 = false;
-
+    
     public Canvas() {
         setFocusable(true);
         size = new Dimension(1180, 780);
@@ -57,45 +57,45 @@ public class Canvas extends JPanel {
         sKey = false;
         dKey = false;
         arrowLock = false;
-
+        
         initGame();
     }
-
+    
     public boolean getGameOver() {
         return gameOver;
     }
-
+    
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
-
+    
     public Player getPlayer() {
         return player;
     }
-
+    
     public void setPlayer(Player player) {
         this.player = player;
     }
-
+    
     public NPC getMob1() {
         return mob1;
     }
-
+    
     public void setMob1(NPC gegner) {
         mob1 = gegner;
     }
-
+    
     private void initGame() {
         setBackground(3);
         createGameObjects();
-
+        
         t = new Timer(20, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 doOnTick();
             }
         });
-
+        
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -122,7 +122,7 @@ public class Canvas extends JPanel {
                         break;
                 }
             }
-
+            
             @Override
             public void keyPressed(KeyEvent e) {
                 if (sKey && aKey) {
@@ -154,7 +154,7 @@ public class Canvas extends JPanel {
                     player.moveRight();
                     dKey = true;
                 }
-
+                
                 switch (e.getKeyCode()) {
                     case VK_J:
                         player.objectInteraction(player, chest1);
@@ -214,6 +214,7 @@ public class Canvas extends JPanel {
 
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
                         player.increaseXP(10);
+
 //                        System.out.println(mob1.getAttackHitbox().getObjectPosition().getX());
 //                        int x = 0;
 //                        for (int i = 0; i < 100; i++) {
@@ -252,11 +253,18 @@ public class Canvas extends JPanel {
                         }
                         setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n, 10));
                         break;
+                    case VK_T:
+                        if (!mob1.getAggro()) {
+                            mob1.setAggro(true);
+                        } else if (mob1.getAggro()) {
+                            mob1.setAggro(false);
+                        }
+                        break;
                 }
             }
         });
     }
-
+    
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
         player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
@@ -264,42 +272,42 @@ public class Canvas extends JPanel {
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
         mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1, 10);
     }
-
+    
     public void setBackground(int imageNumber) {
         String imagePath = imageDirectory + bgPictureList[imageNumber];
         URL imageURL = getClass().getResource(imagePath);
         backgroundPicture = new ImageIcon(imageURL);
-
+        
         imagePath = imageDirectory + bgPictureList[0];
         imageURL = getClass().getResource(imagePath);
         dialogBox = new ImageIcon(imageURL);
-
+        
         imagePath = imageDirectory + bgPictureList[1];
         imageURL = getClass().getResource(imagePath);
         levelUp = new ImageIcon(imageURL);
     }
-
+    
     private void startGame() {
         t.start();
     }
-
+    
     public void pauseGame() {
         t.stop();
     }
-
+    
     public void continueGame() {
         if (!getGameOver()) {
             t.start();
         }
     }
-
+    
     public void restartGame() {
         demoCounter = 0;
         setGameOver(false);
         createGameObjects();
         startGame();
     }
-
+    
     private void youShallNotPass() {
         player.youShallNotPass(player, chest1);
 //        player.youShallNotPass(player, chest2);
@@ -308,18 +316,18 @@ public class Canvas extends JPanel {
         player.youShallNotPass(player, npc1);
         player.youShallNotPass(player, npc2);
     }
-
+    
     public void hitDetect() {
         if (mob1.getInviFrames() <= 0) {
             player.getAttackHitbox().hitDetect(player, mob1);
         }
-
+        
         if (player.getInviFrames() <= 0) {
             mob1.getAttackHitbox().hitDetect(mob1, player);
         }
-
+        
     }
-
+    
     public void weaponDirection() {
         switch (player.getAngle()) {
             case 1:
@@ -338,7 +346,7 @@ public class Canvas extends JPanel {
                 break;
         }
     }
-
+    
     public void attackCD() {
         if (player.getAttackCD() > 0) {
             player.setAttackCD(player.getAttackCD() - 1);
@@ -346,7 +354,7 @@ public class Canvas extends JPanel {
         if (mob1.getAttackCD() > 0) {
             mob1.setAttackCD(mob1.getAttackCD() - 1);
         }
-
+        
         if (mob1.getInviFrames() > 0) {
             mob1.setInviFrames(mob1.getInviFrames() - 1);
         }
@@ -354,7 +362,7 @@ public class Canvas extends JPanel {
             player.setInviFrames(player.getInviFrames() - 1);
         }
     }
-
+    
     public void checkHP() {
         if (player.getStats().getHP() <= 0) {
             gameOver = true;
@@ -366,14 +374,14 @@ public class Canvas extends JPanel {
             player.getMoney().mobdrop(mob1.getLevel());
         }
     }
-
+    
     public void deadMobs() {
         NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0, 10);
         if (!mob1.getAlive()) {
             mob1 = toterMob;
         }
     }
-
+    
     public void arrow() {
         if (player.getArrowActive()) {
             if (angle1) {
@@ -416,9 +424,9 @@ public class Canvas extends JPanel {
                 angle7 = false;
             }
         }
-
+        
     }
-
+    
     private void hpRegeneration() {
         hpTimer++;
         if (hpTimer == 100) {
@@ -431,7 +439,7 @@ public class Canvas extends JPanel {
             hpTimer = 0;
         }
     }
-
+    
     private void checkXP() {
         if (player.getXP() >= player.getXPneeded()) {
             double xpDelta = 0;
@@ -442,18 +450,20 @@ public class Canvas extends JPanel {
             player.setXP(player.getXP() + xpDelta);
         }
     }
-
+    
     private void mobAttack() {
-        mob1.moveToPlayer(player);
+        if (mob1.getAggro()) {
+            mob1.moveToPlayer(player);
+        }
     }
-
+    
     private void hitboxUpdate() {
         player.hitboxUpdate();
         mob1.hitboxUpdate();
     }
-
+    
     private void doOnTick() {
-
+        
         hitboxUpdate();
         youShallNotPass();
         checkXP();
@@ -463,21 +473,21 @@ public class Canvas extends JPanel {
         weaponDirection();
         attackCD();
         hpRegeneration();
-//        mobAttack();
+        mobAttack();
         hitDetect();
-
+        
         arrow();
-
+        
         if (player.getNPCdialog().getDialogVisible()) {
             player.setSpeed(0);
         } else {
             player.setSpeed(player.getOriginalSpeed());
         }
-
+        
         player.walkingAnimation();
         player.getAttackHitbox().weaponFramesFunction(player);
         mob1.getAttackHitbox().weaponFramesFunction(mob1);
-
+        
         repaint();
     }
 
@@ -488,66 +498,66 @@ public class Canvas extends JPanel {
             g.setColor(Color.BLACK);
             g.drawString(player.getStats().getStatSummary1(), 50, 550);
             g.drawString(player.getStats().getStatSummary2() + ". Weapon damage: " + (int) player.getWeapon().getDamage(), 50, 575);
-
+            
             g.setColor(Color.RED);
             g.drawString(mob1.getStats().getStatSummary1(), 50, 650);
             g.drawString(mob1.getStats().getStatSummary2() + ". Weapon damage: " + (int) mob1.getWeapon().getDamage(), 50, 675);
         }
     }
-
+    
     public void drawInteractionObjects(Graphics g) {
         chest1.drawObjects(g);
 //        chest2.drawObjects(g);
 //        chest3.drawObjects(g);
     }
-
+    
     public void drawMobs(Graphics g) {
         mob1.drawObjects(g);
         drawMobHealthbar(g, mob1);
     }
-
+    
     public void drawNPCs(Graphics g) {
         npc1.drawObjects(g);
         npc2.drawObjects(g);
     }
-
+    
     public void drawAttacks(Graphics g) {
         player.getAttackHitbox().drawObjects(g);
         mob1.getAttackHitbox().drawObjects(g);
     }
-
+    
     public void drawDialog(Graphics g) {
         if (player.getNPCdialog().getDialogVisible()) {
             dialogBox.paintIcon(null, g, 0, (780 - 140));
-
+            
             if (player.getNPCdialog().getNPCsprite() != null) {
                 player.getNPCdialog().getNPCsprite().paintIcon(null, g, 88, 666);
             }
-
+            
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(new Color(255, 220, 70));
             g.drawString(player.getNPCdialog().getNPCname(), 230, 695);
-
+            
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.WHITE);
             g.drawString(player.getNPCdialog().getDialogLine1(), 230, 725);
             g.drawString(player.getNPCdialog().getDialogLine2(), 230, 750);
         }
     }
-
+    
     public void drawHealthbar(Graphics g) {
         //This part draws the players HP bar (how much health the player has)
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 30, 250, 30, 3, 3);
         g2d.fill(hpBar);
-
+        
         double currentHPpercent = (player.getStats().getHP() / player.getStats().getMaxHP());
-
+        
         g2d.setColor(Color.GREEN);
         hpBar = new RoundRectangle2D.Double(30, 30, 250 * currentHPpercent, 30, 3, 3);
         g2d.fill(hpBar);
-
+        
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
         g.drawString(player.getName() + " Level " + player.getLevel(), 40, 22);         // ", " + player.getCharacterClass() + 
@@ -574,24 +584,23 @@ public class Canvas extends JPanel {
         //This part is the new mob HP bar (above the individual mobs)
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
-        RoundRectangle2D hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-15, 75, 7, 3, 3);
-        g2d.fill(hpBar);
-
-        double currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
-
-        g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-15, 75 * currentHPpercent, 7, 3, 3);
+        RoundRectangle2D hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75, 7, 3, 3);
         g2d.fill(hpBar);
         
+        double currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
+        
+        g2d.setColor(Color.GREEN);
+        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75 * currentHPpercent, 7, 3, 3);
+        g2d.fill(hpBar);
+
 //        g2d.setColor(Color.WHITE);
 //        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-27, 75, 11, 3, 3);
 //        g2d.fill(hpBar);
-        
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
         g.setColor(Color.BLACK);
-        g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY()-17);
+        g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY() - 17);
     }
-
+    
     public void drawXPbar(Graphics g) {
         //This part draws the players XP bar (how much experience he has and needs to level up)
 //        if (player.getStats().getVisible()) {
@@ -599,37 +608,37 @@ public class Canvas extends JPanel {
         g2d.setColor(Color.LIGHT_GRAY);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
         g2d.fill(hpBar);
-
+        
         double currentXPpercent = ((player.getXP() / player.getXPneeded()));
-
+        
         g2d.setColor(new Color(135, 0, 135));
         hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
         g2d.fill(hpBar);
-
+        
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.WHITE);
         g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
 //        }
     }
-
+    
     public void drawXPstatus(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.BLACK);
             double mobsNeeded = player.getXPneeded() / mob1.getXP();
             g.drawString("Silverserpents: " + player.getMoney().getSilverserpents() + " XP: " + (int) player.getXP() + ". XP needed: " + (int) player.getXPneeded() + ". Mobs needed: " + mobsNeeded, 50, 600);
-
+            
             g.setColor(Color.RED);
             g.drawString("XP: " + (int) mob1.getXP(), 50, 700);
         }
     }
-
+    
     public void drawLevelUp(Graphics g) {
         if (player.getLevelUpAnimationVisible()) {
             levelUp.paintIcon(null, g, player.getObjectPosition().getX() - 7, player.getObjectPosition().getY() - 20);
         }
     }
-
+    
     @Override
     public void paintComponent(Graphics g) {
         backgroundPicture.paintIcon(null, g, 0, 0);           //hier wird das BG Bild gezeichnet        
@@ -640,24 +649,24 @@ public class Canvas extends JPanel {
         drawInteractionObjects(g);
         drawMobs(g);
         drawNPCs(g);
-
+        
         player.drawObjects(g);
         drawHealthbar(g);
         drawXPbar(g);
         drawAttacks(g);
-
+        
         characterStats(g);
         drawXPstatus(g);
         drawDialog(g);
         drawLevelUp(g);
-
+        
         if (getGameOver()) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(Color.BLACK);
             RoundRectangle2D gameOverBG = new RoundRectangle2D.Double(size.width / 4 - 25,
                     size.height / 3 + 50, 675, 100, 3, 3);
             g2d.fill(gameOverBG);
-
+            
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
             g.setColor(Color.RED);
             g.drawString("You died!", size.width / 4 + 50, size.height / 2);

@@ -4,11 +4,22 @@
 package zeldiablo;
 
 public class NPC extends Character {
+    
+    public boolean aggro;
 
     public NPC(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int schaden) {
         super(position, breite, hoehe, winkel, klasse, name, level, schaden);
+        aggro = false;
     }
 
+    public boolean getAggro() {
+        return aggro;
+    }
+    
+    public void setAggro(boolean aggro) {
+        this.aggro = aggro;
+    }
+    
 //    public void aggroRange(Player player) {
 //        moveToPlayer(player);
 //    }
