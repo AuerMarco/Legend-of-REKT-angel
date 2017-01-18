@@ -3,18 +3,27 @@ package zeldiablo;
 import java.awt.Rectangle;
 
 public class Player extends Character {
-    
-    public Currency money;
+
+    private Currency money;
+    private boolean startWeaponChest;
 
     public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int weapon) {
         super(position, breite, hoehe, winkel, klasse, name, level, weapon);
         money = new Currency();
     }
-    
+
     public Currency getMoney() {
         return money;
     }
     
+    public boolean getStartWeaponChest() {
+        return startWeaponChest;
+    }
+    
+    public void setStartWeaponChest(boolean chest) {
+        startWeaponChest = chest;
+    }
+
     public boolean isInReachOf(GameObjects that) {
         switch (super.getAngle()) {
             case 1:
@@ -39,9 +48,18 @@ public class Player extends Character {
 
     public void objectInteraction(Player player, InteractionObjects interObject) {
         if (player.isInReachOf(interObject)) {
-            interObject.setSprite(1);
-            System.out.println("You got epic loot! Yay!");
-            player.getWeapon().setDamage(50);
+            switch (interObject.getID()) {
+                case "StartWeapon":
+                    if (!player.getStartWeaponChest()) {
+                        interObject.setSprite(1);
+                        player.getWeapon().setDamage(10);
+                        player.setStartWeaponChest(true);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 

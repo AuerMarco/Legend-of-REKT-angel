@@ -258,12 +258,10 @@ public class Canvas extends JPanel {
     }
 
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 10);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
+        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
-        chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "Chest 1");
-//        chest2 = new InteractionObjects(new Coordinates(650, 400), 37, 35, "Kiste1", "Kiste 2");
-//        chest3 = new InteractionObjects(new Coordinates(700, 400), 37, 35, "Kiste1", "Kiste 3");
+        chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
         mob1 = new NPC(new Coordinates(460, 100), 80, 70, 1, "Mob", "Orc", 1, 10);
     }
 

@@ -15,7 +15,7 @@ public class InteractionObjects extends GameObjects {
     public final String imageDirectory;
     private ImageIcon sprite;
     private final String[] spriteList;
-    private final String id;
+    private String id;
 
     public InteractionObjects(Coordinates position, int width, int height, String thing, String id) {
         super(position, width, height);
@@ -30,6 +30,14 @@ public class InteractionObjects extends GameObjects {
         URL imageURL = getClass().getResource(imagePath);
         sprite = new ImageIcon(imageURL);
     }
+    
+    public String getID() {
+        return id;
+    }
+    
+    public void setID(String id) {
+        this.id = id;
+    }
 
     @Override
     public void drawObjects(java.awt.Graphics g) {
@@ -40,7 +48,6 @@ public class InteractionObjects extends GameObjects {
 //                getObjektPosition().getY(),
 //                getWidth(), getHeight(), 3, 3);
 //        g2d.fill(spieler);
-        
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }
 
