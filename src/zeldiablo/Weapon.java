@@ -17,11 +17,11 @@ public class Weapon {
 
     public Weapon(int level) {
         name = "examplename";
-        damage = 0;
-        randomDamage(level);
+        damage = 0;        
         n = 0;
         x = 0;
         r = new Random();
+        randomDamage(level);
     }
 
     public String getName() {

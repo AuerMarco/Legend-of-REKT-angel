@@ -36,7 +36,7 @@ public class Character extends GameObjects {
     private Weapon weapon;
     
 
-    public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, int damage) {
+    public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
         super(position, width, height);
         setAngle(angle);
         moving = false;
@@ -61,7 +61,7 @@ public class Character extends GameObjects {
         adjustXP();
         xpNeeded = 100;
         stats = new Stats(characterClass, level, name);
-        weapon = new Weapon(damage);
+        weapon = new Weapon(level);
         arrowActive = false;
         inviFrames = 0;
         attackCD = 0;        

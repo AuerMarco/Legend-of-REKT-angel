@@ -152,7 +152,7 @@ public class Window extends JFrame {
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                welt.setPlayer(new Player(new Coordinates(460, 400), 40, 75, 1, "Knight", "Kyle", 1, 10));
+                welt.setPlayer(new Player(new Coordinates(460, 400), 40, 75, 1, "Knight", "Kyle", 1));
             }
         });
         
@@ -161,7 +161,7 @@ public class Window extends JFrame {
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                welt.setPlayer(new Player(new Coordinates(460, 400), 45, 90, 1, "Berserker", "Kyle", 1, 10));
+                welt.setPlayer(new Player(new Coordinates(460, 400), 45, 90, 1, "Berserker", "Kyle", 1));
             }
         });
         
@@ -170,7 +170,7 @@ public class Window extends JFrame {
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                welt.setPlayer(new Player(new Coordinates(460, 400), 45, 60, 1, "Hunter", "Kyle", 1, 10));
+                welt.setPlayer(new Player(new Coordinates(460, 400), 45, 60, 1, "Hunter", "Kyle", 1));
             }
         });
         
@@ -228,7 +228,7 @@ public class Window extends JFrame {
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                welt.setMob1(new NPC(new Coordinates(400, 200), 200, 159, 1, "Boss1", "Asylum Demon", 1, 10));
+                welt.setMob1(new NPC(new Coordinates(400, 200), 200, 159, 1, "Boss1", "Asylum Demon", 1));
             }
         });
         
@@ -237,7 +237,7 @@ public class Window extends JFrame {
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                welt.setMob1(new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", 1, 10));
+                welt.setMob1(new NPC(new Coordinates(460, 200), 39, 36, 1, "Mob", "Orc", 1));
             }
         });
     }

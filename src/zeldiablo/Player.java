@@ -7,8 +7,8 @@ public class Player extends Character {
     private Currency money;
     private boolean startWeaponChest;
 
-    public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level, int weapon) {
-        super(position, breite, hoehe, winkel, klasse, name, level, weapon);
+    public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
+        super(position, breite, hoehe, winkel, klasse, name, level);
         money = new Currency();
     }
 

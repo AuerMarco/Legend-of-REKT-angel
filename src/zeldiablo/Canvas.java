@@ -251,7 +251,7 @@ public class Canvas extends JPanel {
                         } else {
                             n = player.getLevel() - 1;
                         }
-                        setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n, 10));
+                        setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n));
                         break;
                     case VK_T:
                         if (!mob1.getAggro()) {
@@ -266,11 +266,11 @@ public class Canvas extends JPanel {
     }
     
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, WaffenDMG
-        npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, 10);
-        npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1, 10);
+        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
+        npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1);
+        npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
-        mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1, 10);
+        mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1);
     }
     
     public void setBackground(int imageNumber) {
@@ -376,7 +376,7 @@ public class Canvas extends JPanel {
     }
     
     public void deadMobs() {
-        NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0, 10);
+        NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         if (!mob1.getAlive()) {
             mob1 = toterMob;
         }
