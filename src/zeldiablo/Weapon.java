@@ -1,26 +1,56 @@
 /**
- * @author Auer Marco
+ * @author Wedenig Manuel
  */
 package zeldiablo;
 
+import java.util.Random;
+
 public class Weapon {
-    
-    private double damage;
-    
-    public Weapon() {
-        damage = 10;
+
+    private String name;
+    private int damage;
+    private int x;
+    private int min;
+    private int max;
+    private int n;
+    private Random r;
+
+    public Weapon(int level) {
+        name = "examplename";
+        damage = 0;
+        randomDamage(level);
+        n = 0;
+        x = 0;
+        r = new Random();
     }
-    
-    public Weapon(int damage) {
-        this.damage = damage;
+
+    public String getName() {
+        return name;
     }
-    
-    public double getDamage() {
+
+    public int getDamage() {
         return damage;
     }
-    
-    public void setDamage(double damage) {
-        this.damage = damage;
+
+    public void setName(String newName) {
+        name = newName;
     }
-    
+
+    public void setDamage(int value) {
+        damage = value;
+    }
+
+    public void randomDamage(int level) {
+
+        while (x < level) {
+            n = n + 10;
+            x++;
+        }
+
+        min = n / 2;
+        max = n +1;
+        damage = r.nextInt(max - min) + min;
+
+    }
+
 }
