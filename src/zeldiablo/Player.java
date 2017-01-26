@@ -1,19 +1,26 @@
 package zeldiablo;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class Player extends Character {
 
     private Currency money;
     private boolean startWeaponChest;
+    private ArrayList<Weapon> inventar;
 
     public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
         super(position, breite, hoehe, winkel, klasse, name, level);
         money = new Currency();
+        inventar = new ArrayList<>();
     }
 
     public Currency getMoney() {
         return money;
+    }
+    
+    public ArrayList<Weapon> getInventar() {
+        return inventar;
     }
     
     public boolean getStartWeaponChest() {
@@ -52,8 +59,8 @@ public class Player extends Character {
                 case "StartWeapon":
                     if (!player.getStartWeaponChest()) {
                         interObject.setSprite(1);
-                        player.getWeapon().setDamage(10);
-                        player.setStartWeaponChest(true);
+                        player.getInventar().add(new Weapon(player.getLevel()));
+//                        player.setStartWeaponChest(true);
                     }
                     break;
                 default:

@@ -21,19 +21,20 @@ import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
 
 public class Canvas extends JPanel {
-    
+
     private Player player;
-    
+
     private final Dimension size;
     public final String imageDirectory;
     private final String[] bgPictureList;
     private ImageIcon backgroundPicture;
     private ImageIcon dialogBox;
     private ImageIcon levelUp;
-    
+    private ImageIcon inventory;
+
     private boolean gameOver;
     private int demoCounter, hpTimer;
-    
+
     private Timer t;
     private NPC npc1, npc2;
     private NPC mob1;
@@ -41,15 +42,19 @@ public class Canvas extends JPanel {
     private int arrowCounter;
     private boolean arrowLock;
     public boolean wKey, aKey, sKey, dKey;
-    
-    boolean angle1 = false, angle3 = false, angle5 = false, angle7 = false;
-    
+
+    private boolean angle1 = false, angle3 = false, angle5 = false, angle7 = false;
+
+    private boolean inventoryVisible;
+    private int inventoryHighlight, inventoryCounter;
+    private int invPosi1 = inventoryCounter, invPosi2 = 1, invPosi3 = 2, invPosi4 = 3, invPosi5 = 4;
+
     public Canvas() {
         setFocusable(true);
         size = new Dimension(1180, 780);
         setPreferredSize(size);
         imageDirectory = "images/";
-        bgPictureList = new String[]{"dialogbox.png", "LevelUp.png", "bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
+        bgPictureList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
         gameOver = false;
         demoCounter = 0;
         wKey = false;
@@ -57,45 +62,47 @@ public class Canvas extends JPanel {
         sKey = false;
         dKey = false;
         arrowLock = false;
-        
+        inventoryHighlight = 1;
+        inventoryCounter = 0;
+
         initGame();
     }
-    
+
     public boolean getGameOver() {
         return gameOver;
     }
-    
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
-    
+
     public Player getPlayer() {
         return player;
     }
-    
+
     public void setPlayer(Player player) {
         this.player = player;
     }
-    
+
     public NPC getMob1() {
         return mob1;
     }
-    
+
     public void setMob1(NPC gegner) {
         mob1 = gegner;
     }
-    
+
     private void initGame() {
-        setBackground(3);
+        setBackground(5);
         createGameObjects();
-        
+
         t = new Timer(20, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 doOnTick();
             }
         });
-        
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -122,7 +129,7 @@ public class Canvas extends JPanel {
                         break;
                 }
             }
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
                 if (sKey && aKey) {
@@ -154,9 +161,14 @@ public class Canvas extends JPanel {
                     player.moveRight();
                     dKey = true;
                 }
-                
+
                 switch (e.getKeyCode()) {
                     case VK_J:
+                        if (inventoryVisible) {
+                            if (player.getInventar().size() != 0) {
+                                player.setWeapon(player.getInventar().get(inventoryCounter));
+                            }
+                        }
                         player.objectInteraction(player, chest1);
                         player.objectInteraction(player, npc1);
                         player.objectInteraction(player, npc2);
@@ -215,17 +227,11 @@ public class Canvas extends JPanel {
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
                         player.increaseXP(10);
 
-//                        System.out.println(mob1.getAttackHitbox().getObjectPosition().getX());
-//                        int x = 0;
-//                        for (int i = 0; i < 100; i++) {
-//                            Chance chance = new Chance(player.getStats().getCritChance());
-//                            boolean success = chance.getSuccess();
-//                            System.out.println(success);
-//                            if (success) {
-//                                x++;
-//                            }      
-//                        }
-//                        System.out.println("Erfolge: " + x);
+                        int posi = 1;
+                        for (Weapon weapon : player.getInventar()) {
+                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
+                            posi++;
+                        }
                         break;
                     case VK_C:
                         if (!player.getStats().getVisible()) {
@@ -260,11 +266,47 @@ public class Canvas extends JPanel {
                             mob1.setAggro(false);
                         }
                         break;
+                    case VK_I:
+                        inventoryHighlight = 1;
+                        inventoryCounter = 0;
+                        if (inventoryVisible) {
+                            inventoryVisible = false;
+                        } else {
+                            inventoryVisible = true;
+                        }
+                        break;
+                    case VK_UP:
+//                        System.out.println(inventoryHighlight);
+//                        if (inventoryHighlight > 1 && inventoryCounter < 4) {    // && inventoryCounter != player.getInventar().size()-1      // inventoryHighlight <= 5
+//                            inventoryHighlight--;
+//                        }
+//                        System.out.println(inventoryCounter);
+                        if (inventoryCounter > 0) {
+                            inventoryCounter--;
+                        }
+                        break;
+                    case VK_DOWN:
+//                        System.out.println(inventoryHighlight);                        
+//                        if (inventoryHighlight >= 1 && inventoryHighlight < 5 && inventoryHighlight < player.getInventar().size()) {
+//                            inventoryHighlight++;
+//                        }
+//                        System.out.println(inventoryCounter);
+                        if (inventoryCounter < player.getInventar().size() - 1) {
+                            inventoryCounter++;
+                        }
+                        break;
+                    case VK_E:
+                        player.getInventar().add(new Weapon(player.getLevel()));
+                        player.getInventar().add(new Weapon(player.getLevel()));
+                        player.getInventar().add(new Weapon(player.getLevel()));
+                        player.getInventar().add(new Weapon(player.getLevel()));
+                        player.getInventar().add(new Weapon(player.getLevel()));
+                        break;
                 }
             }
         });
     }
-    
+
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
         player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1);
@@ -272,42 +314,46 @@ public class Canvas extends JPanel {
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
         mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1);
     }
-    
+
     public void setBackground(int imageNumber) {
         String imagePath = imageDirectory + bgPictureList[imageNumber];
         URL imageURL = getClass().getResource(imagePath);
         backgroundPicture = new ImageIcon(imageURL);
-        
+
         imagePath = imageDirectory + bgPictureList[0];
         imageURL = getClass().getResource(imagePath);
         dialogBox = new ImageIcon(imageURL);
-        
+
         imagePath = imageDirectory + bgPictureList[1];
         imageURL = getClass().getResource(imagePath);
         levelUp = new ImageIcon(imageURL);
+
+        imagePath = imageDirectory + bgPictureList[2];
+        imageURL = getClass().getResource(imagePath);
+        inventory = new ImageIcon(imageURL);
     }
-    
+
     private void startGame() {
         t.start();
     }
-    
+
     public void pauseGame() {
         t.stop();
     }
-    
+
     public void continueGame() {
         if (!getGameOver()) {
             t.start();
         }
     }
-    
+
     public void restartGame() {
         demoCounter = 0;
         setGameOver(false);
         createGameObjects();
         startGame();
     }
-    
+
     private void youShallNotPass() {
         player.youShallNotPass(player, chest1);
 //        player.youShallNotPass(player, chest2);
@@ -316,18 +362,18 @@ public class Canvas extends JPanel {
         player.youShallNotPass(player, npc1);
         player.youShallNotPass(player, npc2);
     }
-    
+
     public void hitDetect() {
         if (mob1.getInviFrames() <= 0) {
             player.getAttackHitbox().hitDetect(player, mob1);
         }
-        
+
         if (player.getInviFrames() <= 0) {
             mob1.getAttackHitbox().hitDetect(mob1, player);
         }
-        
+
     }
-    
+
     public void weaponDirection() {
         switch (player.getAngle()) {
             case 1:
@@ -346,7 +392,7 @@ public class Canvas extends JPanel {
                 break;
         }
     }
-    
+
     public void attackCD() {
         if (player.getAttackCD() > 0) {
             player.setAttackCD(player.getAttackCD() - 1);
@@ -354,7 +400,7 @@ public class Canvas extends JPanel {
         if (mob1.getAttackCD() > 0) {
             mob1.setAttackCD(mob1.getAttackCD() - 1);
         }
-        
+
         if (mob1.getInviFrames() > 0) {
             mob1.setInviFrames(mob1.getInviFrames() - 1);
         }
@@ -362,7 +408,7 @@ public class Canvas extends JPanel {
             player.setInviFrames(player.getInviFrames() - 1);
         }
     }
-    
+
     public void checkHP() {
         if (player.getStats().getHP() <= 0) {
             gameOver = true;
@@ -374,14 +420,14 @@ public class Canvas extends JPanel {
             player.getMoney().mobdrop(mob1.getLevel());
         }
     }
-    
+
     public void deadMobs() {
         NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         if (!mob1.getAlive()) {
             mob1 = toterMob;
         }
     }
-    
+
     public void arrow() {
         if (player.getArrowActive()) {
             if (angle1) {
@@ -424,9 +470,9 @@ public class Canvas extends JPanel {
                 angle7 = false;
             }
         }
-        
+
     }
-    
+
     private void hpRegeneration() {
         hpTimer++;
         if (hpTimer == 100) {
@@ -439,7 +485,7 @@ public class Canvas extends JPanel {
             hpTimer = 0;
         }
     }
-    
+
     private void checkXP() {
         if (player.getXP() >= player.getXPneeded()) {
             double xpDelta = 0;
@@ -450,20 +496,20 @@ public class Canvas extends JPanel {
             player.setXP(player.getXP() + xpDelta);
         }
     }
-    
+
     private void mobAttack() {
         if (mob1.getAggro()) {
             mob1.moveToPlayer(player);
         }
     }
-    
+
     private void hitboxUpdate() {
         player.hitboxUpdate();
         mob1.hitboxUpdate();
     }
-    
+
     private void doOnTick() {
-        
+
         hitboxUpdate();
         youShallNotPass();
         checkXP();
@@ -475,89 +521,89 @@ public class Canvas extends JPanel {
         hpRegeneration();
         mobAttack();
         hitDetect();
-        
+
         arrow();
-        
+
         if (player.getNPCdialog().getDialogVisible()) {
             player.setSpeed(0);
         } else {
             player.setSpeed(player.getOriginalSpeed());
         }
-        
+
         player.walkingAnimation();
         player.getAttackHitbox().weaponFramesFunction(player);
         mob1.getAttackHitbox().weaponFramesFunction(mob1);
-        
+
         repaint();
     }
 
-    //Ab hier beginnen die Zeichnungsmethoden:
+    //The drawing methods begin here
     public void characterStats(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.BLACK);
             g.drawString(player.getStats().getStatSummary1(), 50, 550);
             g.drawString(player.getStats().getStatSummary2() + ". Weapon damage: " + (int) player.getWeapon().getDamage(), 50, 575);
-            
+
             g.setColor(Color.RED);
             g.drawString(mob1.getStats().getStatSummary1(), 50, 650);
             g.drawString(mob1.getStats().getStatSummary2() + ". Weapon damage: " + (int) mob1.getWeapon().getDamage(), 50, 675);
         }
     }
-    
+
     public void drawInteractionObjects(Graphics g) {
         chest1.drawObjects(g);
 //        chest2.drawObjects(g);
 //        chest3.drawObjects(g);
     }
-    
+
     public void drawMobs(Graphics g) {
         mob1.drawObjects(g);
         drawMobHealthbar(g, mob1);
     }
-    
+
     public void drawNPCs(Graphics g) {
         npc1.drawObjects(g);
         npc2.drawObjects(g);
     }
-    
+
     public void drawAttacks(Graphics g) {
         player.getAttackHitbox().drawObjects(g);
         mob1.getAttackHitbox().drawObjects(g);
     }
-    
+
     public void drawDialog(Graphics g) {
         if (player.getNPCdialog().getDialogVisible()) {
             dialogBox.paintIcon(null, g, 0, (780 - 140));
-            
+
             if (player.getNPCdialog().getNPCsprite() != null) {
                 player.getNPCdialog().getNPCsprite().paintIcon(null, g, 88, 666);
             }
-            
+
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(new Color(255, 220, 70));
             g.drawString(player.getNPCdialog().getNPCname(), 230, 695);
-            
+
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.WHITE);
             g.drawString(player.getNPCdialog().getDialogLine1(), 230, 725);
             g.drawString(player.getNPCdialog().getDialogLine2(), 230, 750);
         }
     }
-    
+
     public void drawHealthbar(Graphics g) {
         //This part draws the players HP bar (how much health the player has)
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 30, 250, 30, 3, 3);
         g2d.fill(hpBar);
-        
+
         double currentHPpercent = (player.getStats().getHP() / player.getStats().getMaxHP());
-        
+
         g2d.setColor(Color.GREEN);
         hpBar = new RoundRectangle2D.Double(30, 30, 250 * currentHPpercent, 30, 3, 3);
         g2d.fill(hpBar);
-        
+
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
         g.drawString(player.getName() + " Level " + player.getLevel(), 40, 22);         // ", " + player.getCharacterClass() + 
@@ -579,16 +625,16 @@ public class Canvas extends JPanel {
 //        g.drawString(mob1.getName() + " Level " + mob1.getLevel(), 410, 22);
 //        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
     }
-    
+
     public void drawMobHealthbar(Graphics g, NPC mob) {
         //This part is the new mob HP bar (above the individual mobs)
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75, 7, 3, 3);
         g2d.fill(hpBar);
-        
+
         double currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
-        
+
         g2d.setColor(Color.GREEN);
         hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75 * currentHPpercent, 7, 3, 3);
         g2d.fill(hpBar);
@@ -600,7 +646,7 @@ public class Canvas extends JPanel {
         g.setColor(Color.BLACK);
         g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY() - 17);
     }
-    
+
     public void drawXPbar(Graphics g) {
         //This part draws the players XP bar (how much experience he has and needs to level up)
 //        if (player.getStats().getVisible()) {
@@ -608,37 +654,108 @@ public class Canvas extends JPanel {
         g2d.setColor(Color.LIGHT_GRAY);
         RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
         g2d.fill(hpBar);
-        
+
         double currentXPpercent = ((player.getXP() / player.getXPneeded()));
-        
+
         g2d.setColor(new Color(135, 0, 135));
         hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
         g2d.fill(hpBar);
-        
+
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.WHITE);
         g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
 //        }
     }
-    
+
     public void drawXPstatus(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(Color.BLACK);
             double mobsNeeded = player.getXPneeded() / mob1.getXP();
-            g.drawString("Silverserpents: " + player.getMoney().getSilverserpents() + " XP: " + (int) player.getXP() + ". XP needed: " + (int) player.getXPneeded() + ". Mobs needed: " + mobsNeeded, 50, 600);
-            
+            g.drawString("XP: " + (int) player.getXP() + ". XP needed: " + (int) player.getXPneeded() + ". Mobs needed: " + mobsNeeded, 50, 600);
+
             g.setColor(Color.RED);
             g.drawString("XP: " + (int) mob1.getXP(), 50, 700);
         }
     }
-    
+
     public void drawLevelUp(Graphics g) {
         if (player.getLevelUpAnimationVisible()) {
             levelUp.paintIcon(null, g, player.getObjectPosition().getX() - 7, player.getObjectPosition().getY() - 20);
         }
     }
-    
+
+    public void drawInventory(Graphics g) {
+        int x = 850;
+        if (inventoryVisible) {
+            inventory.paintIcon(null, g, 550, 200);
+
+            //This part is responsible for displaying the money the player owns (silverserpents)
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+            g.setColor(Color.WHITE);
+            for (int i = 1; i < (Integer.toString(player.getMoney().getSilverserpents())).length(); i++) {
+                x -= 15;
+            }
+            g.drawString("" + player.getMoney().getSilverserpents(), x, 280);
+
+            //This part is responsible for displaying the weapons in the inventory    
+//            if (player.getInventar().size() >= 5) {
+//                for (int i = 0; i < (player.getInventar().size() / 6); i++) {
+//                    invPosi1 += 4;
+//                }
+//            }
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+            if (inventoryCounter > 0) {
+                if (player.getInventar().get(inventoryCounter - 1) != null) {
+                    g.setColor(Color.WHITE);
+                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 650, 320);
+                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 588, 340);
+                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 587, 360);
+                }
+            }
+            if (player.getInventar().size() != 0) {
+                if (player.getInventar().get(inventoryCounter) != null) {
+                    g.setColor(Color.YELLOW);
+                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 650, 400);
+                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter).getDamage(), 588, 420);
+                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter).getDamage() + " Def:" + player.getInventar().get(inventoryCounter).getDamage(), 587, 440);
+                }
+            }
+            if ((inventoryCounter < player.getInventar().size()-1)) {
+                if (player.getInventar().get(inventoryCounter+1) != null) {
+                    g.setColor(Color.WHITE);
+                    g.drawString("" + player.getInventar().get(inventoryCounter+1).getName(), 650, 475);
+                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter+1).getDamage(), 588, 495);
+                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter+1).getDamage(), 587, 515);
+                }
+            }
+            
+            //Remains of the "old" 5-slot-inventory, kept for memory and just in case I decide to pick that version up again
+//            if ((player.getInventar().size() >= invPosi4)) {
+//                if (player.getInventar().get(invPosi4) != null) {
+//                    g.setColor(Color.WHITE);
+//                    if (inventoryHighlight == 4) {
+//                        g.setColor(Color.YELLOW);
+//                    }
+//                    g.drawString("" + player.getInventar().get(invPosi4).getName(), 650, 555);
+//                    g.drawString("Dmg:" + player.getInventar().get(invPosi4).getDamage() + " Atk:" + player.getInventar().get(invPosi4).getDamage() + " Dex:" + player.getInventar().get(invPosi4).getDamage(), 588, 575);
+//                    g.drawString("Stam:" + player.getInventar().get(invPosi4).getDamage() + " Def:" + player.getInventar().get(invPosi4).getDamage(), 587, 595);
+//                }
+//            }
+//            if ((player.getInventar().size() >= invPosi5)) {
+//                if (player.getInventar().get(invPosi5) != null) {
+//                    g.setColor(Color.WHITE);
+//                    if (inventoryHighlight == 5) {
+//                        g.setColor(Color.YELLOW);
+//                    }
+//                    g.drawString("" + player.getInventar().get(invPosi5).getName(), 650, 630);
+//                    g.drawString("Dmg:" + player.getInventar().get(invPosi5).getDamage() + " Atk:" + player.getInventar().get(invPosi5).getDamage() + " Dex:" + player.getInventar().get(invPosi5).getDamage(), 588, 650);
+//                    g.drawString("Stam:" + player.getInventar().get(invPosi5).getDamage() + " Def:" + player.getInventar().get(invPosi5).getDamage(), 587, 670);
+//                }
+//            }
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         backgroundPicture.paintIcon(null, g, 0, 0);           //hier wird das BG Bild gezeichnet        
@@ -649,24 +766,25 @@ public class Canvas extends JPanel {
         drawInteractionObjects(g);
         drawMobs(g);
         drawNPCs(g);
-        
+
         player.drawObjects(g);
         drawHealthbar(g);
         drawXPbar(g);
         drawAttacks(g);
-        
+
         characterStats(g);
         drawXPstatus(g);
         drawDialog(g);
         drawLevelUp(g);
-        
+        drawInventory(g);
+
         if (getGameOver()) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(Color.BLACK);
             RoundRectangle2D gameOverBG = new RoundRectangle2D.Double(size.width / 4 - 25,
                     size.height / 3 + 50, 675, 100, 3, 3);
             g2d.fill(gameOverBG);
-            
+
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
             g.setColor(Color.RED);
             g.drawString("You died!", size.width / 4 + 50, size.height / 2);
