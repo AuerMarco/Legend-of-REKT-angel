@@ -1,28 +1,50 @@
-/**
- * @author Auer Marco
- */
 package zeldiablo;
 
+/**
+ * This class is made to identify which gameObjects are non player characters
+ * (NPCs) This can either be a friendly NPC (that talks to you) or a mob that
+ * you fight
+ *
+ * @author Auer Marco
+ */
 public class NPC extends Character {
-    
+
     public boolean aggro;
 
-    public NPC(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
-        super(position, breite, hoehe, winkel, klasse, name, level);
+    /**
+     *
+     * @param position Where to spawn it
+     * @param width Width of the entity
+     * @param height Height of the entity
+     * @param angle The angle the NPC is facing
+     * @param characterClass The class of the NPC... plays no role for friendly
+     * ones. For mobs the class will be "Mob"
+     * @param name The ID / Name
+     * @param level Start level
+     */
+    public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
+        super(position, width, height, angle, characterClass, name, level);
         aggro = false;
     }
 
     public boolean getAggro() {
         return aggro;
     }
-    
+
     public void setAggro(boolean aggro) {
         this.aggro = aggro;
     }
-    
+
+    //Originally the mobs were supposed to get aggresive when a player is in a certain ranges
 //    public void aggroRange(Player player) {
 //        moveToPlayer(player);
 //    }
+    
+    /**
+     * Makes the mob move towards the player, if in state "aggro" (aggressive)
+     *
+     * @param player The player character - the figure you control
+     */
     public void moveToPlayer(Player player) {
         int playerX = player.getObjectPosition().getX();
         int playerY = player.getObjectPosition().getY();
@@ -38,8 +60,7 @@ public class NPC extends Character {
                 setAngle(7);
                 setSprite(18);
                 moveRight();
-            }
-            else if (mobY < playerY - 10) {          // - player.getHeight()
+            } else if (mobY < playerY - 10) {          // - player.getHeight()
                 setAngle(1);
                 setSprite(0);
                 moveDown();
@@ -52,6 +73,8 @@ public class NPC extends Character {
 
     }
 
+    //Method that was originally meant to check if the player is in reach and trigger the aggro state. 
+    //It was never finishd
 //    public void checkPlayerInReach(Player player) {
 //        int playerX = player.getObjectPosition().getX();
 //        int playerY = player.getObjectPosition().getY();
@@ -63,6 +86,8 @@ public class NPC extends Character {
 //        }
 //    }
 //
+//    Original attack method of the npc, before the feature got removed. 
+//    All of these are kept in case I decide to go back to making the mob attack
 //    public void attack() {
 //        if (attackCD == 0) {
 //            attackCD = 20;

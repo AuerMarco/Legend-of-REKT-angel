@@ -1,6 +1,3 @@
-/**
- * @author Auer Marco
- */
 package zeldiablo;
 
 import java.awt.Color;
@@ -20,6 +17,12 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
 
+/**
+ * This is pretty much the main class of my game - it acts the canvas - the
+ * stage where everything is drawn on and happening
+ *
+ * @author Auer Marco
+ */
 public class Canvas extends JPanel {
 
     private Player player;
@@ -49,6 +52,11 @@ public class Canvas extends JPanel {
     private int inventoryHighlight, inventoryCounter;
     private int invPosi1 = inventoryCounter, invPosi2 = 1, invPosi3 = 2, invPosi4 = 3, invPosi5 = 4;
 
+    /**
+     * This constructor sets all the basics of the canvas, like size etc Then it
+     * uses an image array, similiar to what you saw / read in the
+     * AttackAnimation class
+     */
     public Canvas() {
         setFocusable(true);
         size = new Dimension(1180, 780);
@@ -88,10 +96,22 @@ public class Canvas extends JPanel {
         return mob1;
     }
 
-    public void setMob1(NPC gegner) {
-        mob1 = gegner;
+    /**
+     * This method will change the currently present mob1 to a new, as every
+     * areal (part of the world) has different mobs
+     *
+     * @param mob Enemy that the current mob1 will get changed to
+     */
+    public void setMob1(NPC mob) {
+        mob1 = mob;
     }
 
+    /**
+     * This mob starts the game up by setting the background (or rather, calling
+     * the method that does it) and then calling the method that creates the
+     * game objects like NPCs and objects like chests It also contains the very,
+     * very important KeyListener that allows to control and play the game!
+     */
     private void initGame() {
         setBackground(5);
         createGameObjects();
@@ -307,6 +327,11 @@ public class Canvas extends JPanel {
         });
     }
 
+    /**
+     * This method creates all the currently present entities of the map. Later
+     * they will get replaced by placeholders and concrete mobs with their
+     * unique locations will be spawned via an another class
+     */
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
         player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1);
@@ -315,6 +340,16 @@ public class Canvas extends JPanel {
         mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1);
     }
 
+    /**
+     * First it sets the path consisting of the directory and the String from
+     * the spriteList. For example: "images/bg_matrix.jpg" Second it creates an
+     * imageURL with the newly defined imagePath Last it will create an
+     * ImageIcon object, the sprite, according to the newly created imageURL
+     *
+     * It does this for all three ImageIcons that are present at the same time
+     *
+     * @param imageNumber decides what index of the spriteList will be accessed
+     */
     public void setBackground(int imageNumber) {
         String imagePath = imageDirectory + bgPictureList[imageNumber];
         URL imageURL = getClass().getResource(imagePath);
@@ -333,20 +368,32 @@ public class Canvas extends JPanel {
         inventory = new ImageIcon(imageURL);
     }
 
+    /**
+     * Starts the timer (which is part of the ActionListener).
+     */
     private void startGame() {
         t.start();
     }
 
+    /**
+     * Stops the timer (which is part of the ActionListener).
+     */
     public void pauseGame() {
         t.stop();
     }
 
+    /**
+     * Continues (starts) the timer (which is part of the ActionListener) if the player isn't gameOver (dead).
+     */
     public void continueGame() {
         if (!getGameOver()) {
             t.start();
         }
     }
 
+    /**
+     * Resets all entities to their defaults (defined in the method createGameObjects() discussed earlier)
+     */
     public void restartGame() {
         demoCounter = 0;
         setGameOver(false);
@@ -354,6 +401,10 @@ public class Canvas extends JPanel {
         startGame();
     }
 
+    /**
+     * Collection method that checks if the player is trying to walk into an object on every frame
+     * One method call for each object / npc
+     */
     private void youShallNotPass() {
         player.youShallNotPass(player, chest1);
 //        player.youShallNotPass(player, chest2);
@@ -363,6 +414,10 @@ public class Canvas extends JPanel {
         player.youShallNotPass(player, npc2);
     }
 
+    /**
+     * Collection method that checks if a player or mob is hit
+     * One method call for each npc / player combination
+     */
     public void hitDetect() {
         if (mob1.getInviFrames() <= 0) {
             player.getAttackHitbox().hitDetect(player, mob1);
@@ -374,6 +429,10 @@ public class Canvas extends JPanel {
 
     }
 
+    /**
+     * This method changes the weapon's direction according to the player's angle.
+     * It does this by simply changing to the correct weapon sprite
+     */
     public void weaponDirection() {
         switch (player.getAngle()) {
             case 1:
@@ -393,6 +452,10 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method prevents the player from using the weapon too fast
+     * It also makes the player / mob vincible again by reducing the invincibility frames on every frame
+     */
     public void attackCD() {
         if (player.getAttackCD() > 0) {
             player.setAttackCD(player.getAttackCD() - 1);
@@ -409,6 +472,9 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method checks if a player or mob has 0 health and performs an according action
+     */
     public void checkHP() {
         if (player.getStats().getHP() <= 0) {
             gameOver = true;
@@ -421,6 +487,9 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method sets a mob to a placeholder (that is outside the map) if it gets flagged as dead by the method above
+     */
     public void deadMobs() {
         NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         if (!mob1.getAlive()) {
@@ -428,6 +497,10 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method will make the Hunter-class shoot an arrow instead of weilding a sword.
+     * Once again the direction is decided by taking the player's angle
+     */
     public void arrow() {
         if (player.getArrowActive()) {
             if (angle1) {
@@ -473,6 +546,9 @@ public class Canvas extends JPanel {
 
     }
 
+    /**
+     * This method will regenerate 1% of the players health every 100 frames
+     */
     private void hpRegeneration() {
         hpTimer++;
         if (hpTimer == 100) {
@@ -486,6 +562,9 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method will check if the player has reached the experience points needed to level up
+     */
     private void checkXP() {
         if (player.getXP() >= player.getXPneeded()) {
             double xpDelta = 0;
@@ -497,17 +576,28 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method will make the mobs run towards the player if they are aggresive
+     * Aggression state can currently be changed with the T-key
+     */
     private void mobAttack() {
         if (mob1.getAggro()) {
             mob1.moveToPlayer(player);
         }
     }
 
+    /**
+     * This will update the players and mobs hitboxs on every frame
+     */
     private void hitboxUpdate() {
         player.hitboxUpdate();
         mob1.hitboxUpdate();
     }
 
+    /**
+     * This method holds all the methods that have to get called on every frame (also known as tick)
+     * This method gets called every 20ms by the ActionListener / timer defined higher up
+     */
     private void doOnTick() {
 
         hitboxUpdate();
@@ -532,12 +622,17 @@ public class Canvas extends JPanel {
 
         player.walkingAnimation();
         player.getAttackHitbox().weaponFramesFunction(player);
-        mob1.getAttackHitbox().weaponFramesFunction(mob1);
+//        mob1.getAttackHitbox().weaponFramesFunction(mob1);
 
         repaint();
     }
 
     //The drawing methods begin here
+    /**
+     * This method draws the current stats of the player you can see by pressing the c-Key
+     * 
+     * @param g graphics
+     */
     public void characterStats(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
@@ -551,27 +646,51 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method draws all the objects like chests etc
+     * 
+     * @param g graphics
+     */
     public void drawInteractionObjects(Graphics g) {
         chest1.drawObjects(g);
 //        chest2.drawObjects(g);
 //        chest3.drawObjects(g);
     }
 
+    /**
+     * This method draws all the mobs
+     * 
+     * @param g graphics
+     */
     public void drawMobs(Graphics g) {
         mob1.drawObjects(g);
         drawMobHealthbar(g, mob1);
     }
 
+    /**
+     * This method draws all the NPCs
+     * @param g graphics
+     */
     public void drawNPCs(Graphics g) {
         npc1.drawObjects(g);
         npc2.drawObjects(g);
     }
 
+    /**
+     * This method draws the attacks (kinda obsolete since atm only the player has an attack animation)
+     * 
+     * @param g graphics
+     */
     public void drawAttacks(Graphics g) {
         player.getAttackHitbox().drawObjects(g);
         mob1.getAttackHitbox().drawObjects(g);
     }
 
+    /**
+     * This method draws the dialog and dialogbox you see when you interact with a friendly NPC (press J when you are near one)
+     * 
+     * @param g graphics
+     */
     public void drawDialog(Graphics g) {
         if (player.getNPCdialog().getDialogVisible()) {
             dialogBox.paintIcon(null, g, 0, (780 - 140));
@@ -591,6 +710,11 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method draws the healthbar
+     * 
+     * @param g graphics
+     */
     public void drawHealthbar(Graphics g) {
         //This part draws the players HP bar (how much health the player has)
         Graphics2D g2d = (Graphics2D) g;
@@ -626,6 +750,11 @@ public class Canvas extends JPanel {
 //        g.drawString("" + (int) mob1.getStats().getHP() + " / " + (int) mob1.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 410, 52);
     }
 
+    /**
+     * This method draws the mob's healthbars
+     * 
+     * @param g graphics
+     */
     public void drawMobHealthbar(Graphics g, NPC mob) {
         //This part is the new mob HP bar (above the individual mobs)
         Graphics2D g2d = (Graphics2D) g;
@@ -647,6 +776,11 @@ public class Canvas extends JPanel {
         g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY() - 17);
     }
 
+    /**
+     * This method draws the experience bar
+     * 
+     * @param g graphics
+     */
     public void drawXPbar(Graphics g) {
         //This part draws the players XP bar (how much experience he has and needs to level up)
 //        if (player.getStats().getVisible()) {
@@ -667,6 +801,11 @@ public class Canvas extends JPanel {
 //        }
     }
 
+    /**
+     * This method draws the experience information in textform to the character stats (when you press C)
+     * 
+     * @param g graphics
+     */
     public void drawXPstatus(Graphics g) {
         if (player.getStats().getVisible()) {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
@@ -679,12 +818,22 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This method draws the level up animation
+     * 
+     * @param g graphics
+     */
     public void drawLevelUp(Graphics g) {
         if (player.getLevelUpAnimationVisible()) {
             levelUp.paintIcon(null, g, player.getObjectPosition().getX() - 7, player.getObjectPosition().getY() - 20);
         }
     }
 
+    /**
+     * This method draws the inventory
+     * 
+     * @param g graphics
+     */
     public void drawInventory(Graphics g) {
         int x = 850;
         if (inventoryVisible) {
@@ -721,15 +870,15 @@ public class Canvas extends JPanel {
                     g.drawString("Stam:" + player.getInventar().get(inventoryCounter).getDamage() + " Def:" + player.getInventar().get(inventoryCounter).getDamage(), 587, 440);
                 }
             }
-            if ((inventoryCounter < player.getInventar().size()-1)) {
-                if (player.getInventar().get(inventoryCounter+1) != null) {
+            if ((inventoryCounter < player.getInventar().size() - 1)) {
+                if (player.getInventar().get(inventoryCounter + 1) != null) {
                     g.setColor(Color.WHITE);
-                    g.drawString("" + player.getInventar().get(inventoryCounter+1).getName(), 650, 475);
-                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter+1).getDamage(), 588, 495);
-                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter+1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter+1).getDamage(), 587, 515);
+                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 650, 475);
+                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 588, 495);
+                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 587, 515);
                 }
             }
-            
+
             //Remains of the "old" 5-slot-inventory, kept for memory and just in case I decide to pick that version up again
 //            if ((player.getInventar().size() >= invPosi4)) {
 //                if (player.getInventar().get(invPosi4) != null) {
@@ -756,6 +905,11 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * This is a collection method that calls all the individual drawing methods
+     * 
+     * @param g graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         backgroundPicture.paintIcon(null, g, 0, 0);           //hier wird das BG Bild gezeichnet        

@@ -1,6 +1,3 @@
-/**
- * @author Auer Marco
- */
 package zeldiablo;
 
 import java.awt.Color;
@@ -11,6 +8,12 @@ import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
+/**
+ * This class contains all ob GameObjects (entities on the screen) that are considered characters. 
+ * The player, mobs (enemies) and the friendly NPCs are all characters.
+ * 
+ * @author Auer Marco
+ */
 public class Character extends GameObjects {
 
     private boolean moving;
@@ -36,6 +39,17 @@ public class Character extends GameObjects {
     private Weapon weapon;
     
 
+    /**
+     * Uses a spriteList just like the AttackAnimation class (read the description ther if you haven't already ;) )
+     * 
+     * @param position Where to spawn it
+     * @param width Width of the entity
+     * @param height Height of the entity
+     * @param angle Determines which way the character is facing (mostly used for the player and mobs)
+     * @param characterClass Which class (Knight, Berserker, Hunter) the character is. "Mob"  (enemy) is also a characterClass
+     * @param name Used as the players name that is displayed or as the mobs "ID" respectively
+     * @param level Which level the character starts at
+     */
     public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
         super(position, width, height);
         setAngle(angle);
@@ -89,6 +103,15 @@ public class Character extends GameObjects {
         return sprite;
     }
 
+    /**
+     * First it sets the path consisting of the directory and the String from
+     * the spriteList. For example: "images/sprites/Mob_down_idle.png"
+     * Second it creates an imageURL with the newly defined imagePath Last it
+     * will create an ImageIcon object, the sprite, according to the newly
+     * created imageURL
+     *
+     * @param imageNumber decides what index of the spriteList will be accessed
+     */
     public void setSprite(int imageNumber) {
         String imagePath = imageDirectory + spriteList[imageNumber];
         URL imageURL = getClass().getResource(imagePath);
@@ -144,6 +167,12 @@ public class Character extends GameObjects {
         return level;
     }
 
+    /**
+     * Set the current level to the param
+     * Adjusts the experience points (xp) needed for the NEXT level
+     * 
+     * @param level which level the character gets set too
+     */
     public void setLevel(int level) {
         showLevelUpAnimation();
         this.level = level;
@@ -152,6 +181,9 @@ public class Character extends GameObjects {
         adjustXPneeded();
     }
 
+    /**
+     * Levels the character up and adjusts the XP needed for the next level
+     */
     public void levelUp() {
         showLevelUpAnimation();
         level++;
@@ -160,6 +192,9 @@ public class Character extends GameObjects {
         adjustXPneeded();
     }
     
+    /**
+     * Makes the level up animation visible
+     */
     public void showLevelUpAnimation() {
         levelUpAnimationFrames = 0;
         levelUpAnimationVisible = true;
@@ -177,6 +212,10 @@ public class Character extends GameObjects {
         this.xp = this.xp + xp;
     }
 
+    /**
+     * Sets the xp (experience points) a mob gives you on dying
+     * Increase by 1 for every level the mob has
+     */
     public void adjustXP() {
         if (characterClass == "Mob") {
 //            if (level == 1) {
@@ -201,6 +240,10 @@ public class Character extends GameObjects {
         return xpNeeded;
     }
 
+    /**
+     * Sets the xp you need for the next level
+     * 25xp more needed for every level you have
+     */
     public void adjustXPneeded() {
         xpNeeded = 100;
         for (int x = level; x > 1; x--) {
@@ -225,6 +268,11 @@ public class Character extends GameObjects {
         arrowActive = active;
     }
 
+    /**
+     * The invincibility frames determine if a character can be damaged at the moment
+     * 
+     * @return inviFrames
+     */
     public int getInviFrames() {
         return inviFrames;
     }
@@ -245,6 +293,9 @@ public class Character extends GameObjects {
         return levelUpAnimationVisible;
     }
 
+    /**
+     * Moves the character up
+     */
     public void moveDown() {               //Winkel: 1
         setObjectPosition(new Coordinates(getObjectPosition().getX(), getObjectPosition().getY() + (1 * super.getSpeed())));
         setMoving(true);
@@ -285,6 +336,10 @@ public class Character extends GameObjects {
         setMoving(true);
     }
 
+    /**
+     * This method gives the player a walking animation by increasing a spriteCounter while he is in the state "moving"
+     * Periodically (every 10 frames) this method then changes the sprite
+     */
     public void walkingAnimation() {
         if (moving) {
             spriteCounter++;
@@ -399,6 +454,11 @@ public class Character extends GameObjects {
         }
     }
 
+    /**
+     * increases a frame counter variable on every frame and makes the level up animation disappear after 50 frames
+     * 
+     * @param player The player character - the figure you control
+     */
     public void levelUpAnimationFunction(Player player) {
         levelUpAnimationFrames++;
         if (levelUpAnimationFrames > 50) {
@@ -406,7 +466,11 @@ public class Character extends GameObjects {
         }
     }
     
-    //Zeichnung für das originale, 1. blaue Viereck :)
+    /**
+     * Draws all the characters to the canvas
+     * 
+     * @param g graphics
+     */
     @Override
     public void drawObjects(java.awt.Graphics g) {
 

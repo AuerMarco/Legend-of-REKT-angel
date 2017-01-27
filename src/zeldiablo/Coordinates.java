@@ -1,8 +1,10 @@
-/**
- * @author Auer Marco
- */
 package zeldiablo;
 
+/**
+ * Really simple class that contains the coordinates for all gameObjects
+ * 
+ * @author Auer Marco
+ */
 public class Coordinates {
 
     private int posX;

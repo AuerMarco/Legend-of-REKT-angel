@@ -3,14 +3,31 @@ package zeldiablo;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * This class contains the character-entity that is the controllable player character
+ * It has all the methods unique to the player (like talking / interacting with objects)
+ * 
+ * @author Auer Marco
+ */
 public class Player extends Character {
 
     private Currency money;
     private boolean startWeaponChest;
     private ArrayList<Weapon> inventar;
 
-    public Player(Coordinates position, int breite, int hoehe, int winkel, String klasse, String name, int level) {
-        super(position, breite, hoehe, winkel, klasse, name, level);
+    /**
+     * Creates a currency and inventory the player can use
+     * 
+     * @param position Where to spawn it
+     * @param width Width of the entity
+     * @param height Height of the entity
+     * @param angle The angle the player is facing
+     * @param characterClass The class of the player (Knight, Berserker, Hunter)
+     * @param name the players name
+     * @param level start level 
+     */
+    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
+        super(position, width, height, angle, characterClass, name, level);
         money = new Currency();
         inventar = new ArrayList<>();
     }
@@ -27,10 +44,21 @@ public class Player extends Character {
         return startWeaponChest;
     }
     
+    /**
+     * If a player has looted a certain chest, it is noted here so each unique chest can only be looted once even after switching the area you are in and thus reloading the chests
+     * 
+     * @param chest boolean true
+     */
     public void setStartWeaponChest(boolean chest) {
         startWeaponChest = chest;
     }
 
+    /**
+     * Checks if the players hitbox (+/- 5 pixel) has a collision with an NPC or object
+     * 
+     * @param that the NPC / object that gets checked
+     * @return boolean true / false
+     */
     public boolean isInReachOf(GameObjects that) {
         switch (super.getAngle()) {
             case 1:
@@ -53,6 +81,12 @@ public class Player extends Character {
         return super.getHitbox().intersects(that.getHitbox());
     }
 
+    /**
+     * Determines which action is performed if a player is in reach of an object using the ID (Name)
+     * 
+     * @param player The player character - the figure you control
+     * @param interObject The object whose ID gets checked to determine the actio performed (if it is in reach)
+     */
     public void objectInteraction(Player player, InteractionObjects interObject) {
         if (player.isInReachOf(interObject)) {
             switch (interObject.getID()) {
@@ -60,7 +94,7 @@ public class Player extends Character {
                     if (!player.getStartWeaponChest()) {
                         interObject.setSprite(1);
                         player.getInventar().add(new Weapon(player.getLevel()));
-//                        player.setStartWeaponChest(true);
+                        player.setStartWeaponChest(true);
                     }
                     break;
                 default:
@@ -70,9 +104,15 @@ public class Player extends Character {
         }
     }
 
-    public void objectInteraction(Player spieler, Character npc) {
+    /**
+     * Determines which action is performed if a player is in reach of an NPC using the ID (Name)
+     * 
+     * @param player The player character - the figure you control
+     * @param npc the NPC whose ID gets checked
+     */
+    public void objectInteraction(Player player, Character npc) {
 
-        if (spieler.isInReachOf(npc)) {
+        if (player.isInReachOf(npc)) {
             switch (npc.getName()) {
                 case "Solaire, Champion of the sun":
                     super.getNPCdialog().dialogSunbro(this, npc);

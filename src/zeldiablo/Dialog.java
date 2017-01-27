@@ -1,10 +1,12 @@
-/**
- * @author Auer Marco
- */
 package zeldiablo;
 
 import javax.swing.ImageIcon;
 
+/**
+ * This class contains the logic for the dialogs and determines which NPC has which dialog by having a method for every NPC / dialog
+ * 
+ * @author Auer Marco
+ */
 public class Dialog {
 
     private String dialogLine1, dialogLine2, npcName;
@@ -13,6 +15,9 @@ public class Dialog {
     private String[] dialogPage;
     private ImageIcon npc;
 
+    /**
+     * Sets all the data members to their beginning state
+     */
     public Dialog() {
         dialogLine1 = "";
         dialogLine2 = "";
@@ -58,6 +63,12 @@ public class Dialog {
         return npc;
     }
 
+    /**
+     * Determines the dialog for the NPC Solaire
+     * 
+     * @param player The player character - the figure you control
+     * @param npc the NPC whose dialog you will see upon interaction
+     */
     public void dialogSunbro(Player player, Character npc) {
         dialogVisible = true;
         this.npc = npc.getSprite();
@@ -66,6 +77,13 @@ public class Dialog {
         dialogLogic();
     }
 
+    /**
+     * Determines the dialog for the NPC Unknown Rogue. 
+     * This one is a demo that shows that a dialog can have multiple lines and multiple pages
+     * 
+     * @param player The player character - the figure you control
+     * @param npc the NPC whose dialog you will see upon interaction
+     */
     public void dialogRogue(Player player, Character npc) {
         dialogVisible = true;
         this.npc = npc.getSprite();
@@ -74,6 +92,11 @@ public class Dialog {
         dialogLogic();
     }
 
+    /**
+     * The logic for switching between dialog pages and displaying 2 lines in the dialog box
+     * You get the next dialog page (if there is one) by pressing J while talking to an NPC
+     * If there is no next page, it closes the dialogbox
+     */
     public void dialogLogic() {
         if ((dialogCounter + 1) < dialogPage.length) {
             dialogLine1 = dialogPage[dialogCounter];
@@ -88,10 +111,6 @@ public class Dialog {
             dialogVisible = false;
         }
     }
-//    @Override
-//    protected void drawObjects(Graphics g) {
-//        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
-//        g.setColor(Color.RED);
-//        g.drawString("PRAISE THE SUN!", 400, 400);
-//    }
+    
+    //The dialog and its box is drawn directly on the canvas, so there is no method for it here
 }
