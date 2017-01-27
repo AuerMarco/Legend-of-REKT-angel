@@ -835,51 +835,46 @@ public class Canvas extends JPanel {
      * @param g graphics
      */
     public void drawInventory(Graphics g) {
-        int x = 850;
+        int x = 1000;
         if (inventoryVisible) {
             inventory.paintIcon(null, g, 550, 200);
+            
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+            g.setColor(Color.WHITE);
+            g.drawString("Inventory", 745, 253);
 
             //This part is responsible for displaying the money the player owns (silverserpents)
-            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
-            g.setColor(Color.WHITE);
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
             for (int i = 1; i < (Integer.toString(player.getMoney().getSilverserpents())).length(); i++) {
-                x -= 15;
+                x -= 18;
             }
-            g.drawString("" + player.getMoney().getSilverserpents(), x, 280);
+            g.drawString("" + player.getMoney().getSilverserpents(), x, 315);
 
             //This part is responsible for displaying the weapons in the inventory    
-//            if (player.getInventar().size() >= 5) {
-//                for (int i = 0; i < (player.getInventar().size() / 6); i++) {
-//                    invPosi1 += 4;
-//                }
-//            }
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
             if (inventoryCounter > 0) {
                 if (player.getInventar().get(inventoryCounter - 1) != null) {
-                    g.setColor(Color.WHITE);
-                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 650, 320);
-                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 588, 340);
-                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 587, 360);
+                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 740, 373);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 600, 398);
+                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 600, 423);
                 }
             }
             if (player.getInventar().size() != 0) {
                 if (player.getInventar().get(inventoryCounter) != null) {
-                    g.setColor(Color.YELLOW);
-                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 650, 400);
-                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter).getDamage(), 588, 420);
-                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter).getDamage() + " Def:" + player.getInventar().get(inventoryCounter).getDamage(), 587, 440);
+                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 740, 490);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter).getDamage(), 600, 515);
+                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter).getDamage(), 600, 540);
                 }
             }
             if ((inventoryCounter < player.getInventar().size() - 1)) {
                 if (player.getInventar().get(inventoryCounter + 1) != null) {
-                    g.setColor(Color.WHITE);
-                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 650, 475);
-                    g.drawString("Dmg:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Atk:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Dex:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 588, 495);
-                    g.drawString("Stam:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Def:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 587, 515);
+                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 740, 600);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 600, 625);
+                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 600, 650);
                 }
             }
 
-            //Remains of the "old" 5-slot-inventory, kept for memory and just in case I decide to pick that version up again
+            //Remains of the "old" 5-slot-inventory, kept just in case I decide to pick that style back up again
 //            if ((player.getInventar().size() >= invPosi4)) {
 //                if (player.getInventar().get(invPosi4) != null) {
 //                    g.setColor(Color.WHITE);
