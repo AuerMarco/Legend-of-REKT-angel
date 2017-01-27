@@ -89,6 +89,8 @@ public class Weapon {
 	
 	public void randomAttack(int level)
 	{
+            n=0;
+        x=0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -103,6 +105,8 @@ public class Weapon {
 	
 	public void randomDexterity(int level)
 	{
+            n=0;
+        x=0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -117,6 +121,8 @@ public class Weapon {
 	
 	public void randomStamina(int level)
 	{
+            n=0;
+        x=0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -131,6 +137,8 @@ public class Weapon {
 	
 	public void randomDefence(int level)
 	{	
+            n=0;
+        x=0;
 		n = 4;
         while (x < level) {
             n = n + 1;

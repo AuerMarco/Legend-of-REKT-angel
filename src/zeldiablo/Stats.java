@@ -2,7 +2,7 @@ package zeldiablo;
 
 /**
  * This class contains the stats (like attackpower) of characters and weapons
- * 
+ *
  * @author Auer Marco
  */
 public class Stats {
@@ -20,26 +20,40 @@ public class Stats {
 
     /**
      * This constructor is used to assign stats to characters (players & mobs)
-     * It might be noted that dexterity is the stat that determines the crit chance. The other stats should be self explainatory
-     * 
+     * It might be noted that dexterity is the stat that determines the crit
+     * chance. The other stats should be self explainatory
+     *
      * @param characterClass Class like Knight or also Mob for example
      * @param level Level the character is at the moment
-     * @param name The (players) name. Also has impacts on the amount of stats you get! Check the adjustment-method for more information.
+     * @param name The (players) name. Also has impacts on the amount of stats
+     * you get! Check the adjustment-method for more information.
      */
-    public Stats(String characterClass, int level, String name) {
+//    public Stats(String characterClass, int level, String name) {
+//        attack = 0;
+//        dexterity = 0;
+//        stamina = 0;
+//        defence = 0;
+//        this.level = level;
+//        statAdjustment(characterClass, level, name);
+//        hp = stamina * 15;
+//        maxHP = hp;
+//        statSummary = "";
+//    }
+    public Stats(Character character) {
         attack = 0;
         dexterity = 0;
         stamina = 0;
         defence = 0;
-        this.level = level;
-        statAdjustment(characterClass, level, name);
+        this.level = character.getLevel();
+        statAdjustment(character);
         hp = stamina * 15;
         maxHP = hp;
         statSummary = "";
     }
-    
+
     /**
-     * This constructor is used for the weapons, as the weapon-class has it's own methods to determine the amount each stat should be
+     * This constructor is used for the weapons, as the weapon-class has it's
+     * own methods to determine the amount each stat should be
      */
     public Stats() {
         attack = 0;
@@ -47,7 +61,6 @@ public class Stats {
         stamina = 0;
         defence = 0;
     }
-    
 
     public double getAttack() {
         return attack;
@@ -102,14 +115,16 @@ public class Stats {
     }
 
     /**
-     * @return a string that sums up 4 of the stats. Used to display them in one line on the screen when pressing C
+     * @return a string that sums up 4 of the stats. Used to display them in one
+     * line on the screen when pressing C
      */
     public String getStatSummary1() {
         return statSummary = "Attack: " + (int) attack + ". Dexterity: " + (int) dexterity + ". Stamina: " + (int) stamina + ". Defence: " + (int) defence;
     }
 
     /**
-     * @return a string that sums up 4 other stats. Used to display them in the second line on the screen when pressing C
+     * @return a string that sums up 4 other stats. Used to display them in the
+     * second line on the screen when pressing C
      */
     public String getStatSummary2() {
         return statSummary = "HP: " + (int) hp + ". Max HP: " + (int) maxHP + ". Level: " + level + ". Crit: " + critChance;
@@ -124,20 +139,21 @@ public class Stats {
     }
 
     /**
-     * This method first determines the base stats the character receives according to the class (e.g. Knight, Mob)
-     * Then it increases the stats (except dexterity) by a certain % for each level. 
-     * Next it increases the dexterity by fixed amounts for each level / class
-     * Next it also multiplies the stats if the character has certain names.
-     * e.g. "debug" increases them to amounts that guarantee one hits
-     * The name "Osl" doubles all the stats
-     * Then it creates a chance object and calculates the characters crit chance. 
-     * The last step is determining the characters health points by multiplying the Stamina times 15.
-     * 
-     * @param characterClass Class like Knight or also Mob for example
-     * @param level Level the character is at the moment
-     * @param name The (players) name. Also has impacts on the amount of stats you get!
+     * This method first determines the base stats the character receives
+     * according to the class (e.g. Knight, Mob) Then it increases the stats
+     * (except dexterity) by a certain % for each level. Next it increases the
+     * dexterity by fixed amounts for each level / class Next it also multiplies
+     * the stats if the character has certain names. e.g. "debug" increases them
+     * to amounts that guarantee one hits The name "Osl" doubles all the stats
+     * Then it creates a chance object and calculates the characters crit
+     * chance. The last step is determining the characters health points by
+     * multiplying the Stamina times 15.
+     *
+     * @param character The character whose stats get updated
      */
-    public void statAdjustment(String characterClass, int level, String name) {
+    public void statAdjustment(Character character) {
+        String characterClass = character.getCharacterClass();
+        String name = character.getName();
         switch (characterClass) {
             case "Knight":
                 attack = 10;
@@ -155,7 +171,7 @@ public class Stats {
                 attack = 10;
                 dexterity = 10;
                 stamina = 10;
-                defence = 5;                
+                defence = 5;
                 break;
             case "REKTangel":
                 stamina = 1;
@@ -236,6 +252,11 @@ public class Stats {
             }
 
         }
+
+        attack += character.getWeapon().getStats().getAttack();
+        dexterity += character.getWeapon().getStats().getDexterity();
+        stamina += character.getWeapon().getStats().getStamina();
+        defence += character.getWeapon().getStats().getDefence();
 
         switch (name) {
             case "Osl":

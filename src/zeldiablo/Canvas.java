@@ -186,7 +186,7 @@ public class Canvas extends JPanel {
                     case VK_J:
                         if (inventoryVisible) {
                             if (player.getInventar().size() != 0) {
-                                player.setWeapon(player.getInventar().get(inventoryCounter));
+                                equipWeapon();
                             }
                         }
                         player.objectInteraction(player, chest1);
@@ -238,15 +238,16 @@ public class Canvas extends JPanel {
 //                        hits = player.getStats().getHP() / dmg;
 //                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
 
-                        int x = 0;
-                        while (x < player.getLevel()) {
-                            player.getMoney().changeValue(10);
-                            x++;
-                        }
+//                        int x = 0;
+//                        while (x < player.getLevel()) {
+//                            player.getMoney().changeValue(10);
+//                            x++;
+//                        }
 
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
-                        player.increaseXP(10);
+//                        player.increaseXP(10);
 
+                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int)player.getWeapon().getStats().getAttack() + " Dex:" + (int)player.getWeapon().getStats().getDexterity() + " Stam:" + (int)player.getWeapon().getStats().getStamina() + " Def:" + (int)player.getWeapon().getStats().getDefence());
                         int posi = 1;
                         for (Weapon weapon : player.getInventar()) {
                             System.out.println("Position: " + posi + ", " + weapon.getDamage());
@@ -593,6 +594,11 @@ public class Canvas extends JPanel {
         player.hitboxUpdate();
         mob1.hitboxUpdate();
     }
+    
+    private void equipWeapon() {
+        player.setWeapon(player.getInventar().get(inventoryCounter));
+        player.getStats().statAdjustment(player);
+    }
 
     /**
      * This method holds all the methods that have to get called on every frame (also known as tick)
@@ -854,23 +860,23 @@ public class Canvas extends JPanel {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
             if (inventoryCounter > 0) {
                 if (player.getInventar().get(inventoryCounter - 1) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 740, 373);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 600, 398);
-                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter - 1).getDamage(), 600, 423);
+                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 600, 373);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getDexterity(), 600, 398);
+                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getDefence(), 600, 423);
                 }
             }
             if (player.getInventar().size() != 0) {
                 if (player.getInventar().get(inventoryCounter) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 740, 490);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter).getDamage(), 600, 515);
-                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter).getDamage(), 600, 540);
+                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 600, 490);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter).getStats().getDexterity(), 600, 515);
+                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter).getStats().getDefence(), 600, 540);
                 }
             }
             if ((inventoryCounter < player.getInventar().size() - 1)) {
                 if (player.getInventar().get(inventoryCounter + 1) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 740, 600);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Dexterity:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 600, 625);
-                    g.drawString("Stamina:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Defence:" + player.getInventar().get(inventoryCounter + 1).getDamage(), 600, 650);
+                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 600, 600);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getDexterity(), 600, 625);
+                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getDefence(), 600, 650);
                 }
             }
 
