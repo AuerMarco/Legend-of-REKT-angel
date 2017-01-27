@@ -244,7 +244,8 @@ public class Character extends GameObjects {
      * Sets the xp you need for the next level
      * 25xp more needed for every level you have
      */
-    public void adjustXPneeded() {
+    public void adjustXPneeded() {        
+        stats.setHP(stats.getMaxHP());
         xpNeeded = 100;
         for (int x = level; x > 1; x--) {
             xpNeeded += 25;

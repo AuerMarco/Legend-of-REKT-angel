@@ -595,6 +595,11 @@ public class Canvas extends JPanel {
         mob1.hitboxUpdate();
     }
     
+    /**
+     * This method makes the player equip the weapon, that is currently selected
+     * Selected means which index the counter currently is on
+     * Then it calls the stats adjustment method to update the player stats
+     */
     private void equipWeapon() {
         player.setWeapon(player.getInventar().get(inventoryCounter));
         player.getStats().statAdjustment(player);

@@ -46,8 +46,7 @@ public class Stats {
         defence = 0;
         this.level = character.getLevel();
         statAdjustment(character);
-        hp = stamina * 15;
-        maxHP = hp;
+        hp = maxHP;
         statSummary = "";
     }
 
@@ -142,8 +141,9 @@ public class Stats {
      * This method first determines the base stats the character receives
      * according to the class (e.g. Knight, Mob) Then it increases the stats
      * (except dexterity) by a certain % for each level. Next it increases the
-     * dexterity by fixed amounts for each level / class Next it also multiplies
-     * the stats if the character has certain names. e.g. "debug" increases them
+     * dexterity by fixed amounts for each level / class. 
+     * Then it adds the equiped weapons stats
+     * Next it multiplies the stats if the character has certain names. e.g. "debug" increases them
      * to amounts that guarantee one hits The name "Osl" doubles all the stats
      * Then it creates a chance object and calculates the characters crit
      * chance. The last step is determining the characters health points by
@@ -153,7 +153,8 @@ public class Stats {
      */
     public void statAdjustment(Character character) {
         String characterClass = character.getCharacterClass();
-        String name = character.getName();
+        String name = character.getName();        
+        this.level = character.getLevel();
         switch (characterClass) {
             case "Knight":
                 attack = 10;
@@ -277,9 +278,10 @@ public class Stats {
         Chance chanceCalc = new Chance(level, dexterity, characterClass);
         critChance = chanceCalc.calculateCritChance();
 
-        this.hp = this.stamina * 15;
-
-        this.maxHP = this.hp;
+        this.maxHP = this.stamina * 15;
+        if (hp > maxHP) {
+            hp = maxHP;
+        }
     }
 
 }
