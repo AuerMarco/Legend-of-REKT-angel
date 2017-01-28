@@ -187,9 +187,14 @@ public class Canvas extends JPanel {
                                 equipWeapon();
                             }
                         }
-                        player.objectInteraction(player, chest1);
-                        player.objectInteraction(player, npc1);
-                        player.objectInteraction(player, npc2);
+                        if (!inventoryVisible) {
+                            player.objectInteraction(player, chest1);
+                            player.objectInteraction(player, npc1);
+                            player.objectInteraction(player, npc2);
+                        }
+                        if (player.getNPCdialog().getDialogVisible()) {
+                            player.getNPCdialog().dialogLogic();
+                        }
                         break;
                     case VK_K:
                         if (player.getAttackCD() == 0) {
@@ -251,10 +256,12 @@ public class Canvas extends JPanel {
                         }
                         break;
                     case VK_C:
-                        if (!player.getStats().getVisible()) {
-                            player.getStats().setVisible(true);
-                        } else if (player.getStats().getVisible()) {
-                            player.getStats().setVisible(false);
+                        if (!player.getNPCdialog().getDialogVisible()) {
+                            if (!player.getStats().getVisible()) {
+                                player.getStats().setVisible(true);
+                            } else if (player.getStats().getVisible()) {
+                                player.getStats().setVisible(false);
+                            }
                         }
                         break;
                     case VK_L:
@@ -286,10 +293,12 @@ public class Canvas extends JPanel {
                     case VK_I:
                         inventoryHighlight = 1;
                         inventoryCounter = 0;
-                        if (inventoryVisible) {
-                            inventoryVisible = false;
-                        } else {
-                            inventoryVisible = true;
+                        if (!player.getNPCdialog().getDialogVisible()) {
+                            if (inventoryVisible) {
+                                inventoryVisible = false;
+                            } else {
+                                inventoryVisible = true;
+                            }
                         }
                         break;
                     case VK_UP:
@@ -318,6 +327,13 @@ public class Canvas extends JPanel {
                         player.getInventar().add(new Weapon(player.getLevel()));
                         player.getInventar().add(new Weapon(player.getLevel()));
                         player.getInventar().add(new Weapon(player.getLevel()));
+                        break;
+                    case VK_ESCAPE:
+                        if (inventoryVisible || player.getStats().getVisible() || player.getLootVisible()) {
+                            inventoryVisible = false;
+                            player.getStats().setVisible(false);
+                            player.setLootVisible(false);
+                        }
                         break;
                 }
             }
@@ -485,14 +501,19 @@ public class Canvas extends JPanel {
             gameOver = true;
             t.stop();
         }
+        
         if (mob1.getStats().getHP() <= 0) {
+            Chance chance = new Chance(10);
+            if (chance.getSuccess() && mob1.getLevel() != 0) {
+                Weapon loot = new Weapon(mob1.getLevel());
+                System.out.println("lol");
+                player.getInventar().add(loot);
+                player.setLoot(loot);
+                player.setLootVisible(true);
+            }
             mob1.setAlive(false);
             player.increaseXP(mob1.getXP());
-            player.getMoney().mobdrop(mob1.getLevel());
-            Chance chance = new Chance(10);
-            if (chance.getSuccess()) {
-                player.getInventar().add(new Weapon(mob1.getLevel()));
-            }
+            player.getMoney().mobdrop(mob1.getLevel());            
         }
     }
 
@@ -972,6 +993,20 @@ public class Canvas extends JPanel {
         }
     }
 
+    private void drawLoot(Graphics g) {
+        if (player.getLootVisible()) {
+            dialogBox.paintIcon(null, g, 0, (780 - 140));
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+            g.setColor(new Color(255, 220, 70));
+            g.drawString("Press [ESC] to close", 800, 695);
+            g.setColor(Color.WHITE);
+            g.drawString("You got loot!", 230, 695);
+
+            g.drawString("Weapon name: " + player.getLoot().getName(), 230, 725);
+            g.drawString("Damage:"+player.getLoot().getDamage()+" Strength:"+(int)player.getLoot().getStats().getAttack()+" Dexterity:"+(int)player.getLoot().getStats().getDexterity()+" Stamina:"+(int)player.getLoot().getStats().getStamina()+" Defence:"+(int)player.getLoot().getStats().getDefence(), 230, 750);
+        }
+    }
+
     /**
      * This is a collection method that calls all the individual drawing methods
      *
@@ -998,6 +1033,7 @@ public class Canvas extends JPanel {
         drawDialog(g);
         drawLevelUp(g);
         drawInventory(g);
+        drawLoot(g);
 
         if (getGameOver()) {
             Graphics2D g2d = (Graphics2D) g;

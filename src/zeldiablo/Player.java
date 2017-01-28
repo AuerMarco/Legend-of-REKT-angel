@@ -13,10 +13,13 @@ import java.util.ArrayList;
 public class Player extends Character {
 
     private Currency money;
-    private boolean startWeaponChest;
     private ArrayList<Weapon> inventar;
 
-    /**
+    private boolean startWeaponChest;
+    private boolean lootVisible;
+    private Weapon loot;
+    
+/**
      * Creates a currency and inventory the player can use
      *
      * @param position Where to spawn it
@@ -27,16 +30,11 @@ public class Player extends Character {
      * @param name the players name
      * @param level start level
      */
-    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
-        super(position, width, height, angle, characterClass, name, level);
-        money = new Currency();
-        inventar = new ArrayList<>();
-    }
-
     public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
         super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
         money = new Currency();
         inventar = new ArrayList<>();
+        loot = new Weapon("placeholder",0,0,0,0,0);
     }
 
     public Currency getMoney() {
@@ -60,6 +58,22 @@ public class Player extends Character {
      */
     public void setStartWeaponChest(boolean chest) {
         startWeaponChest = chest;
+    }
+
+    public boolean getLootVisible() {
+        return lootVisible;
+    }
+
+    public void setLootVisible(boolean visible) {
+        lootVisible = visible;
+    }
+    
+    public Weapon getLoot() {
+        return loot;
+    }
+    
+    public void setLoot(Weapon loot) {
+        this.loot = loot;
     }
 
     /**
@@ -105,8 +119,10 @@ public class Player extends Character {
                 case "StartWeapon":
                     if (!player.getStartWeaponChest()) {
                         interObject.setSprite(1);
-                        player.getInventar().add(new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0));
+                        loot = new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0);
+                        player.getInventar().add(loot);
                         player.setStartWeaponChest(true);
+                        lootVisible = true;
                     }
                     break;
                 default:
