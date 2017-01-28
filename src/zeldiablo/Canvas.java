@@ -29,7 +29,7 @@ public class Canvas extends JPanel {
 
     private final Dimension size;
     public final String imageDirectory;
-    private final String[] bgPictureList;
+    private final String[] bgPictureList, spriteList;
     private ImageIcon backgroundPicture;
     private ImageIcon dialogBox;
     private ImageIcon levelUp;
@@ -62,7 +62,8 @@ public class Canvas extends JPanel {
         size = new Dimension(1180, 780);
         setPreferredSize(size);
         imageDirectory = "images/";
-        bgPictureList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
+        bgPictureList = new String[]{"bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
+        spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png"};
         gameOver = false;
         demoCounter = 0;
         wKey = false;
@@ -113,7 +114,7 @@ public class Canvas extends JPanel {
      * very important KeyListener that allows to control and play the game!
      */
     private void initGame() {
-        setBackground(5);
+        setBackground(2);
         createGameObjects();
 
         t = new Timer(20, new ActionListener() {
@@ -356,15 +357,15 @@ public class Canvas extends JPanel {
         URL imageURL = getClass().getResource(imagePath);
         backgroundPicture = new ImageIcon(imageURL);
 
-        imagePath = imageDirectory + bgPictureList[0];
+        imagePath = imageDirectory + spriteList[0];
         imageURL = getClass().getResource(imagePath);
         dialogBox = new ImageIcon(imageURL);
 
-        imagePath = imageDirectory + bgPictureList[1];
+        imagePath = imageDirectory + spriteList[1];
         imageURL = getClass().getResource(imagePath);
         levelUp = new ImageIcon(imageURL);
 
-        imagePath = imageDirectory + bgPictureList[2];
+        imagePath = imageDirectory + spriteList[2];
         imageURL = getClass().getResource(imagePath);
         inventory = new ImageIcon(imageURL);
     }
@@ -852,7 +853,7 @@ public class Canvas extends JPanel {
             
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
             g.setColor(Color.WHITE);
-            g.drawString("Inventory", 745, 253);
+            g.drawString("Inventory", 775, 253);
 
             //This part is responsible for displaying the money the player owns (silverserpents)
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
