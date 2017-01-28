@@ -30,10 +30,7 @@ public class Canvas extends JPanel {
     private final Dimension size;
     public final String imageDirectory;
     private final String[] bgPictureList, spriteList;
-    private ImageIcon backgroundPicture;
-    private ImageIcon dialogBox;
-    private ImageIcon levelUp;
-    private ImageIcon inventory;
+    private ImageIcon backgroundPicture, dialogBox, levelUp, inventory, stats;
 
     private boolean gameOver;
     private int demoCounter, hpTimer;
@@ -63,7 +60,7 @@ public class Canvas extends JPanel {
         setPreferredSize(size);
         imageDirectory = "images/";
         bgPictureList = new String[]{"bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
-        spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png"};
+        spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
         gameOver = false;
         demoCounter = 0;
         wKey = false;
@@ -244,11 +241,9 @@ public class Canvas extends JPanel {
 //                            player.getMoney().changeValue(10);
 //                            x++;
 //                        }
-
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
 //                        player.increaseXP(10);
-
-                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int)player.getWeapon().getStats().getAttack() + " Dex:" + (int)player.getWeapon().getStats().getDexterity() + " Stam:" + (int)player.getWeapon().getStats().getStamina() + " Def:" + (int)player.getWeapon().getStats().getDefence());
+                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int) player.getWeapon().getStats().getAttack() + " Dex:" + (int) player.getWeapon().getStats().getDexterity() + " Stam:" + (int) player.getWeapon().getStats().getStamina() + " Def:" + (int) player.getWeapon().getStats().getDefence());
                         int posi = 1;
                         for (Weapon weapon : player.getInventar()) {
                             System.out.println("Position: " + posi + ", " + weapon.getDamage());
@@ -368,6 +363,10 @@ public class Canvas extends JPanel {
         imagePath = imageDirectory + spriteList[2];
         imageURL = getClass().getResource(imagePath);
         inventory = new ImageIcon(imageURL);
+
+        imagePath = imageDirectory + spriteList[3];
+        imageURL = getClass().getResource(imagePath);
+        stats = new ImageIcon(imageURL);
     }
 
     /**
@@ -385,7 +384,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * Continues (starts) the timer (which is part of the ActionListener) if the player isn't gameOver (dead).
+     * Continues (starts) the timer (which is part of the ActionListener) if the
+     * player isn't gameOver (dead).
      */
     public void continueGame() {
         if (!getGameOver()) {
@@ -394,7 +394,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * Resets all entities to their defaults (defined in the method createGameObjects() discussed earlier)
+     * Resets all entities to their defaults (defined in the method
+     * createGameObjects() discussed earlier)
      */
     public void restartGame() {
         demoCounter = 0;
@@ -404,8 +405,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * Collection method that checks if the player is trying to walk into an object on every frame
-     * One method call for each object / npc
+     * Collection method that checks if the player is trying to walk into an
+     * object on every frame One method call for each object / npc
      */
     private void youShallNotPass() {
         player.youShallNotPass(player, chest1);
@@ -417,8 +418,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * Collection method that checks if a player or mob is hit
-     * One method call for each npc / player combination
+     * Collection method that checks if a player or mob is hit One method call
+     * for each npc / player combination
      */
     public void hitDetect() {
         if (mob1.getInviFrames() <= 0) {
@@ -432,8 +433,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method changes the weapon's direction according to the player's angle.
-     * It does this by simply changing to the correct weapon sprite
+     * This method changes the weapon's direction according to the player's
+     * angle. It does this by simply changing to the correct weapon sprite
      */
     public void weaponDirection() {
         switch (player.getAngle()) {
@@ -455,8 +456,9 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method prevents the player from using the weapon too fast
-     * It also makes the player / mob vincible again by reducing the invincibility frames on every frame
+     * This method prevents the player from using the weapon too fast It also
+     * makes the player / mob vincible again by reducing the invincibility
+     * frames on every frame
      */
     public void attackCD() {
         if (player.getAttackCD() > 0) {
@@ -475,7 +477,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method checks if a player or mob has 0 health and performs an according action
+     * This method checks if a player or mob has 0 health and performs an
+     * according action
      */
     public void checkHP() {
         if (player.getStats().getHP() <= 0) {
@@ -490,7 +493,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method sets a mob to a placeholder (that is outside the map) if it gets flagged as dead by the method above
+     * This method sets a mob to a placeholder (that is outside the map) if it
+     * gets flagged as dead by the method above
      */
     public void deadMobs() {
         NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
@@ -500,8 +504,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method will make the Hunter-class shoot an arrow instead of weilding a sword.
-     * Once again the direction is decided by taking the player's angle
+     * This method will make the Hunter-class shoot an arrow instead of weilding
+     * a sword. Once again the direction is decided by taking the player's angle
      */
     public void arrow() {
         if (player.getArrowActive()) {
@@ -565,7 +569,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method will check if the player has reached the experience points needed to level up
+     * This method will check if the player has reached the experience points
+     * needed to level up
      */
     private void checkXP() {
         if (player.getXP() >= player.getXPneeded()) {
@@ -579,8 +584,8 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method will make the mobs run towards the player if they are aggresive
-     * Aggression state can currently be changed with the T-key
+     * This method will make the mobs run towards the player if they are
+     * aggresive Aggression state can currently be changed with the T-key
      */
     private void mobAttack() {
         if (mob1.getAggro()) {
@@ -595,11 +600,11 @@ public class Canvas extends JPanel {
         player.hitboxUpdate();
         mob1.hitboxUpdate();
     }
-    
+
     /**
      * This method makes the player equip the weapon, that is currently selected
-     * Selected means which index the counter currently is on
-     * Then it calls the stats adjustment method to update the player stats
+     * Selected means which index the counter currently is on Then it calls the
+     * stats adjustment method to update the player stats
      */
     private void equipWeapon() {
         player.setWeapon(player.getInventar().get(inventoryCounter));
@@ -607,8 +612,9 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method holds all the methods that have to get called on every frame (also known as tick)
-     * This method gets called every 20ms by the ActionListener / timer defined higher up
+     * This method holds all the methods that have to get called on every frame
+     * (also known as tick) This method gets called every 20ms by the
+     * ActionListener / timer defined higher up
      */
     private void doOnTick() {
 
@@ -641,26 +647,71 @@ public class Canvas extends JPanel {
 
     //The drawing methods begin here
     /**
-     * This method draws the current stats of the player you can see by pressing the c-Key
-     * 
+     * This method draws the current stats of the player you can see by pressing
+     * the c-Key
+     *
      * @param g graphics
      */
     public void characterStats(Graphics g) {
         if (player.getStats().getVisible()) {
-            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
-            g.setColor(Color.BLACK);
-            g.drawString(player.getStats().getStatSummary1(), 50, 550);
-            g.drawString(player.getStats().getStatSummary2() + ". Weapon damage: " + (int) player.getWeapon().getDamage(), 50, 575);
+            stats.paintIcon(null, g, 50, 150);
 
-            g.setColor(Color.RED);
-            g.drawString(mob1.getStats().getStatSummary1(), 50, 650);
-            g.drawString(mob1.getStats().getStatSummary2() + ". Weapon damage: " + (int) mob1.getWeapon().getDamage(), 50, 675);
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+            g.setColor(Color.WHITE);
+            g.drawString("Player stats", 210, 193);
+
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+            g.setColor(new Color(255, 220, 70));
+            String[] statNames = new String[]{"Name:", "Class:", "Level:", "Strength:", "Dexterity:", "Stamina:", "Defence:", "Crit Chance:"};
+            int x = 75;
+            int y = 265;
+            for (String statName : statNames) {
+                g.drawString(statName, x, y);
+                y += 25;
+            }
+            g.setColor(Color.WHITE);
+            String[] statNumbers = new String[]{player.getName(), player.getCharacterClass(), "" + player.getLevel(), "" + (int) player.getStats().getAttack(), "" + (int) player.getStats().getDexterity(), "" + (int) player.getStats().getStamina(), "" + (int) player.getStats().getDefence(), "" + player.getStats().getCritChance() + "%"};
+            x = 265;
+            y = 265;
+            for (String statNumber : statNumbers) {
+                g.drawString(statNumber, x, y);
+                y += 25;
+            }
+
+            g.setColor(new Color(255, 220, 70));
+            g.drawString("Equipped weapon:", 75, 490);
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+            x = 75;
+            y = 540;
+            g.setColor(Color.WHITE);
+            g.drawString("" + player.getWeapon().getName(), x, y);
+            g.setColor(Color.WHITE);        //There is a reason for it being set to white twice here. ("placeholder" for a feature later)
+            statNames = new String[]{"Damage:", "Strength:", "Dexterity:", "Stamina:", "Defence:"};
+            for (String statName : statNames) {
+                y += 25;
+                g.drawString(statName, x, y);
+            }
+            x = 200;
+            y = 565;
+            statNumbers = new String[]{"" + player.getWeapon().getDamage(), "+" + (int) player.getWeapon().getStats().getAttack(), "+" + (int) player.getWeapon().getStats().getDexterity(), "+" + (int) player.getWeapon().getStats().getStamina(), "+" + (int) player.getWeapon().getStats().getDefence()};
+            for (String statNumber : statNumbers) {
+                g.drawString(statNumber, x, y);
+                y += 25;
+            }
+
+//            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+//            g.setColor(Color.BLUE);
+//            g.drawString(player.getStats().getStatSummary1(), 50, 750);
+//            g.drawString(player.getStats().getStatSummary2() + ". Weapon damage: " + (int) player.getWeapon().getDamage(), 50, 775);
+//            g.setColor(Color.RED);
+//            g.drawString(mob1.getStats().getStatSummary1(), 50, 650);
+//            g.drawString(mob1.getStats().getStatSummary2() + ". Weapon damage: " + (int) mob1.getWeapon().getDamage(), 50, 675);
         }
     }
 
     /**
      * This method draws all the objects like chests etc
-     * 
+     *
      * @param g graphics
      */
     public void drawInteractionObjects(Graphics g) {
@@ -671,7 +722,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws all the mobs
-     * 
+     *
      * @param g graphics
      */
     public void drawMobs(Graphics g) {
@@ -681,6 +732,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws all the NPCs
+     *
      * @param g graphics
      */
     public void drawNPCs(Graphics g) {
@@ -689,8 +741,9 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method draws the attacks (kinda obsolete since atm only the player has an attack animation)
-     * 
+     * This method draws the attacks (kinda obsolete since atm only the player
+     * has an attack animation)
+     *
      * @param g graphics
      */
     public void drawAttacks(Graphics g) {
@@ -699,8 +752,9 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method draws the dialog and dialogbox you see when you interact with a friendly NPC (press J when you are near one)
-     * 
+     * This method draws the dialog and dialogbox you see when you interact with
+     * a friendly NPC (press J when you are near one)
+     *
      * @param g graphics
      */
     public void drawDialog(Graphics g) {
@@ -724,7 +778,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws the healthbar
-     * 
+     *
      * @param g graphics
      */
     public void drawHealthbar(Graphics g) {
@@ -742,7 +796,7 @@ public class Canvas extends JPanel {
 
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
         g.setColor(Color.BLACK);
-        g.drawString(player.getName() + " Level " + player.getLevel(), 40, 22);         // ", " + player.getCharacterClass() + 
+        g.drawString(player.getName(), 40, 22);         // ", " + player.getCharacterClass() +  // + " Level " + player.getLevel()
         g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
 
 //        //This part is the OLD mob HP bar on top of the screen; left in just for memory's sake
@@ -764,7 +818,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws the mob's healthbars
-     * 
+     *
      * @param g graphics
      */
     public void drawMobHealthbar(Graphics g, NPC mob) {
@@ -790,7 +844,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws the experience bar
-     * 
+     *
      * @param g graphics
      */
     public void drawXPbar(Graphics g) {
@@ -814,8 +868,9 @@ public class Canvas extends JPanel {
     }
 
     /**
-     * This method draws the experience information in textform to the character stats (when you press C)
-     * 
+     * This method draws the experience information in textform to the character
+     * stats (when you press C)
+     *
      * @param g graphics
      */
     public void drawXPstatus(Graphics g) {
@@ -832,7 +887,7 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws the level up animation
-     * 
+     *
      * @param g graphics
      */
     public void drawLevelUp(Graphics g) {
@@ -843,17 +898,17 @@ public class Canvas extends JPanel {
 
     /**
      * This method draws the inventory
-     * 
+     *
      * @param g graphics
      */
     public void drawInventory(Graphics g) {
-        int x = 1000;
+        int x = 1050;
         if (inventoryVisible) {
-            inventory.paintIcon(null, g, 550, 200);
-            
+            inventory.paintIcon(null, g, 600, 200);
+
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
             g.setColor(Color.WHITE);
-            g.drawString("Inventory", 775, 253);
+            g.drawString("Inventory", 825, 253);
 
             //This part is responsible for displaying the money the player owns (silverserpents)
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
@@ -864,25 +919,26 @@ public class Canvas extends JPanel {
 
             //This part is responsible for displaying the weapons in the inventory    
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-            if (inventoryCounter > 0) {
+            x = 650;
+            if (inventoryCounter > 0 && player.getInventar().size() != 0) {
                 if (player.getInventar().get(inventoryCounter - 1) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), 600, 373);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getDexterity(), 600, 398);
-                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter - 1).getStats().getDefence(), 600, 423);
+                    g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), x, 373);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getDexterity(), x, 398);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getDefence(), x, 423);
                 }
             }
             if (player.getInventar().size() != 0) {
                 if (player.getInventar().get(inventoryCounter) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), 600, 490);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter).getStats().getDexterity(), 600, 515);
-                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter).getStats().getDefence(), 600, 540);
+                    g.drawString("" + player.getInventar().get(inventoryCounter).getName(), x, 490);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter).getStats().getDexterity(), x, 515);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter).getStats().getDefence(), x, 540);
                 }
             }
             if ((inventoryCounter < player.getInventar().size() - 1)) {
                 if (player.getInventar().get(inventoryCounter + 1) != null) {
-                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), 600, 600);
-                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getAttack() + " Dexterity:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getDexterity(), 600, 625);
-                    g.drawString("Stamina:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getStamina() + " Defence:" + (int)player.getInventar().get(inventoryCounter + 1).getStats().getDefence(), 600, 650);
+                    g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), x, 600);
+                    g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getDexterity(), x, 625);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getDefence(), x, 650);
                 }
             }
 
@@ -914,7 +970,7 @@ public class Canvas extends JPanel {
 
     /**
      * This is a collection method that calls all the individual drawing methods
-     * 
+     *
      * @param g graphics
      */
     @Override
@@ -934,7 +990,7 @@ public class Canvas extends JPanel {
         drawAttacks(g);
 
         characterStats(g);
-        drawXPstatus(g);
+//        drawXPstatus(g);
         drawDialog(g);
         drawLevelUp(g);
         drawInventory(g);
