@@ -155,7 +155,7 @@ public class Weapon {
 								   ,"Stardust ","Tempest ","Blaster ", "Doom ","Miracle ","Doom ","Depths ","Bloodgod's ","Demise ",
 								   "Eternal ","Hera's ", "Edea's ","Athene's ", "Assault ","Destruction ","Unknown ","Oblivion's ",
 								   "Vow's", "Age ","Iceborn ","Thunderborn ","Lightborn ","Stormborn ","Darkborn ","Lightsworn ",
-								   "Valkyrie's ","Archfiend's ","Salamandra's ","Starborn ","Shadowmist's", "Toxic ","Darkworld's ",
+								   "Valkyrie's ","Archfiend's ","Salamandra's ","Starborn ","Shadowmist's ", "Toxic ","Darkworld's ",
 								   "Keeper's ","Luster ","Ritual ","Necro ","Dust ","Tormentor's ","Buster ","Nova ","Tigerking's ",
 								   "Shdowborn ","Forbidden's ","Dragonborn ","Hurrican ","Ancient ","Samurai ","Odin's ","Nordic ",
 								   "Solemn ","Envoy's ","Emissary's ","Yamato's ","Arasuda's ","Berserker's ","Mystic ","Armageddon ",

@@ -330,7 +330,7 @@ public class Canvas extends JPanel {
      * unique locations will be spawned via an another class
      */
     private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, "Broken sword", 0, 0, 0, 0, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, und dann 5 Parameter zum erstellen der Waffe
+        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, und dann 5 Parameter zum erstellen der Waffe
         npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1);
         npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1);
         chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
@@ -489,6 +489,10 @@ public class Canvas extends JPanel {
             mob1.setAlive(false);
             player.increaseXP(mob1.getXP());
             player.getMoney().mobdrop(mob1.getLevel());
+            Chance chance = new Chance(10);
+            if (chance.getSuccess()) {
+                player.getInventar().add(new Weapon(mob1.getLevel()));
+            }
         }
     }
 
