@@ -13,7 +13,6 @@ public class Weapon {
     private int min;
     private int max;
     private int n;
-    private int y;
     private Random r;
     private Stats weaponstats;
     private String randomname;
@@ -25,7 +24,6 @@ public class Weapon {
         damage =  0;
         n=0;
         x=0;
-        y=2;
         r= new Random();		
         weaponstats = new Stats();
         randomDamage(level);
@@ -74,7 +72,6 @@ public class Weapon {
 
     public void randomDamage(int level)
     {
-
         while(x<level)
         {
             n = n + 10;
@@ -89,8 +86,7 @@ public class Weapon {
 	
 	public void randomAttack(int level)
 	{
-            n=0;
-        x=0;
+		x = 0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -105,12 +101,11 @@ public class Weapon {
 	
 	public void randomDexterity(int level)
 	{
-            n=0;
-        x=0;
+		x = 0;
 		n = 4;
         while (x < level) {
             n = n + 1;
-            x = x +y;
+            x = x +2;
             }
 
         min = 0;
@@ -121,8 +116,7 @@ public class Weapon {
 	
 	public void randomStamina(int level)
 	{
-            n=0;
-        x=0;
+		x = 0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -137,8 +131,7 @@ public class Weapon {
 	
 	public void randomDefence(int level)
 	{	
-            n=0;
-        x=0;
+		x = 0;
 		n = 4;
         while (x < level) {
             n = n + 1;
@@ -153,42 +146,40 @@ public class Weapon {
 	
 	public void randomName () 
 	{
-		String[] meleefirstname = {"Edge ","Hammer ","Rod ","Mace ","Windblade ",
-							 	   "Spear ","Battlerod ","Scepter ","Katana ",
-							 	   "Axe ","Twinaxe ","Dagger ","Tachi ","Shortaxe ",
-							 	   "Stormblade ","Chaos Sword ","Deathblade ","Frost Scepter ",
-							 	   "Dusk Dagger ","Stormdagger ","Void Edge ","Double Edged Sword ",
-							 	   "Rod of destruction ","Tempest Dagger ","Executioners Axe ",
-							 	   "Longsword ","Heavy Axe ","Needlessly big Spear ","Warlords Hammer ",
-							 	   "Deaths Dagger ","Blooddraining Sword ","Shadowmist Blade ",
-							 	   "Thousand Sword ","Razorshiv ","Collosal Blade ","Galaxy Dusk Blade ",
-							 	   "Tormentors Blade ","Bloodthirsters Rod ","Spiritblade Knife ",
-							 	   "Bloodmoons Longsword ","Butchers Knife ","Monoliths Sword ",
-							 	   "Dragonslayers Scepter ","Phantomsblade ","Lightborns Dagger ","Frostborns Edge ",
-							 	   "Darkborn Axe ","Stormborn Knive ","Thunderborn Broadsword ","Stardust Scepter ",
-							 	   "Thunderkings Battleblade ","Stareaters Maw ","Infernal Edge ","Nightmare blade ",
-							 	   "Elementalists Scepter ","Ashuras Nekroblade ","Constellar Axe ","Kyles Deathblade ",
-							 	   "Eccentric Dusk Katana ","Assassins hidden Blade ","Fiendish Edge ","Datk Repulsor "};
-		// Noch erweiterbar!!!!
+		String[] meleefirstname = {"Dusk ","Dark ","Burning ","Bright ","Light ","Frost ","Night ","Gem ","Diamond ","War ",
+								   "Infernal ", "Souldraining ", "Phantom ","Fiendish ", "Bone ","Skull ","Abyssal ","Cinder ",
+								   "Crystal ","War ","Frozen ", "Rage ","Hunter's ","Sanguine ", "Black ","Blue ","Red ",
+								   "Silver ", "Golden ","Titanic ","Wicked ","Ghost ","Soul ","Pain ","Deadly ","Rusty ",
+								   "Demon ","Old ","Undead ","Living ","Devouring ","Blazing ","Chrome ","Dragon ","Flame ",
+								   "Omni ","Vortex ","Storm ","Void ","Hate ","Arcane ","Last ","Serrated ","Unsealed ", "Rainbowglass "
+								   ,"Stardust ","Tempest ","Blaster ", "Doom ","Miracle ","Doom ","Depths ","Bloodgod's ","Demise ",
+								   "Eternal ","Hera's ", "Edea's ","Athene's ", "Assault ","Destruction ","Unknown ","Oblivion's ",
+								   "Vow's", "Age ","Iceborn ","Thunderborn ","Lightborn ","Stormborn ","Darkborn ","Lightsworn ",
+								   "Valkyrie's ","Archfiend's ","Salamandra's ","Starborn ","Shadowmist's", "Toxic ","Darkworld's ",
+								   "Keeper's ","Luster ","Ritual ","Necro ","Dust ","Tormentor's ","Buster ","Nova ","Tigerking's ",
+								   "Shdowborn ","Forbidden's ","Dragonborn ","Hurrican ","Ancient ","Samurai ","Odin's ","Nordic ",
+								   "Solemn ","Envoy's ","Emissary's ","Yamato's ","Arasuda's ","Berserker's ","Mystic ","Armageddon ",
+								   "Unleashed ","Amaterasu's ","Odd ","Samsara's ","Soulreaver's ","Constellar ","Cursed ",
+								   "Nightking's ","Stormking's ","Judgement ","Blackshield ","Dragonknight's ","Serpentfire ","Nightmare ",
+								   "The Prophet's ","Fate ","Deception ","Common ",""};
 		
-		String [] rangedfirstname = {"Nightstalkers Bow","Rangers Bow","Long Bow","Short Bow","Shadowmist Bow","Gem Bow",
-									 "Skull Bow","Snipers Bow","Smiting Bow","Frost Bow","Infernal Bow","Runaans Bow",
-									 "Bone Bow","Light Bow","Dusk Bow","Warbow","Recurve Bow,","Hunters Bow","Rapidfire Bow",
-									 "Giant Arrow Bow","Deathbringer Bow","Worldbreaker Bow","Master Bow","Lighning Bow",
-									 "Thunder Bow", "Lightray Bow","Eruption Bow","Souldraining Bow","Redeemers Bow","Fiendish Bow",
-									 "Deathblossom Bow","Forest keepers Bow","Phantom Bow","Crossbow","Abyss Bow",};
+		String[] meleesecondname = {"Blade","Dagger","Sword","Edge","Knife","Scepter","Wand","Hammer","Axe","Twinaxe",
+									 "Mallet","Machete ","Maw","Scimitar ","Rod","Dirk","Sabre","Spear","Brutalizer","Sealbreaker",
+									 "Mace","Katana","Tachi","Shoto","Two-Hander","Scythe","Lance","Broadsword","Slayer","Kunai",
+									 "Bloodthirster"};
+		
+//		String [] rangedfirstname = {"Nightstalkers Bow","Rangers Bow","Long Bow","Short Bow","Shadowmist Bow","Gem Bow",
+//									 "Skull Bow","Snipers Bow","Smiting Bow","Frost Bow","Infernal Bow","Runaans Bow",
+//									 "Bone Bow","Light Bow","Dusk Bow","Warbow","Recurve Bow,","Hunters Bow","Rapidfire Bow",
+//										 "Giant Arrow Bow","Deathbringer Bow","Worldbreaker Bow","Master Bow","Lighning Bow",
+//										 "Thunder Bow", "Lightray Bow","Eruption yBow","Souldraining Bow","Redeemers Bow","Fiendish Bow",
+//										 "Deathblossom Bow","Forest keepers Bow","Phantom Bow","Crossbow","Abyss Bow",};
+//		Not ready yet!
+		
 	
 		
-		
-		String[] secondname      = {"of doom","from the depths","from an other world","from a different dimension",
-									"of pain","of miracles","of demise","of eternity","of promises","of the Legend",
-									"of the rebellions Rage","of Dark Illusions","of thousand Assaults","from a distant Star",
-									"from a distand Gelaxy","from a distand World","from an unknown country",
-									"from a distorted World","from the Beyond","from the burning abyss","from a Land without hope",
-									"from the realm of the death","of lost Souls"};
-		
 		String randommeleefirstname = (meleefirstname[new Random().nextInt(meleefirstname.length)]);
-		String randommeleesecondname = (secondname[new Random().nextInt(secondname.length)]);
+		String randommeleesecondname = (meleesecondname[new Random().nextInt(meleesecondname.length)]);
 		randomname = randommeleefirstname + randommeleesecondname;
 		
 	}
