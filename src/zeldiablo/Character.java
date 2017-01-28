@@ -9,9 +9,10 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
- * This class contains all ob GameObjects (entities on the screen) that are considered characters. 
- * The player, mobs (enemies) and the friendly NPCs are all characters.
- * 
+ * This class contains all ob GameObjects (entities on the screen) that are
+ * considered characters. The player, mobs (enemies) and the friendly NPCs are
+ * all characters.
+ *
  * @author Auer Marco
  */
 public class Character extends GameObjects {
@@ -19,7 +20,7 @@ public class Character extends GameObjects {
     private boolean moving;
     public final String imageDirectory;
     private ImageIcon sprite;
-    private final String[] spriteList;
+    private String[] spriteList;
     private int spriteCounter;
     private Dialog npcDialog;
     private String characterClass;
@@ -34,20 +35,23 @@ public class Character extends GameObjects {
     private boolean levelUpAnimationVisible;
     private double xp;
     private double xpNeeded;
-    
+
     private Stats stats;
     private Weapon weapon;
-    
 
     /**
-     * Uses a spriteList just like the AttackAnimation class (read the description ther if you haven't already ;) )
-     * 
+     * Uses a spriteList just like the AttackAnimation class (read the
+     * description ther if you haven't already ;) )
+     *
      * @param position Where to spawn it
      * @param width Width of the entity
      * @param height Height of the entity
-     * @param angle Determines which way the character is facing (mostly used for the player and mobs)
-     * @param characterClass Which class (Knight, Berserker, Hunter) the character is. "Mob"  (enemy) is also a characterClass
-     * @param name Used as the players name that is displayed or as the mobs "ID" respectively
+     * @param angle Determines which way the character is facing (mostly used
+     * for the player and mobs)
+     * @param characterClass Which class (Knight, Berserker, Hunter) the
+     * character is. "Mob" (enemy) is also a characterClass
+     * @param name Used as the players name that is displayed or as the mobs
+     * "ID" respectively
      * @param level Which level the character starts at
      */
     public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
@@ -75,14 +79,14 @@ public class Character extends GameObjects {
         adjustXP();
         xpNeeded = 100;
         weapon = new Weapon(level);
-        stats = new Stats(this);        
+        stats = new Stats(this);
         arrowActive = false;
         inviFrames = 0;
-        attackCD = 0;        
+        attackCD = 0;
         levelUpAnimationFrames = 0;
         levelUpAnimationVisible = false;
     }
-    
+
     public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
         super(position, width, height);
         setAngle(angle);
@@ -108,14 +112,14 @@ public class Character extends GameObjects {
         adjustXP();
         xpNeeded = 100;
         weapon = new Weapon(wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
-        stats = new Stats(this);        
+        stats = new Stats(this);
         arrowActive = false;
         inviFrames = 0;
-        attackCD = 0;        
+        attackCD = 0;
         levelUpAnimationFrames = 0;
         levelUpAnimationVisible = false;
     }
-    
+
     public boolean getMoving() {
         return moving;
     }
@@ -138,10 +142,9 @@ public class Character extends GameObjects {
 
     /**
      * First it sets the path consisting of the directory and the String from
-     * the spriteList. For example: "images/sprites/Mob_down_idle.png"
-     * Second it creates an imageURL with the newly defined imagePath Last it
-     * will create an ImageIcon object, the sprite, according to the newly
-     * created imageURL
+     * the spriteList. For example: "images/sprites/Mob_down_idle.png" Second it
+     * creates an imageURL with the newly defined imagePath Last it will create
+     * an ImageIcon object, the sprite, according to the newly created imageURL
      *
      * @param imageNumber decides what index of the spriteList will be accessed
      */
@@ -165,6 +168,31 @@ public class Character extends GameObjects {
 
     public void setCharacterClass(String characterClass) {
         this.characterClass = characterClass;
+        switch (characterClass) {
+            case "Knight":
+                super.setHeight(80);
+                super.setWidth(35);
+                break;
+            case "Berserker":
+                super.setHeight(102);
+                super.setWidth(52);
+                break;
+            case "Hunter":
+                super.setHeight(75);
+                super.setWidth(33);
+                break;
+            default:
+                break;
+        }
+        spriteList = new String[]{characterClass + "_down_idle.png", characterClass + "_down_move1.png", characterClass + "_down_move2.png",
+            characterClass + "_downLeft_idle.png", characterClass + "_downLeft_move1.png", characterClass + "_downLeft_move2.png",
+            characterClass + "_left_idle.png", characterClass + "_left_move1.png", characterClass + "_left_move2.png",
+            characterClass + "_upLeft_idle.png", characterClass + "_upLeft_move1.png", characterClass + "_upLeft_move2.png",
+            characterClass + "_up_idle.png", characterClass + "_up_move1.png", characterClass + "_up_move2.png",
+            characterClass + "_upRight_idle.png", characterClass + "_upRight_move1.png", characterClass + "_upRight_move2.png",
+            characterClass + "_right_idle.png", characterClass + "_right_move1.png", characterClass + "_right_move2.png",
+            characterClass + "_downRight_idle.png", characterClass + "_downRight_move1.png", characterClass + "_downRight_move2.png"};
+        setSprite(0);
         stats.statAdjustment(this);
     }
 
@@ -174,6 +202,7 @@ public class Character extends GameObjects {
 
     public void setName(String name) {
         this.name = name;
+        stats.statAdjustment(this);
     }
 
     public AttackAnimation getAttackHitbox() {
@@ -201,9 +230,9 @@ public class Character extends GameObjects {
     }
 
     /**
-     * Set the current level to the param
-     * Adjusts the experience points (xp) needed for the NEXT level
-     * 
+     * Set the current level to the param Adjusts the experience points (xp)
+     * needed for the NEXT level
+     *
      * @param level which level the character gets set too
      */
     public void setLevel(int level) {
@@ -224,7 +253,7 @@ public class Character extends GameObjects {
         adjustXP();
         adjustXPneeded();
     }
-    
+
     /**
      * Makes the level up animation visible
      */
@@ -246,8 +275,8 @@ public class Character extends GameObjects {
     }
 
     /**
-     * Sets the xp (experience points) a mob gives you on dying
-     * Increase by 1 for every level the mob has
+     * Sets the xp (experience points) a mob gives you on dying Increase by 1
+     * for every level the mob has
      */
     public void adjustXP() {
         if (characterClass == "Mob") {
@@ -274,16 +303,16 @@ public class Character extends GameObjects {
     }
 
     /**
-     * Sets the xp you need for the next level
-     * 25xp more needed for every level you have
+     * Sets the xp you need for the next level 25xp more needed for every level
+     * you have
      */
-    public void adjustXPneeded() {        
+    public void adjustXPneeded() {
         stats.setHP(stats.getMaxHP());
         xpNeeded = 100;
         for (int x = level; x > 1; x--) {
             xpNeeded += 25;
         }
-        
+
     }
 
     public Weapon getWeapon() {
@@ -303,8 +332,9 @@ public class Character extends GameObjects {
     }
 
     /**
-     * The invincibility frames determine if a character can be damaged at the moment
-     * 
+     * The invincibility frames determine if a character can be damaged at the
+     * moment
+     *
      * @return inviFrames
      */
     public int getInviFrames() {
@@ -314,15 +344,15 @@ public class Character extends GameObjects {
     public void setInviFrames(int frames) {
         inviFrames = frames;
     }
-    
+
     public int getAttackCD() {
         return attackCD;
     }
-    
+
     public void setAttackCD(int cd) {
         attackCD = cd;
     }
-    
+
     public boolean getLevelUpAnimationVisible() {
         return levelUpAnimationVisible;
     }
@@ -371,8 +401,9 @@ public class Character extends GameObjects {
     }
 
     /**
-     * This method gives the player a walking animation by increasing a spriteCounter while he is in the state "moving"
-     * Periodically (every 10 frames) this method then changes the sprite
+     * This method gives the player a walking animation by increasing a
+     * spriteCounter while he is in the state "moving" Periodically (every 10
+     * frames) this method then changes the sprite
      */
     public void walkingAnimation() {
         if (moving) {
@@ -489,8 +520,9 @@ public class Character extends GameObjects {
     }
 
     /**
-     * increases a frame counter variable on every frame and makes the level up animation disappear after 50 frames
-     * 
+     * increases a frame counter variable on every frame and makes the level up
+     * animation disappear after 50 frames
+     *
      * @param player The player character - the figure you control
      */
     public void levelUpAnimationFunction(Player player) {
@@ -499,10 +531,10 @@ public class Character extends GameObjects {
             levelUpAnimationVisible = false;
         }
     }
-    
+
     /**
      * Draws all the characters to the canvas
-     * 
+     *
      * @param g graphics
      */
     @Override
@@ -519,7 +551,7 @@ public class Character extends GameObjects {
 ////        transform.rotate(getAngle(), spieler.getCenterX(), spieler.getCenterY());
 ////        Shape transformedMissileShape = transform.createTransformedShape(spieler);
 ////        
-//        g2d.fill(spieler);  
+//        g2d.fill(spieler);
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }
 }
