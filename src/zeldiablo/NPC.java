@@ -26,6 +26,10 @@ public class NPC extends Character {
         super(position, width, height, angle, characterClass, name, level);
         aggro = false;
     }
+    public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
+        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
+        aggro = false;
+    }
 
     public boolean getAggro() {
         return aggro;

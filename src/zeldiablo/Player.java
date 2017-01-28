@@ -31,6 +31,12 @@ public class Player extends Character {
         money = new Currency();
         inventar = new ArrayList<>();
     }
+    
+    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
+        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
+        money = new Currency();
+        inventar = new ArrayList<>();
+    }
 
     public Currency getMoney() {
         return money;
