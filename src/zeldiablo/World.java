@@ -56,5 +56,6 @@ public class World {
         canvas.setBackground(1);
         canvas.getPlayer().setMapID("Zone_Town");
         canvas.createGameObjects();
+        canvas.getPlayer().setObjectPosition(new Coordinates(500, 550));
     }
 }

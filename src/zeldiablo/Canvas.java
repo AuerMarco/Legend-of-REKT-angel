@@ -952,7 +952,7 @@ public class Canvas extends JPanel implements Serializable {
 
     private void chestSpawner() {
         if (!spawned && player.getStartWeaponChest() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
-            mob1 = new NPC(new Coordinates(500, 250), 80, 70, 1, "Mob", "Orc", 1);
+            mob1 = new NPC(new Coordinates(500, 250), 80, 70, 1, "Mob", "Orc", 1, "Broken Sword", 0, 0, 0, 0, 0);
             spawned = true;
         }
     }
