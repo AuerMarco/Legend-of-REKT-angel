@@ -16,7 +16,9 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 /**
  * This is pretty much the main class of my game - it acts the canvas - the
@@ -936,6 +938,10 @@ public class Canvas extends JPanel implements Serializable {
             world.theMatrix(this);
         } else if (startscreenCounter == 1) {
             System.out.println("New game started");
+            System.out.println("Please enter your name:");
+            Scanner scanner = new Scanner(System.in);
+            String name = scanner.nextLine();
+            player.setName(name);
             world.theBeginning(this);
         }
 

@@ -3,6 +3,7 @@ package zeldiablo;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.swing.JTextField;
 
 /**
  * This class contains the character-entity that is the controllable player

@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import java.io.Serializable;
+import java.util.Scanner;
 import javax.swing.ImageIcon;
 
 /**
@@ -139,7 +140,7 @@ public class Dialog implements Serializable {
         dialogVisible = true;
         this.npc = npc.getSprite();
         npcName = npc.getName();
-        dialogPage = new String[]{"This is a chest. You can open chests by pressing [J].", "Go ahead and grab the weapon in it.", "You open your inventory with [I].", "If you press [J] while the inventory is open, ", "you equip the weapon in the middle slot."};
+        dialogPage = new String[]{"This is a chest. You can open chests by pressing [J].", "Go ahead and grab the weapon in it.", "You open your inventory with [I].", "If you press [J] while the inventory is open, ", "you equip the weapon in the middle slot.", "Afterwards you need to talk to me again!"};
     }
     
     public void dialogMobIntro(Player player, Character npc) {
