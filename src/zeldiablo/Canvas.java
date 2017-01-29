@@ -54,6 +54,9 @@ public class Canvas extends JPanel implements Serializable {
     private int inventoryHighlight, inventoryCounter;
     private int invPosi1 = inventoryCounter, invPosi2 = 1, invPosi3 = 2, invPosi4 = 3, invPosi5 = 4;
 
+    private boolean startScreen;
+    private int startscreenCounter;
+
     /**
      * This constructor sets all the basics of the canvas, like size etc Then it
      * uses an image array, similiar to what you saw / read in the
@@ -97,11 +100,11 @@ public class Canvas extends JPanel implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    
+
     public NPC getNPC1() {
         return npc1;
     }
-    
+
     /**
      * This method will change the currently present npc1 to a new, as every
      * areal (part of the world) has different NPCs and mobs
@@ -111,11 +114,11 @@ public class Canvas extends JPanel implements Serializable {
     public void setNPC1(NPC npc) {
         npc1 = npc;
     }
-    
+
     public NPC getNPC2() {
         return npc2;
     }
-    
+
     public void setNPC2(NPC npc) {
         npc2 = npc;
     }
@@ -123,31 +126,31 @@ public class Canvas extends JPanel implements Serializable {
     public NPC getNPC3() {
         return npc3;
     }
-    
+
     public void setNPC3(NPC npc) {
         npc3 = npc;
     }
-    
+
     public NPC getNPC4() {
         return npc4;
     }
-    
+
     public void setNPC4(NPC npc) {
         npc4 = npc;
     }
-    
+
     public NPC getNPC5() {
         return npc5;
     }
-    
+
     public void setNPC5(NPC npc) {
         npc5 = npc;
     }
-    
+
     public NPC getMob1() {
         return mob1;
     }
-    
+
     public void setMob1(NPC mob) {
         mob1 = mob;
     }
@@ -155,105 +158,109 @@ public class Canvas extends JPanel implements Serializable {
     public NPC getMob2() {
         return mob2;
     }
-    
+
     public void setMob2(NPC mob) {
         mob2 = mob;
     }
-    
+
     public NPC getMob3() {
         return mob3;
     }
-    
+
     public void setMob3(NPC mob) {
         mob3 = mob;
     }
-    
+
     public NPC getMob4() {
         return mob4;
     }
-    
+
     public void setMob4(NPC mob) {
         mob4 = mob;
     }
-    
+
     public NPC getMob5() {
         return mob5;
     }
-    
+
     public void setMob5(NPC mob) {
         mob5 = mob;
     }
-    
+
     public NPC getMob6() {
         return mob6;
     }
-    
+
     public void setMob6(NPC mob) {
         mob6 = mob;
     }
-    
+
     public NPC getMob7() {
         return mob7;
     }
-    
+
     public void setMob7(NPC mob) {
         mob7 = mob;
     }
-    
+
     public NPC getMob8() {
         return mob8;
     }
-    
+
     public void setMob8(NPC mob) {
         mob8 = mob;
     }
-    
+
     public NPC getMob9() {
         return mob9;
     }
-    
+
     public void setMob9(NPC mob) {
         mob9 = mob;
     }
-    
+
     public NPC getMob10() {
         return mob10;
     }
-    
+
     public void setMob10(NPC mob) {
         mob10 = mob;
-    }    
-    
+    }
+
     public InteractionObject getChest1() {
         return chest1;
     }
-    
-    public void setChest1 (InteractionObject chest) {
+
+    public void setChest1(InteractionObject chest) {
         chest1 = chest;
     }
-    
+
     public InteractionObject getChest2() {
         return chest2;
     }
-    
-    public void setChest2 (InteractionObject chest) {
+
+    public void setChest2(InteractionObject chest) {
         chest2 = chest;
     }
-    
+
     public InteractionObject getChest3() {
         return chest3;
     }
-    
-    public void setChest3 (InteractionObject chest) {
+
+    public void setChest3(InteractionObject chest) {
         chest3 = chest;
     }
-    
-    
+
+    public void setStartscreenFalse() {
+        startScreen = false;
+    }
+
     /**
-     * This method starts the game up by setting the background (or rather, calling
-     * the method that does it) and then calling the method that creates the
-     * game objects like NPCs and objects like chests It also contains the very,
-     * very important KeyListener that allows to control and play the game!
+     * This method starts the game up by setting the background (or rather,
+     * calling the method that does it) and then calling the method that creates
+     * the game objects like NPCs and objects like chests It also contains the
+     * very, very important KeyListener that allows to control and play the
+     * game!
      */
     private void initGame() {
         setBackground(2);
@@ -327,52 +334,60 @@ public class Canvas extends JPanel implements Serializable {
 
                 switch (e.getKeyCode()) {
                     case VK_J:
-                        if (inventoryVisible) {
-                            if (player.getInventar().size() != 0) {
-                                equipWeapon();
+                        if (!startScreen) {
+                            if (inventoryVisible) {
+                                if (player.getInventar().size() != 0) {
+                                    equipWeapon();
+                                }
+                            }
+                            if (!inventoryVisible) {
+                                player.objectInteraction(player, chest1);
+                                player.objectInteraction(player, npc1);
+                                player.objectInteraction(player, npc2);
+                            }
+                            if (player.getNPCdialog().getDialogVisible()) {
+                                player.getNPCdialog().dialogLogic();
                             }
                         }
-                        if (!inventoryVisible) {
-                            player.objectInteraction(player, chest1);
-                            player.objectInteraction(player, npc1);
-                            player.objectInteraction(player, npc2);
-                        }
-                        if (player.getNPCdialog().getDialogVisible()) {
-                            player.getNPCdialog().dialogLogic();
+                        if (startScreen) {
+                            startMenu();
                         }
                         break;
                     case VK_K:
-                        if (player.getAttackCD() <= 0) {
-                            player.setAttackCD(20);
-                            if (player.getCharacterClass() != "Hunter") {      //player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker"
-                                player.getAttackHitbox().setWeaponFrames(0);
-                                player.getAttackHitbox().melee(player);
-                            } else {
-                                angle1 = false;
-                                angle3 = false;
-                                angle5 = false;
-                                angle7 = false;
+                        if (!startScreen) {
+                            if (player.getAttackCD() <= 0) {
+                                player.setAttackCD(20);
+                                if (player.getCharacterClass() != "Hunter") {      //player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker"
+                                    player.getAttackHitbox().setWeaponFrames(0);
+                                    player.getAttackHitbox().melee(player);
+                                } else {
+                                    angle1 = false;
+                                    angle3 = false;
+                                    angle5 = false;
+                                    angle7 = false;
 //                                arrowLock = false;
-                                player.setArrowActive(true);
-                                arrowCounter = 0;
-                                switch (player.getAngle()) {
-                                    case 1:
-                                        angle1 = true;
-                                        break;
-                                    case 3:
-                                        angle3 = true;
-                                        break;
-                                    case 5:
-                                        angle5 = true;
-                                        break;
-                                    case 7:
-                                        angle7 = true;
-                                        break;
-                                    default:
-                                        break;
+                                    player.setArrowActive(true);
+                                    arrowCounter = 0;
+                                    switch (player.getAngle()) {
+                                        case 1:
+                                            angle1 = true;
+                                            break;
+                                        case 3:
+                                            angle3 = true;
+                                            break;
+                                        case 5:
+                                            angle5 = true;
+                                            break;
+                                        case 7:
+                                            angle7 = true;
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
                         }
+
                         break;
                     case VK_ENTER:
 //                        System.out.println(mob1.getAngle());
@@ -402,11 +417,13 @@ public class Canvas extends JPanel implements Serializable {
                         changeScreen();
                         break;
                     case VK_C:
-                        if (!player.getNPCdialog().getDialogVisible()) {
-                            if (!player.getStats().getVisible()) {
-                                player.getStats().setVisible(true);
-                            } else if (player.getStats().getVisible()) {
-                                player.getStats().setVisible(false);
+                        if (!startScreen) {
+                            if (!player.getNPCdialog().getDialogVisible()) {
+                                if (!player.getStats().getVisible()) {
+                                    player.getStats().setVisible(true);
+                                } else if (player.getStats().getVisible()) {
+                                    player.getStats().setVisible(false);
+                                }
                             }
                         }
                         break;
@@ -421,13 +438,15 @@ public class Canvas extends JPanel implements Serializable {
                         mob1.levelUp();
                         break;
                     case VK_R:
-                        int n = 0;
-                        if (player.getLevel() == 1) {
-                            n = 1;
-                        } else {
-                            n = player.getLevel() - 1;
+                        if (!startScreen) {
+                            int n = 0;
+                            if (player.getLevel() == 1) {
+                                n = 1;
+                            } else {
+                                n = player.getLevel() - 1;
+                            }
+                            setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n));
                         }
-                        setMob1(new NPC(new Coordinates(460, 200), 80, 70, 1, "Mob", "Orc", n));
                         break;
                     case VK_T:
                         if (!mob1.getAggro()) {
@@ -437,13 +456,15 @@ public class Canvas extends JPanel implements Serializable {
                         }
                         break;
                     case VK_I:
-                        inventoryHighlight = 1;
-                        inventoryCounter = 0;
-                        if (!player.getNPCdialog().getDialogVisible()) {
-                            if (inventoryVisible) {
-                                inventoryVisible = false;
-                            } else {
-                                inventoryVisible = true;
+                        if (!startScreen) {
+                            inventoryHighlight = 1;
+                            inventoryCounter = 0;
+                            if (!player.getNPCdialog().getDialogVisible()) {
+                                if (inventoryVisible) {
+                                    inventoryVisible = false;
+                                } else {
+                                    inventoryVisible = true;
+                                }
                             }
                         }
                         break;
@@ -456,6 +477,10 @@ public class Canvas extends JPanel implements Serializable {
                         if (inventoryCounter > 0) {
                             inventoryCounter--;
                         }
+                        if (startscreenCounter >= 1) {
+                            startscreenCounter--;
+                        }
+//                        System.out.println(startscreenCounter);
                         break;
                     case VK_DOWN:
 //                        System.out.println(inventoryHighlight);                        
@@ -466,6 +491,10 @@ public class Canvas extends JPanel implements Serializable {
                         if (inventoryCounter < player.getInventar().size() - 1) {
                             inventoryCounter++;
                         }
+                        if (startscreenCounter < 1) {
+                            startscreenCounter++;
+                        }
+//                        System.out.println(startscreenCounter);
                         break;
                     case VK_E:
                         player.getInventar().add(new Weapon(player.getLevel()));
@@ -501,6 +530,7 @@ public class Canvas extends JPanel implements Serializable {
      * unique locations will be spawned via an another class
      */
     private void createGameObjects() {                                          //Game Objects (placeholders) are created here       
+        startScreen = true;
         player = new Player(new Coordinates(-2000, -2000), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
         placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         npc1 = placeholder;
@@ -518,8 +548,8 @@ public class Canvas extends JPanel implements Serializable {
         mob8 = placeholder;
         mob9 = placeholder;
         mob10 = placeholder;
-        InteractionObject placeholderChest = new InteractionObject(new Coordinates(-1000, -1000), 0, 0, "Chest1", "Null");   
-        chest1 = placeholderChest;   
+        InteractionObject placeholderChest = new InteractionObject(new Coordinates(-1000, -1000), 0, 0, "Chest1", "Null");
+        chest1 = placeholderChest;
     }
 
     /**
@@ -809,6 +839,18 @@ public class Canvas extends JPanel implements Serializable {
         world.theMatrix(this);
     }
 
+    private void startMenu() {
+        if (startscreenCounter == 0) {
+            System.out.println("Loaded game");
+        } else if (startscreenCounter == 1) {
+            System.out.println("New game started");
+        }
+
+//        SaveFile file = new SaveFile();
+//        Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
+//        file.loadPlayer(player, playerLoader);
+    }
+
     /**
      * This method holds all the methods that have to get called on every frame
      * (also known as tick) This method gets called every 20ms by the
@@ -981,22 +1023,23 @@ public class Canvas extends JPanel implements Serializable {
      */
     public void drawHealthbar(Graphics g) {
         //This part draws the players HP bar (how much health the player has)
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
-        RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 30, 250, 30, 3, 3);
-        g2d.fill(hpBar);
+        if (!startScreen) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.RED);
+            RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 30, 250, 30, 3, 3);
+            g2d.fill(hpBar);
 
-        double currentHPpercent = (player.getStats().getHP() / player.getStats().getMaxHP());
+            double currentHPpercent = (player.getStats().getHP() / player.getStats().getMaxHP());
 
-        g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(30, 30, 250 * currentHPpercent, 30, 3, 3);
-        g2d.fill(hpBar);
+            g2d.setColor(Color.GREEN);
+            hpBar = new RoundRectangle2D.Double(30, 30, 250 * currentHPpercent, 30, 3, 3);
+            g2d.fill(hpBar);
 
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-        g.setColor(Color.BLACK);
-        g.drawString(player.getName(), 40, 22);         // ", " + player.getCharacterClass() +  // + " Level " + player.getLevel()
-        g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
-
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+            g.setColor(Color.BLACK);
+            g.drawString(player.getName(), 40, 22);         // ", " + player.getCharacterClass() +  // + " Level " + player.getLevel()
+            g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
+        }
 //        //This part is the OLD mob HP bar on top of the screen; left in just for memory's sake
 //        g2d.setColor(Color.RED);
 //        hpBar = new RoundRectangle2D.Double(400, 30, 250, 30, 3, 3);
@@ -1047,22 +1090,22 @@ public class Canvas extends JPanel implements Serializable {
      */
     public void drawXPbar(Graphics g) {
         //This part draws the players XP bar (how much experience he has and needs to level up)
-//        if (player.getStats().getVisible()) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.LIGHT_GRAY);
-        RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
-        g2d.fill(hpBar);
+        if (!startScreen) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.LIGHT_GRAY);
+            RoundRectangle2D hpBar = new RoundRectangle2D.Double(30, 66, 250, 30, 3, 3);
+            g2d.fill(hpBar);
 
-        double currentXPpercent = ((player.getXP() / player.getXPneeded()));
+            double currentXPpercent = ((player.getXP() / player.getXPneeded()));
 
-        g2d.setColor(new Color(135, 0, 135));
-        hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
-        g2d.fill(hpBar);
+            g2d.setColor(new Color(135, 0, 135));
+            hpBar = new RoundRectangle2D.Double(30, 66, 250 * currentXPpercent, 30, 3, 3);
+            g2d.fill(hpBar);
 
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-        g.setColor(Color.WHITE);
-        g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
-//        }
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+            g.setColor(Color.WHITE);
+            g.drawString("" + (int) player.getXP() + " / " + (int) player.getXPneeded() + "  " + (int) (currentXPpercent * 100) + "%", 40, 88);
+        }
     }
 
     /**
@@ -1166,6 +1209,11 @@ public class Canvas extends JPanel implements Serializable {
         }
     }
 
+    /**
+     * Draws a dialog box that shows you what weapon you got
+     *
+     * @param g graphics
+     */
     private void drawLoot(Graphics g) {
         if (player.getLootVisible()) {
             dialogBox.paintIcon(null, g, 0, (780 - 140));
@@ -1177,6 +1225,31 @@ public class Canvas extends JPanel implements Serializable {
 
             g.drawString("Weapon name: " + player.getLoot().getName(), 230, 725);
             g.drawString("Damage:" + player.getLoot().getDamage() + " Strength:" + (int) player.getLoot().getStats().getAttack() + " Dexterity:" + (int) player.getLoot().getStats().getDexterity() + " Stamina:" + (int) player.getLoot().getStats().getStamina() + " Defence:" + (int) player.getLoot().getStats().getDefence(), 230, 750);
+        }
+    }
+
+    public void drawStartMenu(Graphics g) {
+        if (startScreen) {
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+            g.setColor(new Color(255, 220, 70));
+            g.drawString("Legend of REKT angel", 325, 300);
+
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+            g.setColor(Color.BLACK);
+            if (startscreenCounter == 0) {
+                g.setColor(new Color(255, 220, 70));
+            }
+            g.drawString("Load game", 400, 350);
+            g.setColor(Color.BLACK);
+            if (startscreenCounter == 1) {
+                g.setColor(new Color(255, 220, 70));
+            }
+            g.drawString("New game", 400, 400);
+
+            g.setColor(Color.BLACK);
+            g.drawString("[J] to choose option", 325, 450);
+            g.drawString("[Arrow Down] to go one option lower", 325, 475);
+            g.drawString("[Arrow Up] to go one option higher", 325, 500);
         }
     }
 
@@ -1207,6 +1280,7 @@ public class Canvas extends JPanel implements Serializable {
         drawLevelUp(g);
         drawInventory(g);
         drawLoot(g);
+        drawStartMenu(g);
 
         if (getGameOver()) {
             Graphics2D g2d = (Graphics2D) g;

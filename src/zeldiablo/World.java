@@ -14,6 +14,7 @@ public class World {
     //Place for constructor(s)
         
     public void theMatrix(Canvas canvas) {
+        canvas.setStartscreenFalse();
         canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));        
         canvas.setNPC1( new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1));
         canvas.setNPC2(new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1));
