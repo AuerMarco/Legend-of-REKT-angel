@@ -135,6 +135,20 @@ public class Dialog implements Serializable {
         dialogPage = new String[]{"So you want to be a "+player.getCharacterClass()+"?", "If you are ready to leave, press [ESC]."};
     }
     
+    public void dialogChestIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"This is a chest. You can open chests by pressing [J].", "Go ahead and grab the weapon in it.", "You open your inventory with [I].", "If you press [J] while the inventory is open, ", "you equip the weapon in the middle slot."};
+    }
+    
+    public void dialogMobIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"You can open your character window by pressing [C].", "You can see all your stats and your equipped weapon there.", "Now... I am sure you have noticed the enemy behind me.", "Go fight it to leave the tutorial!", "P.S.: They are usually aggressive, coming towards you.", "I have weakend this one with the power of the sun!"};
+    }
+    
     /**
      * The logic for switching between dialog pages and displaying 2 lines in the dialog box
      * You get the next dialog page (if there is one) by pressing J while talking to an NPC

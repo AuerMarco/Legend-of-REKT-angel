@@ -51,4 +51,10 @@ public class World {
         canvas.setNPC1(new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1,"ChestIntro"));
         canvas.setChest1(new InteractionObject(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon"));
     }
+    
+    public void town(Canvas canvas) {
+        canvas.setBackground(1);
+        canvas.getPlayer().setMapID("Zone_Town");
+        canvas.createGameObjects();
+    }
 }

@@ -179,8 +179,7 @@ public class Player extends Character implements Serializable {
                 case "Intro":
                     if (choice.equalsIgnoreCase("Yes") && player.getCharacterClass() != "REKTangel") {
                         super.getNPCdialog().dialogDecission(this, npc);
-                    }
-                    else if (player.getChoice().equalsIgnoreCase("REKTangel")) {
+                    } else if (player.getChoice().equalsIgnoreCase("REKTangel")) {
                         super.getNPCdialog().dialogIntro(this, npc);
                     } else {
                         super.getNPCdialog().dialogChoice(this, npc);
@@ -199,7 +198,7 @@ public class Player extends Character implements Serializable {
                 case "BerserkerIntro":
                     if (choice.equalsIgnoreCase("Yes")) {
                         player.setCharacterClass(npc.getCharacterClass());
-                        super.getNPCdialog().dialogBerserkerIntro(this, npc);                        
+                        super.getNPCdialog().dialogBerserkerIntro(this, npc);
                     } else {
                         choice = "Berserker";
                         super.getNPCdialog().dialogBerserkerIntro(this, npc);
@@ -207,12 +206,20 @@ public class Player extends Character implements Serializable {
                     break;
                 case "HunterIntro":
                     if (choice.equalsIgnoreCase("Yes")) {
-                        player.setCharacterClass(npc.getCharacterClass());  
-                        super.getNPCdialog().dialogHunterIntro(this, npc);                      
+                        player.setCharacterClass(npc.getCharacterClass());
+                        super.getNPCdialog().dialogHunterIntro(this, npc);
                     } else {
                         choice = "Hunter";
                         super.getNPCdialog().dialogHunterIntro(this, npc);
                     }
+                    break;
+                case "ChestIntro":
+                    if (player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
+                        super.getNPCdialog().dialogMobIntro(this, npc);
+                    } else {
+                        super.getStats().setHP(player.getStats().getMaxHP());
+                        super.getNPCdialog().dialogChestIntro(this, npc);
+                    }                    
                     break;
                 default:
                     break;

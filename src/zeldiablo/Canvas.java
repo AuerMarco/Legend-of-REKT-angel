@@ -57,6 +57,7 @@ public class Canvas extends JPanel implements Serializable {
     private boolean startScreen;
     private int startscreenCounter;
     World world;
+    boolean spawned;
 
     /**
      * This constructor sets all the basics of the canvas, like size etc Then it
@@ -80,8 +81,7 @@ public class Canvas extends JPanel implements Serializable {
         inventoryHighlight = 1;
         inventoryCounter = 0;
         world = new World();
-//        npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
-//        chests = new InteractionObject[]{chest1, chest2, chest3};
+        spawned = false;
 
         initGame();
     }
@@ -756,6 +756,19 @@ public class Canvas extends JPanel implements Serializable {
                 player.getCurrency().mobdrop(mob.getLevel());
             }
         }
+
+        if (player.getStartWeaponChest() && spawned && mob1.getStats().getHP() <= 0 && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
+            Chance chance = new Chance(10);
+            if (chance.getSuccess() && mob1.getLevel() != 0) {
+                Weapon loot = new Weapon(mob1.getLevel());
+                player.getInventar().add(loot);
+                player.setLoot(loot);
+                player.setLootVisible(true);
+            }
+            player.increaseXP(mob1.getXP());
+            player.getCurrency().mobdrop(mob1.getLevel());
+            world.town(this);
+        }
     }
 
     /**
@@ -931,6 +944,13 @@ public class Canvas extends JPanel implements Serializable {
 //        file.loadPlayer(player, playerLoader);
     }
 
+    private void chestSpawner() {
+        if (!spawned && player.getStartWeaponChest() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
+            mob1 = new NPC(new Coordinates(500, 250), 80, 70, 1, "Mob", "Orc", 1);
+            spawned = true;
+        }
+    }
+
     /**
      * This method holds all the methods that have to get called on every frame
      * (also known as tick) This method gets called every 20ms by the
@@ -949,6 +969,7 @@ public class Canvas extends JPanel implements Serializable {
         hpRegeneration();
         mobAttack();
         hitDetect();
+        chestSpawner();
 
         arrow();
 
