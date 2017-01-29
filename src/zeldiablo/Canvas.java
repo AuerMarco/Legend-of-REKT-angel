@@ -16,6 +16,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
+import java.io.Serializable;
 
 /**
  * This is pretty much the main class of my game - it acts the canvas - the
@@ -23,7 +24,7 @@ import java.awt.geom.RoundRectangle2D;
  *
  * @author Auer Marco
  */
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements Serializable {
 
     private Player player;
 
@@ -197,12 +198,12 @@ public class Canvas extends JPanel {
                         }
                         break;
                     case VK_K:
-                        if (player.getAttackCD() == 0) {
+                        if (player.getAttackCD() <= 0) {
                             player.setAttackCD(20);
-                            if (player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker") {
+                            if (player.getCharacterClass() != "Hunter") {      //player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker"
                                 player.getAttackHitbox().setWeaponFrames(0);
                                 player.getAttackHitbox().melee(player);
-                            } else if (player.getCharacterClass() == "Hunter") {
+                            } else {
                                 angle1 = false;
                                 angle3 = false;
                                 angle5 = false;
@@ -243,7 +244,7 @@ public class Canvas extends JPanel {
 
 //                        int x = 0;
 //                        while (x < player.getLevel()) {
-//                            player.getMoney().changeValue(10);
+//                            player.getCurrency().changeValue(10);
 //                            x++;
 //                        }
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
@@ -335,6 +336,15 @@ public class Canvas extends JPanel {
                             player.setLootVisible(false);
                         }
                         break;
+                    case VK_F5:
+                        SaveFile file = new SaveFile();
+                        file.createSaveFile(player);
+                        break;
+                    case VK_F9:
+                        file = new SaveFile();
+                        Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
+                        file.loadPlayer(player, playerLoader);
+                        break;                        
                 }
             }
         });
@@ -501,7 +511,7 @@ public class Canvas extends JPanel {
             gameOver = true;
             t.stop();
         }
-        
+
         if (mob1.getStats().getHP() <= 0) {
             Chance chance = new Chance(10);
             if (chance.getSuccess() && mob1.getLevel() != 0) {
@@ -513,7 +523,7 @@ public class Canvas extends JPanel {
             }
             mob1.setAlive(false);
             player.increaseXP(mob1.getXP());
-            player.getMoney().mobdrop(mob1.getLevel());            
+            player.getCurrency().mobdrop(mob1.getLevel());
         }
     }
 
@@ -937,10 +947,10 @@ public class Canvas extends JPanel {
 
             //This part is responsible for displaying the money the player owns (silverserpents)
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-            for (int i = 1; i < (Integer.toString(player.getMoney().getSilverserpents())).length(); i++) {
+            for (int i = 1; i < (Integer.toString(player.getCurrency().getSilverserpents())).length(); i++) {
                 x -= 18;
             }
-            g.drawString("" + player.getMoney().getSilverserpents(), x, 315);
+            g.drawString("" + player.getCurrency().getSilverserpents(), x, 315);
 
             //This part is responsible for displaying the weapons in the inventory    
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
@@ -1003,7 +1013,7 @@ public class Canvas extends JPanel {
             g.drawString("You got loot!", 230, 695);
 
             g.drawString("Weapon name: " + player.getLoot().getName(), 230, 725);
-            g.drawString("Damage:"+player.getLoot().getDamage()+" Strength:"+(int)player.getLoot().getStats().getAttack()+" Dexterity:"+(int)player.getLoot().getStats().getDexterity()+" Stamina:"+(int)player.getLoot().getStats().getStamina()+" Defence:"+(int)player.getLoot().getStats().getDefence(), 230, 750);
+            g.drawString("Damage:" + player.getLoot().getDamage() + " Strength:" + (int) player.getLoot().getStats().getAttack() + " Dexterity:" + (int) player.getLoot().getStats().getDexterity() + " Stamina:" + (int) player.getLoot().getStats().getStamina() + " Defence:" + (int) player.getLoot().getStats().getDefence(), 230, 750);
         }
     }
 

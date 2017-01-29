@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,9 +11,11 @@ import java.util.ArrayList;
  *
  * @author Auer Marco
  */
-public class Player extends Character {
+public class Player extends Character implements Serializable  {
+    
+    private static final long serialVersionUID = 1L;
 
-    private Currency money;
+    private Currency currency;
     private ArrayList<Weapon> inventar;
 
     private boolean startWeaponChest;
@@ -32,17 +35,25 @@ public class Player extends Character {
      */
     public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
         super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
-        money = new Currency();
+        currency = new Currency();
         inventar = new ArrayList<>();
         loot = new Weapon("placeholder",0,0,0,0,0);
     }
 
-    public Currency getMoney() {
-        return money;
+    public Currency getCurrency() {
+        return currency;
+    }
+    
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public ArrayList<Weapon> getInventar() {
         return inventar;
+    }
+    
+    public void setInventar(ArrayList<Weapon> inventar) {
+        this.inventar = inventar;
     }
 
     public boolean getStartWeaponChest() {

@@ -3,7 +3,9 @@
  */
 package zeldiablo;
 
-public class Currency {
+import java.io.Serializable;
+
+public class Currency implements Serializable {
     
     //Currency is called silverserpents
         private int silverserpents;

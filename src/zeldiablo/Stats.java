@@ -1,11 +1,13 @@
 package zeldiablo;
 
+import java.io.Serializable;
+
 /**
  * This class contains the stats (like attackpower) of characters and weapons
  *
  * @author Auer Marco
  */
-public class Stats {
+public class Stats implements Serializable {
 
     private double attack;
     private double dexterity;

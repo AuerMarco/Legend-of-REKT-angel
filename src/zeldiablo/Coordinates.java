@@ -1,11 +1,13 @@
 package zeldiablo;
 
+import java.io.Serializable;
+
 /**
  * Really simple class that contains the coordinates for all gameObjects
  * 
  * @author Auer Marco
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     private int posX;
     private int posY;

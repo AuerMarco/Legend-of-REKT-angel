@@ -2,9 +2,8 @@ package zeldiablo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
+import java.io.Serializable;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
@@ -15,7 +14,7 @@ import javax.swing.ImageIcon;
  *
  * @author Auer Marco
  */
-public class Character extends GameObjects {
+public class Character extends GameObjects implements Serializable {
 
     private boolean moving;
     public final String imageDirectory;

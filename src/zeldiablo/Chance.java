@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.Serializable;
 
 /**
  * This class has two functions
@@ -11,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * 
  * @author Auer Marco
  */
-public class Chance {
+public class Chance implements Serializable {
 
     double min;
     double max;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
+import java.io.Serializable;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
@@ -13,7 +14,7 @@ import javax.swing.ImageIcon;
  *
  * @author Auer Marco
  */
-public class AttackAnimation extends GameObjects {
+public class AttackAnimation extends GameObjects implements Serializable {
 
     private int weaponFrames;
     private int inviFrames;
@@ -173,7 +174,6 @@ public class AttackAnimation extends GameObjects {
             System.out.println("Mob to player: " + damage);
             player.setInviFrames(50);
         }
-
     }
 
     /**

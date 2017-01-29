@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -14,7 +15,7 @@ import javax.swing.JMenuItem;
  * 
  * @author Auer Marco
  */
-public class Window extends JFrame {
+public class Window extends JFrame implements Serializable {
 
     private final Canvas world;
 

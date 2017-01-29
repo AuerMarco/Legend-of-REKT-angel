@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /**
  * This class is the superclass of all the entities on the canvas.
@@ -8,7 +9,7 @@ import java.awt.Rectangle;
  * 
  * @author Auer Marco
  */
-public abstract class GameObjects {
+public abstract class GameObjects implements Serializable {
 
     private Coordinates objectPosition;
     private int width;

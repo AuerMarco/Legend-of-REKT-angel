@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 /**
@@ -7,7 +8,7 @@ import javax.swing.ImageIcon;
  * 
  * @author Auer Marco
  */
-public class Dialog {
+public class Dialog implements Serializable {
 
     private String dialogLine1, dialogLine2, npcName;
     private boolean dialogVisible;
