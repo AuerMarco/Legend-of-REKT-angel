@@ -17,7 +17,7 @@ import javax.swing.JMenuItem;
  */
 public class Window extends JFrame implements Serializable {
 
-    private final Canvas world;
+    private Canvas world;
 
     /**
      * creates the Canvas on which everything plays / gets drawn on

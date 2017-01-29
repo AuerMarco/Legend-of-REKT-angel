@@ -124,7 +124,7 @@ public class Player extends Character implements Serializable  {
      * @param interObject The object whose ID gets checked to determine the
      * actio performed (if it is in reach)
      */
-    public void objectInteraction(Player player, InteractionObjects interObject) {
+    public void objectInteraction(Player player, InteractionObject interObject) {
         if (player.isInReachOf(interObject)) {
             switch (interObject.getID()) {
                 case "StartWeapon":

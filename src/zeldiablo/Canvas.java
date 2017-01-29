@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -17,6 +16,7 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 import java.awt.geom.RoundRectangle2D;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * This is pretty much the main class of my game - it acts the canvas - the
@@ -37,9 +37,13 @@ public class Canvas extends JPanel implements Serializable {
     private int demoCounter, hpTimer;
 
     private Timer t;
-    private NPC npc1, npc2;
-    private NPC mob1;
-    private InteractionObjects chest1, chest2, chest3;
+    private NPC placeholder;
+    private NPC npc1, npc2, npc3, npc4, npc5;
+//    private NPC[] npcs;
+    private NPC mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10;
+//    private NPC[] mobs;
+    private InteractionObject chest1, chest2, chest3;
+//    private InteractionObject[] chests;
     private int arrowCounter;
     private boolean arrowLock;
     public boolean wKey, aKey, sKey, dKey;
@@ -71,6 +75,9 @@ public class Canvas extends JPanel implements Serializable {
         arrowLock = false;
         inventoryHighlight = 1;
         inventoryCounter = 0;
+//        npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
+//        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+//        chests = new InteractionObject[]{chest1, chest2, chest3};
 
         initGame();
     }
@@ -90,23 +97,160 @@ public class Canvas extends JPanel implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+    
+    public NPC getNPC1() {
+        return npc1;
+    }
+    
+    /**
+     * This method will change the currently present npc1 to a new, as every
+     * areal (part of the world) has different NPCs and mobs
+     *
+     * @param npc NPC that the current npc1 will get changed to
+     */
+    public void setNPC1(NPC npc) {
+        npc1 = npc;
+    }
+    
+    public NPC getNPC2() {
+        return npc2;
+    }
+    
+    public void setNPC2(NPC npc) {
+        npc2 = npc;
+    }
 
+    public NPC getNPC3() {
+        return npc3;
+    }
+    
+    public void setNPC3(NPC npc) {
+        npc3 = npc;
+    }
+    
+    public NPC getNPC4() {
+        return npc4;
+    }
+    
+    public void setNPC4(NPC npc) {
+        npc4 = npc;
+    }
+    
+    public NPC getNPC5() {
+        return npc5;
+    }
+    
+    public void setNPC5(NPC npc) {
+        npc5 = npc;
+    }
+    
     public NPC getMob1() {
         return mob1;
     }
-
-    /**
-     * This method will change the currently present mob1 to a new, as every
-     * areal (part of the world) has different mobs
-     *
-     * @param mob Enemy that the current mob1 will get changed to
-     */
+    
     public void setMob1(NPC mob) {
         mob1 = mob;
     }
 
+    public NPC getMob2() {
+        return mob2;
+    }
+    
+    public void setMob2(NPC mob) {
+        mob2 = mob;
+    }
+    
+    public NPC getMob3() {
+        return mob3;
+    }
+    
+    public void setMob3(NPC mob) {
+        mob3 = mob;
+    }
+    
+    public NPC getMob4() {
+        return mob4;
+    }
+    
+    public void setMob4(NPC mob) {
+        mob4 = mob;
+    }
+    
+    public NPC getMob5() {
+        return mob5;
+    }
+    
+    public void setMob5(NPC mob) {
+        mob5 = mob;
+    }
+    
+    public NPC getMob6() {
+        return mob6;
+    }
+    
+    public void setMob6(NPC mob) {
+        mob6 = mob;
+    }
+    
+    public NPC getMob7() {
+        return mob7;
+    }
+    
+    public void setMob7(NPC mob) {
+        mob7 = mob;
+    }
+    
+    public NPC getMob8() {
+        return mob8;
+    }
+    
+    public void setMob8(NPC mob) {
+        mob8 = mob;
+    }
+    
+    public NPC getMob9() {
+        return mob9;
+    }
+    
+    public void setMob9(NPC mob) {
+        mob9 = mob;
+    }
+    
+    public NPC getMob10() {
+        return mob10;
+    }
+    
+    public void setMob10(NPC mob) {
+        mob10 = mob;
+    }    
+    
+    public InteractionObject getChest1() {
+        return chest1;
+    }
+    
+    public void setChest1 (InteractionObject chest) {
+        chest1 = chest;
+    }
+    
+    public InteractionObject getChest2() {
+        return chest2;
+    }
+    
+    public void setChest2 (InteractionObject chest) {
+        chest2 = chest;
+    }
+    
+    public InteractionObject getChest3() {
+        return chest3;
+    }
+    
+    public void setChest3 (InteractionObject chest) {
+        chest3 = chest;
+    }
+    
+    
     /**
-     * This mob starts the game up by setting the background (or rather, calling
+     * This method starts the game up by setting the background (or rather, calling
      * the method that does it) and then calling the method that creates the
      * game objects like NPCs and objects like chests It also contains the very,
      * very important KeyListener that allows to control and play the game!
@@ -249,12 +393,13 @@ public class Canvas extends JPanel implements Serializable {
 //                        }
 //                        player.getStats().setHP(player.getStats().getHP() - 10);
 //                        player.increaseXP(10);
-                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int) player.getWeapon().getStats().getAttack() + " Dex:" + (int) player.getWeapon().getStats().getDexterity() + " Stam:" + (int) player.getWeapon().getStats().getStamina() + " Def:" + (int) player.getWeapon().getStats().getDefence());
-                        int posi = 1;
-                        for (Weapon weapon : player.getInventar()) {
-                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
-                            posi++;
-                        }
+//                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int) player.getWeapon().getStats().getAttack() + " Dex:" + (int) player.getWeapon().getStats().getDexterity() + " Stam:" + (int) player.getWeapon().getStats().getStamina() + " Def:" + (int) player.getWeapon().getStats().getDefence());
+//                        int posi = 1;
+//                        for (Weapon weapon : player.getInventar()) {
+//                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
+//                            posi++;
+//                        }
+                        changeScreen();
                         break;
                     case VK_C:
                         if (!player.getNPCdialog().getDialogVisible()) {
@@ -344,7 +489,7 @@ public class Canvas extends JPanel implements Serializable {
                         file = new SaveFile();
                         Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
                         file.loadPlayer(player, playerLoader);
-                        break;                        
+                        break;
                 }
             }
         });
@@ -355,12 +500,26 @@ public class Canvas extends JPanel implements Serializable {
      * they will get replaced by placeholders and concrete mobs with their
      * unique locations will be spawned via an another class
      */
-    private void createGameObjects() {                                          // hier werden die Spielobjekte erzeugt        
-        player = new Player(new Coordinates(460, 700), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameter: Coordinates, Breite, Höhe, Winkel, Klasse, Name bzw. ID, Level, und dann 5 Parameter zum erstellen der Waffe
-        npc1 = new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1);
-        npc2 = new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1);
-        chest1 = new InteractionObjects(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon");
-        mob1 = new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1);
+    private void createGameObjects() {                                          //Game Objects (placeholders) are created here       
+        player = new Player(new Coordinates(-2000, -2000), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
+        placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
+        npc1 = placeholder;
+        npc2 = placeholder;
+        npc3 = placeholder;
+        npc4 = placeholder;
+        npc5 = placeholder;
+        mob1 = placeholder;
+        mob2 = placeholder;
+        mob3 = placeholder;
+        mob4 = placeholder;
+        mob5 = placeholder;
+        mob6 = placeholder;
+        mob7 = placeholder;
+        mob8 = placeholder;
+        mob9 = placeholder;
+        mob10 = placeholder;
+        InteractionObject placeholderChest = new InteractionObject(new Coordinates(-1000, -1000), 0, 0, "Chest1", "Null");   
+        chest1 = placeholderChest;   
     }
 
     /**
@@ -532,9 +691,8 @@ public class Canvas extends JPanel implements Serializable {
      * gets flagged as dead by the method above
      */
     public void deadMobs() {
-        NPC toterMob = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         if (!mob1.getAlive()) {
-            mob1 = toterMob;
+            mob1 = placeholder;
         }
     }
 
@@ -644,6 +802,11 @@ public class Canvas extends JPanel implements Serializable {
     private void equipWeapon() {
         player.setWeapon(player.getInventar().get(inventoryCounter));
         player.getStats().statAdjustment(player);
+    }
+
+    private void changeScreen() {
+        World world = new World();
+        world.theMatrix(this);
     }
 
     /**

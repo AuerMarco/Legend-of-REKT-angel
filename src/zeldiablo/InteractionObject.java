@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
  * 
  * @author Auer Marco
  */
-public class InteractionObjects extends GameObjects {
+public class InteractionObject extends GameObjects {
 
     public final String imageDirectory;
     private ImageIcon sprite;
@@ -29,7 +29,7 @@ public class InteractionObjects extends GameObjects {
      * @param thing Which object it is. example "Chest1" 
      * @param id The "name" of the chest. The ID determines which loot you get from which chest
      */
-    public InteractionObjects(Coordinates position, int width, int height, String thing, String id) {
+    public InteractionObject(Coordinates position, int width, int height, String thing, String id) {
         super(position, width, height);
         imageDirectory = "images/objects/";
         spriteList = new String[]{thing + "_deactivated.png", thing + "_activated.png"};

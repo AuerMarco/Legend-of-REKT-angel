@@ -112,7 +112,7 @@ public abstract class GameObjects implements Serializable {
      * @param player The player character - the figure you control
      * @param InterObject An object (like a chest) that can be interacted with
      */
-    public void youShallNotPass(Player player, InteractionObjects InterObject) {
+    public void youShallNotPass(Player player, InteractionObject InterObject) {
         if (player.touches(InterObject)) {
             switch (player.getAngle()) {
                 case 1:

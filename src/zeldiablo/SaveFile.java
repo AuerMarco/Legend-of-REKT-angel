@@ -12,6 +12,7 @@ import java.io.Serializable;
  * It allows to save and load all the player data like the level etc.
  *
  * @author Auer Marco
+ * @author mkyong.com
  */
 public class SaveFile implements Serializable {
 
