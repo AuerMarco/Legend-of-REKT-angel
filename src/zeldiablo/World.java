@@ -18,7 +18,16 @@ public class World {
         canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));        
         canvas.setNPC1( new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1));
         canvas.setNPC2(new NPC(new Coordinates(350, 400), 48, 100, 4, "Rogue", "Unknown rogue", 1));
-        canvas.setMob1(new NPC(new Coordinates(460, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob1(new NPC(new Coordinates(100, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob2(new NPC(new Coordinates(200, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob3(new NPC(new Coordinates(300, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob4(new NPC(new Coordinates(400, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob5(new NPC(new Coordinates(500, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob6(new NPC(new Coordinates(600, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob7(new NPC(new Coordinates(700, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob8(new NPC(new Coordinates(800, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob9(new NPC(new Coordinates(900, 300), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob10(new NPC(new Coordinates(1000, 300), 80, 70, 1, "Mob", "Orc", 1));
         canvas.setChest1(new InteractionObject(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon"));
     }
 }

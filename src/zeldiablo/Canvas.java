@@ -41,7 +41,7 @@ public class Canvas extends JPanel implements Serializable {
     private NPC npc1, npc2, npc3, npc4, npc5;
 //    private NPC[] npcs;
     private NPC mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10;
-//    private NPC[] mobs;
+    private NPC[] mobs;
     private InteractionObject chest1, chest2, chest3;
 //    private InteractionObject[] chests;
     private int arrowCounter;
@@ -449,10 +449,13 @@ public class Canvas extends JPanel implements Serializable {
                         }
                         break;
                     case VK_T:
-                        if (!mob1.getAggro()) {
-                            mob1.setAggro(true);
-                        } else if (mob1.getAggro()) {
-                            mob1.setAggro(false);
+                        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+                        for (NPC mob : mobs) {
+                            if (!mob.getAggro()) {
+                                mob.setAggro(true);
+                            } else if (mob.getAggro()) {
+                                mob.setAggro(false);
+                            }
                         }
                         break;
                     case VK_I:
@@ -533,11 +536,12 @@ public class Canvas extends JPanel implements Serializable {
         startScreen = true;
         player = new Player(new Coordinates(-2000, -2000), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
         placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
+        //The array doesn't work here for some reason
         npc1 = placeholder;
         npc2 = placeholder;
         npc3 = placeholder;
         npc4 = placeholder;
-        npc5 = placeholder;
+        npc5 = placeholder;        
         mob1 = placeholder;
         mob2 = placeholder;
         mob3 = placeholder;
@@ -637,14 +641,15 @@ public class Canvas extends JPanel implements Serializable {
      * for each npc / player combination
      */
     public void hitDetect() {
-        if (mob1.getInviFrames() <= 0) {
-            player.getAttackHitbox().hitDetect(player, mob1);
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            if (mob.getInviFrames() <= 0) {
+                player.getAttackHitbox().hitDetect(player, mob);
+            }
+            if (player.getInviFrames() <= 0) {
+                mob.getAttackHitbox().hitDetect(mob, player);
+            }
         }
-
-        if (player.getInviFrames() <= 0) {
-            mob1.getAttackHitbox().hitDetect(mob1, player);
-        }
-
     }
 
     /**
@@ -679,15 +684,18 @@ public class Canvas extends JPanel implements Serializable {
         if (player.getAttackCD() > 0) {
             player.setAttackCD(player.getAttackCD() - 1);
         }
-        if (mob1.getAttackCD() > 0) {
-            mob1.setAttackCD(mob1.getAttackCD() - 1);
-        }
+//        if (mob1.getAttackCD() > 0) {
+//            mob1.setAttackCD(mob1.getAttackCD() - 1);
+//        }
 
-        if (mob1.getInviFrames() > 0) {
-            mob1.setInviFrames(mob1.getInviFrames() - 1);
-        }
         if (player.getInviFrames() > 0) {
             player.setInviFrames(player.getInviFrames() - 1);
+        }
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            if (mob.getInviFrames() > 0) {
+                mob.setInviFrames(mob.getInviFrames() - 1);
+            }
         }
     }
 
@@ -701,18 +709,20 @@ public class Canvas extends JPanel implements Serializable {
             t.stop();
         }
 
-        if (mob1.getStats().getHP() <= 0) {
-            Chance chance = new Chance(10);
-            if (chance.getSuccess() && mob1.getLevel() != 0) {
-                Weapon loot = new Weapon(mob1.getLevel());
-                System.out.println("lol");
-                player.getInventar().add(loot);
-                player.setLoot(loot);
-                player.setLootVisible(true);
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            if (mob.getStats().getHP() <= 0) {
+                Chance chance = new Chance(100);
+                if (chance.getSuccess() && mob.getLevel() != 0) {
+                    Weapon loot = new Weapon(mob.getLevel());
+                    player.getInventar().add(loot);
+                    player.setLoot(loot);
+                    player.setLootVisible(true);
+                }
+                mob.setAlive(false);
+                player.increaseXP(mob.getXP());
+                player.getCurrency().mobdrop(mob.getLevel());
             }
-            mob1.setAlive(false);
-            player.increaseXP(mob1.getXP());
-            player.getCurrency().mobdrop(mob1.getLevel());
         }
     }
 
@@ -721,8 +731,36 @@ public class Canvas extends JPanel implements Serializable {
      * gets flagged as dead by the method above
      */
     public void deadMobs() {
+        //The array doesn't work here for some reason
         if (!mob1.getAlive()) {
             mob1 = placeholder;
+        }
+        if (!mob2.getAlive()) {
+            mob2 = placeholder;
+        }
+        if (!mob3.getAlive()) {
+            mob3 = placeholder;
+        }
+        if (!mob4.getAlive()) {
+            mob4 = placeholder;
+        }
+        if (!mob5.getAlive()) {
+            mob5 = placeholder;
+        }
+        if (!mob6.getAlive()) {
+            mob6 = placeholder;
+        }
+        if (!mob7.getAlive()) {
+            mob7 = placeholder;
+        }
+        if (!mob8.getAlive()) {
+            mob8 = placeholder;
+        }
+        if (!mob9.getAlive()) {
+            mob9 = placeholder;
+        }
+        if (!mob10.getAlive()) {
+            mob10 = placeholder;
         }
     }
 
@@ -811,8 +849,11 @@ public class Canvas extends JPanel implements Serializable {
      * aggresive Aggression state can currently be changed with the T-key
      */
     private void mobAttack() {
-        if (mob1.getAggro()) {
-            mob1.moveToPlayer(player);
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            if (mob.getAggro()) {
+                mob.moveToPlayer(player);
+            }
         }
     }
 
@@ -821,7 +862,10 @@ public class Canvas extends JPanel implements Serializable {
      */
     private void hitboxUpdate() {
         player.hitboxUpdate();
-        mob1.hitboxUpdate();
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            mob.hitboxUpdate();
+        }
     }
 
     /**
@@ -966,8 +1010,15 @@ public class Canvas extends JPanel implements Serializable {
      * @param g graphics
      */
     public void drawMobs(Graphics g) {
-        mob1.drawObjects(g);
-        drawMobHealthbar(g, mob1);
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            mob.drawObjects(g);
+            drawMobHealthbar(g, mob);
+        }
+//        mob1.drawObjects(g);
+//        drawMobHealthbar(g, mob1);
+//        mob2.drawObjects(g);
+//        drawMobHealthbar(g, mob2);
     }
 
     /**
@@ -988,7 +1039,7 @@ public class Canvas extends JPanel implements Serializable {
      */
     public void drawAttacks(Graphics g) {
         player.getAttackHitbox().drawObjects(g);
-        mob1.getAttackHitbox().drawObjects(g);
+//        mob1.getAttackHitbox().drawObjects(g);
     }
 
     /**
@@ -1065,22 +1116,25 @@ public class Canvas extends JPanel implements Serializable {
     public void drawMobHealthbar(Graphics g, NPC mob) {
         //This part is the new mob HP bar (above the individual mobs)
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
-        RoundRectangle2D hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75, 7, 3, 3);
-        g2d.fill(hpBar);
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mobObj : mobs) {
+            g2d.setColor(Color.RED);
+            RoundRectangle2D hpBar = new RoundRectangle2D.Double(mobObj.getObjectPosition().getX(), mobObj.getObjectPosition().getY() - 15, 75, 7, 3, 3);
+            g2d.fill(hpBar);
 
-        double currentHPpercent = (mob1.getStats().getHP() / mob1.getStats().getMaxHP());
+            double currentHPpercent = (mobObj.getStats().getHP() / mobObj.getStats().getMaxHP());
 
-        g2d.setColor(Color.GREEN);
-        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY() - 15, 75 * currentHPpercent, 7, 3, 3);
-        g2d.fill(hpBar);
+            g2d.setColor(Color.GREEN);
+            hpBar = new RoundRectangle2D.Double(mobObj.getObjectPosition().getX(), mobObj.getObjectPosition().getY() - 15, 75 * currentHPpercent, 7, 3, 3);
+            g2d.fill(hpBar);
 
 //        g2d.setColor(Color.WHITE);
 //        hpBar = new RoundRectangle2D.Double(mob1.getObjectPosition().getX(), mob1.getObjectPosition().getY()-27, 75, 11, 3, 3);
 //        g2d.fill(hpBar);
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
-        g.setColor(Color.BLACK);
-        g.drawString("Level " + mob1.getLevel(), mob1.getObjectPosition().getX() + 5, mob1.getObjectPosition().getY() - 17);
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+            g.setColor(Color.BLACK);
+            g.drawString("Level " + mobObj.getLevel(), mobObj.getObjectPosition().getX() + 5, mobObj.getObjectPosition().getY() - 17);
+        }
     }
 
     /**
