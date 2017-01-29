@@ -93,6 +93,48 @@ public class Dialog implements Serializable {
 //        dialogLogic();
     }
     
+    public void dialogIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"Welcome, adventurer!", "Behind me you can see 3 shadows of your possible future!", "You have to choose one of these futures!", "Each of these classes has it's own advantages.", "Go talk to them and then decide.", "When you have decided, come talk to me again."};
+    }
+    
+    public void dialogKnightIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"Greetings. I am a mighty Knight.", "I have more health and stamina than the other classes.", "My damage isn't the greatest tho. I also don't crit much.", "If you have decided, you should go talk to Solaire."};
+    }
+    
+    public void dialogBerserkerIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"Greetings. I am a mighty Berserker.", "I do more damage than the other classes.", "I also have a higher chance to land critical hits!", "My defence isn't the greatest tho.", "If you have decided, you should go talk to Solaire."};
+    }
+    
+    public void dialogHunterIntro(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"Greetings. I am a mighty Hunter.", "I do average damage and have average crit chance.", "My big advantage is attacking from a distance!", "My defence isn't the greatest tho.", "If you have decided, you should go talk to Solaire."};
+    }
+    
+    public void dialogChoice(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"So have you decided?", "Then go interact with the class you want to choose now."};
+    }
+    
+    public void dialogDecission(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"So you want to be a "+player.getCharacterClass()+"?", "If you are ready to leave, press [ESC]."};
+    }
+    
     /**
      * The logic for switching between dialog pages and displaying 2 lines in the dialog box
      * You get the next dialog page (if there is one) by pressing J while talking to an NPC

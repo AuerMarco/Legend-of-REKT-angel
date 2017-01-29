@@ -39,11 +39,11 @@ public class Canvas extends JPanel implements Serializable {
     private Timer t;
     private NPC placeholder;
     private NPC npc1, npc2, npc3, npc4, npc5;
-//    private NPC[] npcs;
+    private NPC[] npcs;
     private NPC mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10;
     private NPC[] mobs;
     private InteractionObject chest1, chest2, chest3;
-//    private InteractionObject[] chests;
+    private InteractionObject[] chests;
     private int arrowCounter;
     private boolean arrowLock;
     public boolean wKey, aKey, sKey, dKey;
@@ -56,6 +56,7 @@ public class Canvas extends JPanel implements Serializable {
 
     private boolean startScreen;
     private int startscreenCounter;
+    World world;
 
     /**
      * This constructor sets all the basics of the canvas, like size etc Then it
@@ -78,8 +79,8 @@ public class Canvas extends JPanel implements Serializable {
         arrowLock = false;
         inventoryHighlight = 1;
         inventoryCounter = 0;
+        world = new World();
 //        npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
-//        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
 //        chests = new InteractionObject[]{chest1, chest2, chest3};
 
         initGame();
@@ -264,6 +265,8 @@ public class Canvas extends JPanel implements Serializable {
      */
     private void initGame() {
         setBackground(2);
+        startScreen = true;
+        player = new Player(new Coordinates(-2000, -2000), 200, 80, 1, "REKTangel", "???", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
         createGameObjects();
 
         t = new Timer(20, new ActionListener() {
@@ -342,8 +345,12 @@ public class Canvas extends JPanel implements Serializable {
                             }
                             if (!inventoryVisible) {
                                 player.objectInteraction(player, chest1);
-                                player.objectInteraction(player, npc1);
-                                player.objectInteraction(player, npc2);
+                                npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
+                                for (NPC npc : npcs) {
+                                    player.objectInteraction(player, npc);
+                                }
+
+//                                player.objectInteraction(player, npc2);
                             }
                             if (player.getNPCdialog().getDialogVisible()) {
                                 player.getNPCdialog().dialogLogic();
@@ -414,7 +421,8 @@ public class Canvas extends JPanel implements Serializable {
 //                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
 //                            posi++;
 //                        }
-                        changeScreen();
+//                        changeScreen();
+                        System.out.println(player.getChoice());
                         break;
                     case VK_C:
                         if (!startScreen) {
@@ -512,6 +520,9 @@ public class Canvas extends JPanel implements Serializable {
                             player.getStats().setVisible(false);
                             player.setLootVisible(false);
                         }
+                        if (player.getMapID().equalsIgnoreCase("Zone_Start")) {
+                            changeScreen();
+                        }
                         break;
                     case VK_F5:
                         SaveFile file = new SaveFile();
@@ -521,6 +532,24 @@ public class Canvas extends JPanel implements Serializable {
                         file = new SaveFile();
                         Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
                         file.loadPlayer(player, playerLoader);
+                        break;
+                    case VK_1:
+                        if (player.getMapID().equalsIgnoreCase("Zone_Start")) {
+                            player.setCharacterClass("Knight");
+                            changeScreen();
+                        }
+                        break;
+                    case VK_2:
+                        if (player.getMapID().equalsIgnoreCase("Zone_Start")) {
+                            player.setCharacterClass("Berserker");
+                            changeScreen();
+                        }
+                        break;
+                    case VK_3:
+                        if (player.getMapID().equalsIgnoreCase("Zone_Start")) {
+                            player.setCharacterClass("Hunter");
+                            changeScreen();
+                        }
                         break;
                 }
             }
@@ -532,16 +561,15 @@ public class Canvas extends JPanel implements Serializable {
      * they will get replaced by placeholders and concrete mobs with their
      * unique locations will be spawned via an another class
      */
-    private void createGameObjects() {                                          //Game Objects (placeholders) are created here       
-        startScreen = true;
-        player = new Player(new Coordinates(-2000, -2000), 35, 80, 1, "Knight", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
+    public void createGameObjects() {                                          //Game Objects (placeholders) are created here       
+
         placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
         //The array doesn't work here for some reason
         npc1 = placeholder;
         npc2 = placeholder;
         npc3 = placeholder;
         npc4 = placeholder;
-        npc5 = placeholder;        
+        npc5 = placeholder;
         mob1 = placeholder;
         mob2 = placeholder;
         mob3 = placeholder;
@@ -554,6 +582,8 @@ public class Canvas extends JPanel implements Serializable {
         mob10 = placeholder;
         InteractionObject placeholderChest = new InteractionObject(new Coordinates(-1000, -1000), 0, 0, "Chest1", "Null");
         chest1 = placeholderChest;
+        chest2 = placeholderChest;
+        chest3 = placeholderChest;
     }
 
     /**
@@ -632,8 +662,10 @@ public class Canvas extends JPanel implements Serializable {
 //        player.youShallNotPass(player, chest2);
 //        player.youShallNotPass(player, chest3);
 
-        player.youShallNotPass(player, npc1);
-        player.youShallNotPass(player, npc2);
+        npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
+        for (NPC npc : npcs) {
+            player.youShallNotPass(player, npc);
+        }
     }
 
     /**
@@ -712,7 +744,7 @@ public class Canvas extends JPanel implements Serializable {
         mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
         for (NPC mob : mobs) {
             if (mob.getStats().getHP() <= 0) {
-                Chance chance = new Chance(100);
+                Chance chance = new Chance(10);
                 if (chance.getSuccess() && mob.getLevel() != 0) {
                     Weapon loot = new Weapon(mob.getLevel());
                     player.getInventar().add(loot);
@@ -879,15 +911,19 @@ public class Canvas extends JPanel implements Serializable {
     }
 
     private void changeScreen() {
-        World world = new World();
-        world.theMatrix(this);
+//        world.theMatrix(this);
+        if (player.getMapID().equalsIgnoreCase("Zone_Start") && player.getCharacterClass() != "REKTangel") {
+            world.chestIntro(this);
+        }
     }
 
     private void startMenu() {
         if (startscreenCounter == 0) {
             System.out.println("Loaded game");
+            world.theMatrix(this);
         } else if (startscreenCounter == 1) {
             System.out.println("New game started");
+            world.theBeginning(this);
         }
 
 //        SaveFile file = new SaveFile();
@@ -922,7 +958,9 @@ public class Canvas extends JPanel implements Serializable {
             player.setSpeed(player.getOriginalSpeed());
         }
 
-        player.walkingAnimation();
+        if (player.getCharacterClass() != "REKTangel") {
+            player.walkingAnimation();
+        }
         player.getAttackHitbox().weaponFramesFunction(player);
 //        mob1.getAttackHitbox().weaponFramesFunction(mob1);
 
@@ -1027,8 +1065,11 @@ public class Canvas extends JPanel implements Serializable {
      * @param g graphics
      */
     public void drawNPCs(Graphics g) {
-        npc1.drawObjects(g);
-        npc2.drawObjects(g);
+        npcs = new NPC[]{npc1, npc2, npc3, npc4, npc5};
+        for (NPC npc : npcs) {
+            npc.drawObjects(g);
+        }
+//        npc2.drawObjects(g);
     }
 
     /**

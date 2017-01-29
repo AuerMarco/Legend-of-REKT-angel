@@ -9,7 +9,8 @@ package zeldiablo;
  */
 public class NPC extends Character {
 
-    public boolean aggro;
+    private boolean aggro;
+    private String id;
 
     /**
      *
@@ -30,6 +31,12 @@ public class NPC extends Character {
         super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
         aggro = false;
     }
+    
+    public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String id) {
+        super(position, width, height, angle, characterClass, name, level);
+        aggro = false;
+        this.id = id;
+    }
 
     public boolean getAggro() {
         return aggro;
@@ -37,6 +44,13 @@ public class NPC extends Character {
 
     public void setAggro(boolean aggro) {
         this.aggro = aggro;
+    }
+    
+    public String getID() {
+        return id;
+    }
+    public void setID(String id) {
+        this.id = id;
     }
 
     //Originally the mobs were supposed to get aggresive when a player is in a certain ranges

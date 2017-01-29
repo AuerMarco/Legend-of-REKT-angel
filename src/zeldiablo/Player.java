@@ -11,18 +11,20 @@ import java.util.ArrayList;
  *
  * @author Auer Marco
  */
-public class Player extends Character implements Serializable  {
+public class Player extends Character implements Serializable {
     
     private static final long serialVersionUID = 1L;
-
+    
     private Currency currency;
     private ArrayList<Weapon> inventar;
-
+    
     private boolean startWeaponChest;
     private boolean lootVisible;
     private Weapon loot;
-    
-/**
+    private String choice;
+    private String mapID;
+
+    /**
      * Creates a currency and inventory the player can use
      *
      * @param position Where to spawn it
@@ -37,9 +39,11 @@ public class Player extends Character implements Serializable  {
         super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
         currency = new Currency();
         inventar = new ArrayList<>();
-        loot = new Weapon("placeholder",0,0,0,0,0);
+        loot = new Weapon("placeholder", 0, 0, 0, 0, 0);
+        choice = "REKTangel";
+        mapID = "Zone_Menu";
     }
-
+    
     public Currency getCurrency() {
         return currency;
     }
@@ -47,7 +51,7 @@ public class Player extends Character implements Serializable  {
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
-
+    
     public ArrayList<Weapon> getInventar() {
         return inventar;
     }
@@ -55,7 +59,7 @@ public class Player extends Character implements Serializable  {
     public void setInventar(ArrayList<Weapon> inventar) {
         this.inventar = inventar;
     }
-
+    
     public boolean getStartWeaponChest() {
         return startWeaponChest;
     }
@@ -70,11 +74,11 @@ public class Player extends Character implements Serializable  {
     public void setStartWeaponChest(boolean chest) {
         startWeaponChest = chest;
     }
-
+    
     public boolean getLootVisible() {
         return lootVisible;
     }
-
+    
     public void setLootVisible(boolean visible) {
         lootVisible = visible;
     }
@@ -85,6 +89,18 @@ public class Player extends Character implements Serializable  {
     
     public void setLoot(Weapon loot) {
         this.loot = loot;
+    }
+    
+    public String getChoice() {
+        return choice;
+    }
+    
+    public String getMapID() {
+        return mapID;
+    }
+    
+    public void setMapID(String mapID) {
+        this.mapID = mapID;
     }
 
     /**
@@ -139,7 +155,7 @@ public class Player extends Character implements Serializable  {
                 default:
                     break;
             }
-
+            
         }
     }
 
@@ -150,19 +166,58 @@ public class Player extends Character implements Serializable  {
      * @param player The player character - the figure you control
      * @param npc the NPC whose ID gets checked
      */
-    public void objectInteraction(Player player, Character npc) {
-
+    public void objectInteraction(Player player, NPC npc) {
+        
         if (player.isInReachOf(npc)) {
-            switch (npc.getName()) {
+            switch (npc.getID()) {
                 case "Solaire, Champion of the sun":
                     super.getNPCdialog().dialogSunbro(this, npc);
                     break;
                 case "Unknown rogue":
                     super.getNPCdialog().dialogRogue(this, npc);
+                    break;
+                case "Intro":
+                    if (choice.equalsIgnoreCase("Yes") && player.getCharacterClass() != "REKTangel") {
+                        super.getNPCdialog().dialogDecission(this, npc);
+                    }
+                    else if (player.getChoice().equalsIgnoreCase("REKTangel")) {
+                        super.getNPCdialog().dialogIntro(this, npc);
+                    } else {
+                        super.getNPCdialog().dialogChoice(this, npc);
+                        choice = "Yes";
+                    }
+                    break;
+                case "KnightIntro":
+                    if (choice.equalsIgnoreCase("Yes")) {
+                        player.setCharacterClass(npc.getCharacterClass());
+                        super.getNPCdialog().dialogKnightIntro(this, npc);
+                    } else {
+                        choice = "Knight";
+                        super.getNPCdialog().dialogKnightIntro(this, npc);
+                    }
+                    break;
+                case "BerserkerIntro":
+                    if (choice.equalsIgnoreCase("Yes")) {
+                        player.setCharacterClass(npc.getCharacterClass());
+                        super.getNPCdialog().dialogBerserkerIntro(this, npc);                        
+                    } else {
+                        choice = "Berserker";
+                        super.getNPCdialog().dialogBerserkerIntro(this, npc);
+                    }
+                    break;
+                case "HunterIntro":
+                    if (choice.equalsIgnoreCase("Yes")) {
+                        player.setCharacterClass(npc.getCharacterClass());  
+                        super.getNPCdialog().dialogHunterIntro(this, npc);                      
+                    } else {
+                        choice = "Hunter";
+                        super.getNPCdialog().dialogHunterIntro(this, npc);
+                    }
+                    break;
                 default:
                     break;
             }
         }
-
+        
     }
 }
