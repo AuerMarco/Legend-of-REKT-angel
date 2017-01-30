@@ -59,7 +59,7 @@ public class Canvas extends JPanel implements Serializable {
     private boolean startScreen;
     private int startscreenCounter;
     World world;
-    boolean spawned;
+    boolean spawned, hunterfix;
 
     /**
      * This constructor sets all the basics of the canvas, like size etc Then it
@@ -368,7 +368,7 @@ public class Canvas extends JPanel implements Serializable {
                         if (!startScreen) {
                             if (player.getAttackCD() <= 0) {
                                 player.setAttackCD(20);
-                                if (player.getCharacterClass() != "Hunter") {      //player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker"
+                                if (!player.getCharacterClass().equals("Hunter")) {      //player.getCharacterClass() == "Knight" || player.getCharacterClass() == "Berserker"
                                     player.getAttackHitbox().setWeaponFrames(0);
                                     player.getAttackHitbox().melee(player);
                                 } else {
@@ -426,7 +426,7 @@ public class Canvas extends JPanel implements Serializable {
 //                            posi++;
 //                        }
                         changeScreen();
-//                        System.out.println(player.getChoice());
+//                        System.out.println(player.getCharacterClass());
                         break;
                     case VK_C:
                         if (!startScreen) {
@@ -945,6 +945,7 @@ public class Canvas extends JPanel implements Serializable {
 //            world.theMatrix(this);
             SaveFile file = new SaveFile();
             Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
+//            player = new Player(new Coordinates(450, 500), 35, 80, 1, playerLoader.getCharacterClass(), "Unnamed", 1, "Broken Sword", 0, 0, 0, 0, 0);                    
             file.loadPlayer(player, playerLoader);
             world.town(this);
         } else if (startscreenCounter == 1) {
