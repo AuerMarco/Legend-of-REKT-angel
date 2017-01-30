@@ -16,7 +16,7 @@ public class World {
     public void theMatrix(Canvas canvas) {
         canvas.setStartscreenFalse();
         canvas.setBackground(0);
-        canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));  
+//        canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));  
         canvas.getPlayer().setMapID("Zone_Matrix");
         canvas.createGameObjects();
         canvas.setNPC1( new NPC(new Coordinates(500, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1,"Solaire, Champion of the sun"));

@@ -36,7 +36,7 @@ public class Canvas extends JPanel implements Serializable {
     private ImageIcon backgroundPicture, dialogBox, levelUp, inventory, stats;
 
     private boolean gameOver;
-    private int demoCounter, hpTimer;
+    private int gameoverCounter, hpTimer;
 
     private Timer t;
     private NPC placeholder;
@@ -74,7 +74,7 @@ public class Canvas extends JPanel implements Serializable {
         bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg"};
         spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
         gameOver = false;
-        demoCounter = 0;
+        gameoverCounter = 0;
         wKey = false;
         aKey = false;
         sKey = false;
@@ -652,7 +652,7 @@ public class Canvas extends JPanel implements Serializable {
      * createGameObjects() discussed earlier)
      */
     public void restartGame() {
-        demoCounter = 0;
+        gameoverCounter = 0;
         setGameOver(false);
         createGameObjects();
         startGame();
@@ -742,8 +742,11 @@ public class Canvas extends JPanel implements Serializable {
      */
     public void checkHP() {
         if (player.getStats().getHP() <= 0) {
+            player.getStats().setHP(player.getStats().getMaxHP());
             gameOver = true;
-            t.stop();
+            world.town(this);
+            player.getCurrency().setValue(player.getCurrency().getSilverserpents() / 2);
+//            t.stop();
         }
 
         mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
@@ -772,7 +775,7 @@ public class Canvas extends JPanel implements Serializable {
                 player.setLootVisible(true);
             }
             player.increaseXP(mob1.getXP());
-            player.getCurrency().mobdrop(mob1.getLevel());            
+            player.getCurrency().mobdrop(mob1.getLevel());
         }
     }
 
@@ -963,6 +966,15 @@ public class Canvas extends JPanel implements Serializable {
         }
     }
 
+    public void removeGameover() {
+        if (gameOver) {
+            gameoverCounter++;
+            if (gameoverCounter >= 50) {
+                gameOver = false;
+            }
+        }
+    }
+
     /**
      * This method holds all the methods that have to get called on every frame
      * (also known as tick) This method gets called every 20ms by the
@@ -982,7 +994,7 @@ public class Canvas extends JPanel implements Serializable {
         mobAttack();
         hitDetect();
         chestSpawner();
-
+        removeGameover();
         arrow();
 
         if (player.getNPCdialog().getDialogVisible()) {
@@ -1395,7 +1407,7 @@ public class Canvas extends JPanel implements Serializable {
 
 //        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 50));
 //        g.setColor(Color.BLACK);
-//        g.drawString("Frames: " + demoCounter, 22, size.height - 5);        //Parameter: Text der dasteht | x-Position | y-Position
+//        g.drawString("Frames: " + gameoverCounter, 22, size.height - 5);        //Parameter: Text der dasteht | x-Position | y-Position
         drawInteractionObjects(g);
         drawMobs(g);
         drawNPCs(g);
