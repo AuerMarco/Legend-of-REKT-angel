@@ -71,7 +71,7 @@ public class Canvas extends JPanel implements Serializable {
         size = new Dimension(1180, 780);
         setPreferredSize(size);
         imageDirectory = "images/";
-        bgPictureList = new String[]{"bg_cobble.jpg", "bg_grass.jpg", "bg_matrix.jpg"};
+        bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg"};
         spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
         gameOver = false;
         demoCounter = 0;
@@ -266,7 +266,7 @@ public class Canvas extends JPanel implements Serializable {
      * game!
      */
     private void initGame() {
-        setBackground(2);
+        setBackground(0);
         startScreen = true;
         player = new Player(new Coordinates(-2000, -2000), 200, 80, 1, "REKTangel", "???", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
         createGameObjects();
@@ -354,10 +354,9 @@ public class Canvas extends JPanel implements Serializable {
 
 //                                player.objectInteraction(player, npc2);
                             }
-                            if ( player.getStartWeaponChest() && player.getNPCdialog().getDialogVisible() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro") && player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
+                            if (player.getStartWeaponChest() && player.getNPCdialog().getDialogVisible() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro") && player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
                                 player.getNPCdialog().dialogLogicSpecial();
-                            }
-                            else if (player.getNPCdialog().getDialogVisible()) {
+                            } else if (player.getNPCdialog().getDialogVisible()) {
                                 player.getNPCdialog().dialogLogic();
                             }
                         }
@@ -426,8 +425,8 @@ public class Canvas extends JPanel implements Serializable {
 //                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
 //                            posi++;
 //                        }
-//                        changeScreen();
-                        System.out.println(player.getChoice());
+                        changeScreen();
+//                        System.out.println(player.getChoice());
                         break;
                     case VK_C:
                         if (!startScreen) {
@@ -569,6 +568,7 @@ public class Canvas extends JPanel implements Serializable {
     public void createGameObjects() {                                          //Game Objects (placeholders) are created here       
 
         placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
+        placeholder.setAggro(false);
         //The array doesn't work here for some reason
         npc1 = placeholder;
         npc2 = placeholder;
@@ -763,6 +763,7 @@ public class Canvas extends JPanel implements Serializable {
         }
 
         if (player.getStartWeaponChest() && spawned && mob1.getStats().getHP() <= 0 && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
+            world.town(this);
             Chance chance = new Chance(10);
             if (chance.getSuccess() && mob1.getLevel() != 0) {
                 Weapon loot = new Weapon(mob1.getLevel());
@@ -771,8 +772,7 @@ public class Canvas extends JPanel implements Serializable {
                 player.setLootVisible(true);
             }
             player.increaseXP(mob1.getXP());
-            player.getCurrency().mobdrop(mob1.getLevel());
-            world.town(this);
+            player.getCurrency().mobdrop(mob1.getLevel());            
         }
     }
 
@@ -929,16 +929,21 @@ public class Canvas extends JPanel implements Serializable {
     }
 
     private void changeScreen() {
-//        world.theMatrix(this);
         if (player.getMapID().equalsIgnoreCase("Zone_Start") && player.getCharacterClass() != "REKTangel") {
             world.chestIntro(this);
+        } else {
+            world.theMatrix(this);
         }
     }
 
     private void startMenu() {
         if (startscreenCounter == 0) {
             System.out.println("Loaded game");
-            world.theMatrix(this);
+//            world.theMatrix(this);
+            SaveFile file = new SaveFile();
+            Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
+            file.loadPlayer(player, playerLoader);
+            world.town(this);
         } else if (startscreenCounter == 1) {
             System.out.println("New game started");
             System.out.println("Please enter your name:");
@@ -948,14 +953,12 @@ public class Canvas extends JPanel implements Serializable {
             world.theBeginning(this);
         }
 
-//        SaveFile file = new SaveFile();
-//        Player playerLoader = file.loadSaveFile("c:\\temp\\player.ser");
-//        file.loadPlayer(player, playerLoader);
     }
 
     private void chestSpawner() {
         if (!spawned && player.getNPCdialog().getDialogSpecial() && player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword") && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
             mob1 = new NPC(new Coordinates(500, 250), 80, 70, 1, "Mob", "Orc", 1, "Broken Sword", 0, 0, 0, 0, 0);
+            mob1.setAggro(false);
             spawned = true;
         }
     }
@@ -1159,6 +1162,9 @@ public class Canvas extends JPanel implements Serializable {
 
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
             g.setColor(Color.BLACK);
+            if (player.getTutorialComplete()) {
+                g.setColor(Color.WHITE);
+            }
             g.drawString(player.getName(), 40, 22);         // ", " + player.getCharacterClass() +  // + " Level " + player.getLevel()
             g.drawString("" + (int) player.getStats().getHP() + " / " + (int) player.getStats().getMaxHP() + "  " + (int) (currentHPpercent * 100) + "%", 40, 52);
         }

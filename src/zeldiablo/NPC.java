@@ -25,16 +25,16 @@ public class NPC extends Character {
      */
     public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level) {
         super(position, width, height, angle, characterClass, name, level);
-        aggro = false;
+        aggro = true;
     }
     public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
         super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
-        aggro = false;
+        aggro = true;
     }
     
     public NPC(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String id) {
         super(position, width, height, angle, characterClass, name, level);
-        aggro = false;
+        aggro = true;
         this.id = id;
     }
 

@@ -15,6 +15,7 @@ public class World {
         
     public void theMatrix(Canvas canvas) {
         canvas.setStartscreenFalse();
+        canvas.setBackground(0);
         canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));  
         canvas.getPlayer().setMapID("Zone_Matrix");
         canvas.createGameObjects();
@@ -52,10 +53,13 @@ public class World {
         canvas.setChest1(new InteractionObject(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon"));
     }
     
-    public void town(Canvas canvas) {
+    public void town(Canvas canvas) {        
+        canvas.setStartscreenFalse();
+        canvas.getPlayer().setTutorialComplete(true);
+        canvas.getPlayer().getNPCdialog().setDialogSpecial(false);
         canvas.setBackground(1);
         canvas.getPlayer().setMapID("Zone_Town");
         canvas.createGameObjects();
-        canvas.getPlayer().setObjectPosition(new Coordinates(500, 550));
+        canvas.getPlayer().setObjectPosition(new Coordinates(600, 550));
     }
 }

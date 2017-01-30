@@ -117,6 +117,7 @@ public class SaveFile implements Serializable {
         player.setLevel(loadState.getLevel());      
         player.setXP(loadState.getXP());
         player.setStartWeaponChest(loadState.getStartWeaponChest());
+        player.setTutorialComplete(true);
 //        player.setObjectPosition(loadState.getObjectPosition());
     }
 }

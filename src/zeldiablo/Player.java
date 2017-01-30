@@ -24,6 +24,7 @@ public class Player extends Character implements Serializable {
     private Weapon loot;
     private String choice;
     private String mapID;
+    private boolean tutorialComplete;
 
     /**
      * Creates a currency and inventory the player can use
@@ -102,6 +103,14 @@ public class Player extends Character implements Serializable {
     
     public void setMapID(String mapID) {
         this.mapID = mapID;
+    }
+    
+    public boolean getTutorialComplete() {
+        return tutorialComplete;
+    }
+    
+    public void setTutorialComplete(boolean complete) {
+        tutorialComplete = complete;
     }
 
     /**
@@ -215,10 +224,10 @@ public class Player extends Character implements Serializable {
                     }
                     break;
                 case "ChestIntro":
+                        super.getStats().setHP(player.getStats().getMaxHP());
                     if (player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
                         super.getNPCdialog().dialogMobIntro(this, npc);
                     } else {
-                        super.getStats().setHP(player.getStats().getMaxHP());
                         super.getNPCdialog().dialogChestIntro(this, npc);
                     }                    
                     break;
