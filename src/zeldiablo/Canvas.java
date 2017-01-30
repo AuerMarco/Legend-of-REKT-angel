@@ -354,7 +354,10 @@ public class Canvas extends JPanel implements Serializable {
 
 //                                player.objectInteraction(player, npc2);
                             }
-                            if (player.getNPCdialog().getDialogVisible()) {
+                            if ( player.getStartWeaponChest() && player.getNPCdialog().getDialogVisible() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro") && player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
+                                player.getNPCdialog().dialogLogicSpecial();
+                            }
+                            else if (player.getNPCdialog().getDialogVisible()) {
                                 player.getNPCdialog().dialogLogic();
                             }
                         }
@@ -951,7 +954,7 @@ public class Canvas extends JPanel implements Serializable {
     }
 
     private void chestSpawner() {
-        if (!spawned && player.getStartWeaponChest() && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
+        if (!spawned && player.getNPCdialog().getDialogSpecial() && player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword") && player.getMapID().equalsIgnoreCase("Zone_ChestIntro")) {
             mob1 = new NPC(new Coordinates(500, 250), 80, 70, 1, "Mob", "Orc", 1, "Broken Sword", 0, 0, 0, 0, 0);
             spawned = true;
         }
