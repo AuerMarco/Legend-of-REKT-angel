@@ -74,15 +74,15 @@ public class NPC extends Character {
                 setAngle(3);
                 setSprite(6);
                 moveLeft();
-            } else if (mobX < playerX - 10) {          // - player.getWidth()
+            }if (mobX < playerX - 10) {          // - player.getWidth()
                 setAngle(7);
                 setSprite(18);
                 moveRight();
-            } else if (mobY < playerY - 10) {          // - player.getHeight()
+            }if (mobY < playerY - 10) {          // - player.getHeight()
                 setAngle(1);
                 setSprite(0);
                 moveDown();
-            } else if (mobY > playerY + 10) {          // + player.getHeight()
+            }if (mobY > playerY + 10) {          // + player.getHeight()
                 setAngle(5);
                 setSprite(12);
                 moveUp();

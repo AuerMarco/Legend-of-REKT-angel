@@ -60,6 +60,7 @@ public class World {
         canvas.getPlayer().setMapID("Zone_Town");
         canvas.createGameObjects();
         canvas.getPlayer().setObjectPosition(new Coordinates(600, 550));
+        canvas.setNPC1(new NPC(new Coordinates(600, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, "Solaire, Champion of the sun"));
         canvas.setTeleporter1(new InteractionObject(new Coordinates(1120, 362), 40, 115, "nothing", "StartWeapon"));
     }
     
@@ -70,10 +71,13 @@ public class World {
     }
     
     public void area1(Canvas canvas) {
-        canvas.setBackground(3);
+        canvas.setBackground(3);        
+        canvas.getPlayer().setObjectPosition(new Coordinates(80, 370));
         canvas.getPlayer().setMapID("Zone_Area1");        
         canvas.createGameObjects();
-        canvas.getPlayer().setObjectPosition(new Coordinates(80, 370));
         canvas.setTeleporter1(new InteractionObject(new Coordinates(40, 362), 40, 115, "nothing", "StartWeapon"));
+        canvas.setMob1(new NPC(new Coordinates(400, 150), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob2(new NPC(new Coordinates(900, 360), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()+1));
+        canvas.setMob3(new NPC(new Coordinates(200, 600), 80, 70, 1, "Mob", "Orc", 1));
     }
 }

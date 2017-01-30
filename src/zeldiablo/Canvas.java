@@ -585,7 +585,6 @@ public class Canvas extends JPanel implements Serializable {
     public void createGameObjects() {                                          //Game Objects (placeholders) are created here       
 
         placeholder = new NPC(new Coordinates(-1000, -1000), 0, 0, 1, "placeholder", "Mob placeholder", 0);
-        placeholder.setAggro(false);
         //The array doesn't work here for some reason
         npc1 = placeholder;
         npc2 = placeholder;
@@ -767,7 +766,7 @@ public class Canvas extends JPanel implements Serializable {
             player.getStats().setHP(player.getStats().getMaxHP());
             gameOver = true;
             world.town(this);
-            player.getCurrency().setValue(player.getCurrency().getSilverserpents() / 2);
+            player.getCurrency().setValue(player.getCurrency().getSilverserpents() - (player.getCurrency().getSilverserpents()*10/100));
 //            t.stop();
         }
 
@@ -1010,6 +1009,15 @@ public class Canvas extends JPanel implements Serializable {
             }
         }
     }
+    
+    public void antiAggro() {
+        mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
+        for (NPC mob : mobs) {
+            if (mob.getLevel() == 0) {
+                mob.setAggro(false);
+            }
+        }
+    }
 
     /**
      * This method holds all the methods that have to get called on every frame
@@ -1018,6 +1026,7 @@ public class Canvas extends JPanel implements Serializable {
      */
     private void doOnTick() {
 
+        antiAggro();
         hitboxUpdate();
         teleporterMethod();
         youShallNotPass();

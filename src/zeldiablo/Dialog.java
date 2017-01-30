@@ -85,8 +85,8 @@ public class Dialog implements Serializable {
         dialogVisible = true;
         this.npc = npc.getSprite();
         npcName = npc.getName();
+        player.getStats().setHP(player.getStats().getMaxHP());
         dialogPage = new String[]{"Praise the sun!"};
-//        dialogLogic();
     }
 
     /**
