@@ -60,5 +60,20 @@ public class World {
         canvas.getPlayer().setMapID("Zone_Town");
         canvas.createGameObjects();
         canvas.getPlayer().setObjectPosition(new Coordinates(600, 550));
+        canvas.setTeleporter1(new InteractionObject(new Coordinates(1120, 362), 40, 115, "nothing", "StartWeapon"));
+    }
+    
+    public void arena(Canvas canvas) {        
+        canvas.setBackground(2);
+        canvas.getPlayer().setMapID("Zone_Arena");        
+        canvas.createGameObjects();
+    }
+    
+    public void area1(Canvas canvas) {
+        canvas.setBackground(3);
+        canvas.getPlayer().setMapID("Zone_Area1");        
+        canvas.createGameObjects();
+        canvas.getPlayer().setObjectPosition(new Coordinates(80, 370));
+        canvas.setTeleporter1(new InteractionObject(new Coordinates(40, 362), 40, 115, "nothing", "StartWeapon"));
     }
 }

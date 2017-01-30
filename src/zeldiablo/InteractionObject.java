@@ -67,11 +67,11 @@ public class InteractionObject extends GameObjects {
     @Override
     public void drawObjects(java.awt.Graphics g) {
 
-//        Graphics2D g2d = (Graphics2D) g;
-//        g2d.setColor(Color.BLUE);
-//        RoundRectangle2D spieler = new RoundRectangle2D.Double(getObjektPosition().getX(),
-//                getObjektPosition().getY(),
-//                getWidth(), getHeight(), 3, 3);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+        RoundRectangle2D spieler = new RoundRectangle2D.Double(getObjectPosition().getX(),
+                getObjectPosition().getY(),
+                getWidth(), getHeight(), 3, 3);
 //        g2d.fill(spieler);
         sprite.paintIcon(null, g, getObjectPosition().getX(), getObjectPosition().getY());
     }

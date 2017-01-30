@@ -59,7 +59,8 @@ public class Canvas extends JPanel implements Serializable {
     private boolean startScreen;
     private int startscreenCounter;
     World world;
-    boolean spawned, hunterfix;
+    boolean spawned;
+    InteractionObject tele1, tele2, tele3, tele4;
 
     /**
      * This constructor sets all the basics of the canvas, like size etc Then it
@@ -71,7 +72,7 @@ public class Canvas extends JPanel implements Serializable {
         size = new Dimension(1180, 780);
         setPreferredSize(size);
         imageDirectory = "images/";
-        bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg"};
+        bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg", "bg_arena.jpg", "bg_area1.jpg"};
         spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
         gameOver = false;
         gameoverCounter = 0;
@@ -256,6 +257,22 @@ public class Canvas extends JPanel implements Serializable {
 
     public void setStartscreenFalse() {
         startScreen = false;
+    }
+
+    public void setTeleporter1(InteractionObject tele) {
+        tele1 = tele;
+    }
+
+    public void setTeleporter2(InteractionObject tele) {
+        tele2 = tele;
+    }
+
+    public void setTeleporter3(InteractionObject tele) {
+        tele3 = tele;
+    }
+
+    public void setTeleporter4(InteractionObject tele) {
+        tele4 = tele;
     }
 
     /**
@@ -589,6 +606,11 @@ public class Canvas extends JPanel implements Serializable {
         chest1 = placeholderChest;
         chest2 = placeholderChest;
         chest3 = placeholderChest;
+        InteractionObject telePlaceholder = new InteractionObject(new Coordinates(-1000, -1000), 0, 0, "nothing", "Null");
+        tele1 = telePlaceholder;
+        tele2 = telePlaceholder;
+        tele3 = telePlaceholder;
+        tele4 = telePlaceholder;
     }
 
     /**
@@ -976,6 +998,19 @@ public class Canvas extends JPanel implements Serializable {
         }
     }
 
+    public void teleporterMethod() {
+        if (player.touches(tele1)) {
+//            System.out.println("tele1");
+            if (player.getMapID().equals("Zone_Town")) {
+                world.area1(this);
+            }
+            else if (player.getMapID().equals("Zone_Area1")) {
+                world.town(this);
+                player.setObjectPosition(new Coordinates(1060, 362));
+            }
+        }
+    }
+
     /**
      * This method holds all the methods that have to get called on every frame
      * (also known as tick) This method gets called every 20ms by the
@@ -984,6 +1019,7 @@ public class Canvas extends JPanel implements Serializable {
     private void doOnTick() {
 
         hitboxUpdate();
+        teleporterMethod();
         youShallNotPass();
         checkXP();
         player.levelUpAnimationFunction(player);
@@ -1425,6 +1461,11 @@ public class Canvas extends JPanel implements Serializable {
         drawInventory(g);
         drawLoot(g);
         drawStartMenu(g);
+
+        tele1.drawObjects(g);
+        tele2.drawObjects(g);
+        tele3.drawObjects(g);
+        tele4.drawObjects(g);
 
         if (getGameOver()) {
             Graphics2D g2d = (Graphics2D) g;
