@@ -1117,7 +1117,7 @@ public class Canvas extends JPanel implements Serializable {
             g.drawString("Player stats", 210, 193);
 
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
-            g.setColor(new Color(0, 112, 255));               //new Color(255, 220, 70)
+            g.setColor(new Color(255, 220, 70));
             String[] statNames = new String[]{"Name:", "Class:", "Level:", "Strength:", "Dexterity:", "Stamina:", "Defence:", "Crit Chance:"};
             int x = 75;
             int y = 265;

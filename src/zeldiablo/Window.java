@@ -30,7 +30,7 @@ public class Window extends JFrame implements Serializable {
         add(world);                                 //The canvas (world) gets added to the window
         pack();                                     //Creates a window (border) fitting to the panel (canvas) size
 
-        setTitle("The Legend of REKT Angel v2.4.3 - by Auer & Wedenig");    //Game (window) title
+        setTitle("The Legend of REKT Angel v2.6.0 - by Auer & Wedenig");    //Game (window) title
         setLocation(400, 100);                      //The start position of the window
         setResizable(false);                        //Makes the size fixed. I read that it can otherwise lead to problems
         setVisible(true);                           //Makes the window visible
