@@ -54,6 +54,7 @@ public class Canvas extends JPanel implements Serializable {
 
     private boolean inventoryVisible;
     private int inventoryHighlight, inventoryCounter;
+    private int color1, color2, color3;
     private int invPosi1 = inventoryCounter, invPosi2 = 1, invPosi3 = 2, invPosi4 = 3, invPosi5 = 4;
 
     private boolean startScreen;
@@ -766,7 +767,7 @@ public class Canvas extends JPanel implements Serializable {
             player.getStats().setHP(player.getStats().getMaxHP());
             gameOver = true;
             world.town(this);
-            player.getCurrency().setValue(player.getCurrency().getSilverserpents() - (player.getCurrency().getSilverserpents()*10/100));
+            player.getCurrency().setValue(player.getCurrency().getSilverserpents() - (player.getCurrency().getSilverserpents() * 10 / 100));
 //            t.stop();
         }
 
@@ -1002,14 +1003,13 @@ public class Canvas extends JPanel implements Serializable {
 //            System.out.println("tele1");
             if (player.getMapID().equals("Zone_Town")) {
                 world.area1(this);
-            }
-            else if (player.getMapID().equals("Zone_Area1")) {
+            } else if (player.getMapID().equals("Zone_Area1")) {
                 world.town(this);
                 player.setObjectPosition(new Coordinates(1060, 362));
             }
         }
     }
-    
+
     public void antiAggro() {
         mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
         for (NPC mob : mobs) {
@@ -1018,6 +1018,49 @@ public class Canvas extends JPanel implements Serializable {
             }
         }
     }
+
+//    //unfinished method that will change the weapons color in the future
+//    public void setColor() {
+//        switch (player.getWeapon().getName()) {
+//            case "Poor":
+//                color1 = 157;
+//                color2 = 157;
+//                color3 = 157;
+//                break;
+//            case "Common":
+//                color1 = 255;
+//                color2 = 255;
+//                color3 = 255;
+//                break;
+//            case "Uncommon":
+//                color1 = 30;
+//                color2 = 255;
+//                color3 = 0;
+//                break;
+//            case "Rare":
+//                color1 = 0;
+//                color2 = 112;
+//                color3 = 255;
+//                break;
+//            case "Epic":
+//                color1 = 163;
+//                color2 = 53;
+//                color3 = 238;
+//                break;
+//            case "Legendary":
+//                color1 = 255;
+//                color2 = 128;
+//                color3 = 0;
+//                break;
+//            case "Artifact":
+//                color1 = 230;
+//                color2 = 204;
+//                color3 = 128;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     /**
      * This method holds all the methods that have to get called on every frame
@@ -1074,7 +1117,7 @@ public class Canvas extends JPanel implements Serializable {
             g.drawString("Player stats", 210, 193);
 
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
-            g.setColor(new Color(255, 220, 70));
+            g.setColor(new Color(0, 112, 255));               //new Color(255, 220, 70)
             String[] statNames = new String[]{"Name:", "Class:", "Level:", "Strength:", "Dexterity:", "Stamina:", "Defence:", "Crit Chance:"};
             int x = 75;
             int y = 265;

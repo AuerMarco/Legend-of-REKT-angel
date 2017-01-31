@@ -76,8 +76,8 @@ public class World {
         canvas.getPlayer().setMapID("Zone_Area1");        
         canvas.createGameObjects();
         canvas.setTeleporter1(new InteractionObject(new Coordinates(40, 362), 40, 115, "nothing", "StartWeapon"));
-        canvas.setMob1(new NPC(new Coordinates(400, 150), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob1(new NPC(new Coordinates(400, 150), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()));
         canvas.setMob2(new NPC(new Coordinates(900, 360), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()+1));
-        canvas.setMob3(new NPC(new Coordinates(200, 600), 80, 70, 1, "Mob", "Orc", 1));
+        canvas.setMob3(new NPC(new Coordinates(200, 600), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()));
     }
 }
