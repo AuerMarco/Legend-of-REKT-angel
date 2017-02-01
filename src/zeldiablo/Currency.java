@@ -1,6 +1,3 @@
-/**
- * @author Wedenig Manuel
- */
 package zeldiablo;
 
 import java.io.Serializable;

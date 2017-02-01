@@ -7,6 +7,7 @@ import java.util.Random;
  * Generates a weapon, either with random values or fixed ones (depending on the
  * constructor)
  *
+ * @author Auer Marco
  * @author Wedenig Manuel
  */
 public class Weapon implements Serializable {
@@ -19,7 +20,8 @@ public class Weapon implements Serializable {
     private int n;
     private Random r;
     private Stats weaponstats;
-    private String randomname;
+    private double actualStats, maxStats;
+    private String quality;
 
     /**
      * This Class got two constructors, one for the random generated weapons and
@@ -27,7 +29,6 @@ public class Weapon implements Serializable {
      */
     public Weapon(int level) {
         randomName();
-        name = randomname;
         damage = 0;
         n = 0;
         x = 0;
@@ -38,7 +39,7 @@ public class Weapon implements Serializable {
         randomDexterity(level);
         randomStamina(level);
         randomDefence(level);
-
+        determineQuality();
     }
 
     public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
@@ -50,6 +51,18 @@ public class Weapon implements Serializable {
         weaponstats.setDexterity(dexterity);
         weaponstats.setStamina(stamina);
         weaponstats.setDefence(defence);
+    }
+    
+    public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence, String quality) {
+
+        this.name = name;
+        this.damage = damage;
+        weaponstats = new Stats();
+        weaponstats.setAttack(attack);
+        weaponstats.setDexterity(dexterity);
+        weaponstats.setStamina(stamina);
+        weaponstats.setDefence(defence);
+        this.quality = quality;
     }
 
     /**
@@ -81,6 +94,22 @@ public class Weapon implements Serializable {
         return weaponstats;
     }
 
+    public double getActualStats() {
+        return actualStats;
+    }
+
+    public double getMaxStats() {
+        return maxStats;
+    }
+    
+    public String getQuality() {
+        return quality;
+    }
+    
+    public void setQuality(String quality) {
+        this.quality = quality;
+    }
+
     /**
      * Method to calculate the damage of a random generated weapon. The loop
      * says: For every level the character got, the maximum of damage the weapon
@@ -100,7 +129,7 @@ public class Weapon implements Serializable {
         min = n / 2;
         max = n + 1;
         damage = r.nextInt(max - min) + min;
-
+        maxStats += n;
     }
 
     /**
@@ -119,6 +148,7 @@ public class Weapon implements Serializable {
         max = n + 1;
         int attack = r.nextInt(max - min) + min;
         weaponstats.setAttack(attack);
+        maxStats += n;
     }
 
     /**
@@ -138,6 +168,7 @@ public class Weapon implements Serializable {
         max = n + 1;
         int dexterity = r.nextInt(max - min) + min;
         weaponstats.setDexterity(dexterity);
+        maxStats += n;
     }
 
     /**
@@ -153,9 +184,10 @@ public class Weapon implements Serializable {
         }
 
         min = 0;
-        max = n;
+        max = n + 1;
         int stamina = r.nextInt(max - min) + min;
         weaponstats.setStamina(stamina);
+        maxStats += n;
     }
 
     /**
@@ -171,9 +203,10 @@ public class Weapon implements Serializable {
         }
 
         min = 0;
-        max = n;
+        max = n + 1;
         int defence = r.nextInt(max - min) + min;
         weaponstats.setDefence(defence);
+        maxStats += n;
     }
 
     /**
@@ -193,7 +226,7 @@ public class Weapon implements Serializable {
             "Omni ", "Vortex ", "Storm ", "Void ", "Hate ", "Arcane ", "Last ", "Serrated ", "Unsealed ", "Rainbowglass ",
             "Stardust ", "Tempest ", "Blaster ", "Doom ", "Miracle ", "Doom ", "Depths ", "Bloodgod's ", "Demise ",
             "Eternal ", "Hera's ", "Edea's ", "Athene's ", "Assault ", "Destruction ", "Unknown ", "Oblivion's ",
-            "Vow's", "Age ", "Iceborn ", "Thunderborn ", "Lightborn ", "Stormborn ", "Darkborn ", "Lightsworn ",
+            "Vow's ", "Age ", "Iceborn ", "Thunderborn ", "Lightborn ", "Stormborn ", "Darkborn ", "Lightsworn ",
             "Valkyrie's ", "Archfiend's ", "Salamandra's ", "Starborn ", "Shadowmist's ", "Toxic ", "Darkworld's ",
             "Keeper's ", "Luster ", "Ritual ", "Necro ", "Dust ", "Tormentor's ", "Buster ", "Nova ", "Tigerking's ",
             "Shdowborn ", "Forbidden's ", "Dragonborn ", "Hurrican ", "Ancient ", "Samurai ", "Odin's ", "Nordic ",
@@ -216,8 +249,31 @@ public class Weapon implements Serializable {
 //		Not ready yet!
         String randommeleefirstname = (meleefirstname[new Random().nextInt(meleefirstname.length)]);
         String randommeleesecondname = (meleesecondname[new Random().nextInt(meleesecondname.length)]);
-        randomname = randommeleefirstname + randommeleesecondname;
+        name = randommeleefirstname.trim() + " " + randommeleesecondname;
+    }
 
+    public void determineQuality() {
+        actualStats = damage + weaponstats.getAttack() + weaponstats.getDexterity() + weaponstats.getStamina() + weaponstats.getDefence();
+        double percent = (actualStats / maxStats) * 100;
+//        System.out.println(percent);
+        
+        if (percent == 100) {
+            quality = "Legendary";
+        }
+        else if (percent >= 90) {
+            quality = "Epic";
+        }
+        else if (percent >= 75) {
+            quality = "Rare";
+        }
+        else if (percent >= 55) {
+            quality = "Uncommon";
+        }
+        else if (percent >= 35) {
+            quality = "Common";
+        } else {
+            quality = "Poor";
+        } 
     }
 
 }

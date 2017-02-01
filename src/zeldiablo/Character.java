@@ -118,7 +118,39 @@ public class Character extends GameObjects implements Serializable {
         levelUpAnimationFrames = 0;
         levelUpAnimationVisible = false;
     }
+    
+    public Character(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef, String wepqual) {
+        super(position, width, height);
+        setAngle(angle);
+        moving = false;
+        imageDirectory = "images/sprites/";
+        this.characterClass = characterClass;
+        this.name = name;
+        spriteList = new String[]{characterClass + "_down_idle.png", characterClass + "_down_move1.png", characterClass + "_down_move2.png",
+            characterClass + "_downLeft_idle.png", characterClass + "_downLeft_move1.png", characterClass + "_downLeft_move2.png",
+            characterClass + "_left_idle.png", characterClass + "_left_move1.png", characterClass + "_left_move2.png",
+            characterClass + "_upLeft_idle.png", characterClass + "_upLeft_move1.png", characterClass + "_upLeft_move2.png",
+            characterClass + "_up_idle.png", characterClass + "_up_move1.png", characterClass + "_up_move2.png",
+            characterClass + "_upRight_idle.png", characterClass + "_upRight_move1.png", characterClass + "_upRight_move2.png",
+            characterClass + "_right_idle.png", characterClass + "_right_move1.png", characterClass + "_right_move2.png",
+            characterClass + "_downRight_idle.png", characterClass + "_downRight_move1.png", characterClass + "_downRight_move2.png"};
+        spriteCounter = 0;
+        setSprite(0);
+        npcDialog = new Dialog();
+        attackHitbox = new AttackAnimation(new Coordinates(-1000, -1000), 0, 0, "Sword1");
+        alive = true;
 
+        this.level = level;
+        adjustXP();
+        xpNeeded = 100;
+        weapon = new Weapon(wepname, wepdmg, wepstr, wepdex, wepstam, wepdef, wepqual);
+        stats = new Stats(this);
+        arrowActive = false;
+        inviFrames = 0;
+        attackCD = 0;
+        levelUpAnimationFrames = 0;
+        levelUpAnimationVisible = false;
+    }
     public boolean getMoving() {
         return moving;
     }

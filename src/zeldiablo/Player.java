@@ -13,12 +13,12 @@ import javax.swing.JTextField;
  * @author Auer Marco
  */
 public class Player extends Character implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private Currency currency;
     private ArrayList<Weapon> inventar;
-    
+
     private boolean startWeaponChest;
     private boolean lootVisible;
     private Weapon loot;
@@ -37,31 +37,31 @@ public class Player extends Character implements Serializable {
      * @param name the players name
      * @param level start level
      */
-    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
-        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
+    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef, String wepqual) {
+        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef, wepqual);
         currency = new Currency();
         inventar = new ArrayList<>();
         loot = new Weapon("placeholder", 0, 0, 0, 0, 0);
         choice = "REKTangel";
         mapID = "Zone_Menu";
     }
-    
+
     public Currency getCurrency() {
         return currency;
     }
-    
+
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
-    
+
     public ArrayList<Weapon> getInventar() {
         return inventar;
     }
-    
+
     public void setInventar(ArrayList<Weapon> inventar) {
         this.inventar = inventar;
     }
-    
+
     public boolean getStartWeaponChest() {
         return startWeaponChest;
     }
@@ -76,39 +76,39 @@ public class Player extends Character implements Serializable {
     public void setStartWeaponChest(boolean chest) {
         startWeaponChest = chest;
     }
-    
+
     public boolean getLootVisible() {
         return lootVisible;
     }
-    
+
     public void setLootVisible(boolean visible) {
         lootVisible = visible;
     }
-    
+
     public Weapon getLoot() {
         return loot;
     }
-    
+
     public void setLoot(Weapon loot) {
         this.loot = loot;
     }
-    
+
     public String getChoice() {
         return choice;
     }
-    
+
     public String getMapID() {
         return mapID;
     }
-    
+
     public void setMapID(String mapID) {
         this.mapID = mapID;
     }
-    
+
     public boolean getTutorialComplete() {
         return tutorialComplete;
     }
-    
+
     public void setTutorialComplete(boolean complete) {
         tutorialComplete = complete;
     }
@@ -156,7 +156,7 @@ public class Player extends Character implements Serializable {
                 case "StartWeapon":
                     if (!player.getStartWeaponChest()) {
                         interObject.setSprite(1);
-                        loot = new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0);
+                        loot = new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0,"Common");
                         player.getInventar().add(loot);
                         player.setStartWeaponChest(true);
                         lootVisible = true;
@@ -165,7 +165,7 @@ public class Player extends Character implements Serializable {
                 default:
                     break;
             }
-            
+
         }
     }
 
@@ -177,7 +177,7 @@ public class Player extends Character implements Serializable {
      * @param npc the NPC whose ID gets checked
      */
     public void objectInteraction(Player player, NPC npc) {
-        
+
         if (player.isInReachOf(npc)) {
             switch (npc.getID()) {
                 case "Solaire, Champion of the sun":
@@ -224,17 +224,17 @@ public class Player extends Character implements Serializable {
                     }
                     break;
                 case "ChestIntro":
-                        super.getStats().setHP(player.getStats().getMaxHP());
+                    super.getStats().setHP(player.getStats().getMaxHP());
                     if (player.getWeapon().getName().equalsIgnoreCase("Wooden Training Sword")) {
                         super.getNPCdialog().dialogMobIntro(this, npc);
                     } else {
                         super.getNPCdialog().dialogChestIntro(this, npc);
-                    }                    
+                    }
                     break;
                 default:
                     break;
             }
         }
-        
+
     }
 }

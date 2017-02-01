@@ -14,7 +14,7 @@ public class World {
     public void theMatrix(Canvas canvas) {
         canvas.setStartscreenFalse();
         canvas.setBackground(0);
-//        canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Knight", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0));  
+        canvas.setPlayer(new Player(new Coordinates(450, 500), 35, 80, 1, "Hunter", "debug", 1, "Broken Sword", 0, 0, 0, 0, 0, "Artifact"));  
         canvas.getPlayer().setObjectPosition(new Coordinates(600, 550));
         canvas.getPlayer().setMapID("Zone_Matrix");
         canvas.createGameObjects();
@@ -30,7 +30,7 @@ public class World {
         canvas.setMob8(new NPC(new Coordinates(800, 300), 80, 70, 1, "Mob", "Orc", 1));
         canvas.setMob9(new NPC(new Coordinates(900, 300), 80, 70, 1, "Mob", "Orc", 1));
         canvas.setMob10(new NPC(new Coordinates(1000, 300), 80, 70, 1, "Mob", "Orc", 1));
-        canvas.setChest1(new InteractionObject(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon"));
+        canvas.setChest1(new InteractionObject(new Coordinates(600, 400), 37, 35, "Chest1", "StartWeapon"));        
     }
 
     public void theBeginning(Canvas canvas) {
