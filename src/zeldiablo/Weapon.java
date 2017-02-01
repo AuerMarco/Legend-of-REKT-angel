@@ -22,6 +22,7 @@ public class Weapon implements Serializable {
     private Stats weaponstats;
     private double actualStats, maxStats;
     private String quality;
+    private String flavortext, special;
 
     /**
      * This Class got two constructors, one for the random generated weapons and
@@ -40,6 +41,8 @@ public class Weapon implements Serializable {
         randomStamina(level);
         randomDefence(level);
         determineQuality();
+        flavortext = "";
+        special = "";
     }
 
     public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
@@ -51,19 +54,22 @@ public class Weapon implements Serializable {
         weaponstats.setDexterity(dexterity);
         weaponstats.setStamina(stamina);
         weaponstats.setDefence(defence);
+        quality = "";
+        flavortext = "";
+        special = "";
     }
     
-    public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence, String quality) {
-
-        this.name = name;
-        this.damage = damage;
-        weaponstats = new Stats();
-        weaponstats.setAttack(attack);
-        weaponstats.setDexterity(dexterity);
-        weaponstats.setStamina(stamina);
-        weaponstats.setDefence(defence);
-        this.quality = quality;
-    }
+//    public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
+//
+//        this.name = name;
+//        this.damage = damage;
+//        weaponstats = new Stats();
+//        weaponstats.setAttack(attack);
+//        weaponstats.setDexterity(dexterity);
+//        weaponstats.setStamina(stamina);
+//        weaponstats.setDefence(defence);
+//        this.quality = quality;
+//    }
 
     /**
      * Method to get the name
@@ -108,6 +114,22 @@ public class Weapon implements Serializable {
     
     public void setQuality(String quality) {
         this.quality = quality;
+    }
+    
+    public String getFlavortext() {
+        return flavortext;
+    }
+    
+    public void setFlavortext(String flavortext) {
+        this.flavortext = flavortext;
+    }
+    
+    public String getSpecial() {
+        return special;
+    }
+    
+    public void setSpecial(String special) {
+        this.special = special;
     }
 
     /**
@@ -266,7 +288,7 @@ public class Weapon implements Serializable {
         else if (percent >= 75) {
             quality = "Rare";
         }
-        else if (percent >= 55) {
+        else if (percent >= 50) {
             quality = "Uncommon";
         }
         else if (percent >= 35) {

@@ -37,8 +37,8 @@ public class Player extends Character implements Serializable {
      * @param name the players name
      * @param level start level
      */
-    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef, String wepqual) {
-        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef, wepqual);
+    public Player(Coordinates position, int width, int height, int angle, String characterClass, String name, int level, String wepname, int wepdmg, int wepstr, int wepdex, int wepstam, int wepdef) {
+        super(position, width, height, angle, characterClass, name, level, wepname, wepdmg, wepstr, wepdex, wepstam, wepdef);
         currency = new Currency();
         inventar = new ArrayList<>();
         loot = new Weapon("placeholder", 0, 0, 0, 0, 0);
@@ -156,7 +156,8 @@ public class Player extends Character implements Serializable {
                 case "StartWeapon":
                     if (!player.getStartWeaponChest()) {
                         interObject.setSprite(1);
-                        loot = new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0,"Common");
+                        loot = new Weapon("Wooden Training Sword", 10, 0, 0, 0, 0);
+                        loot.setQuality("Common");
                         player.getInventar().add(loot);
                         player.setStartWeaponChest(true);
                         lootVisible = true;

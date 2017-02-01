@@ -286,7 +286,9 @@ public class Canvas extends JPanel implements Serializable {
     private void initGame() {
         setBackground(0);
         startScreen = true;
-        player = new Player(new Coordinates(-2000, -2000), 200, 80, 1, "REKTangel", "???", 1, "Broken Sword", 0, 0, 0, 0, 0, "Poor");          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
+        player = new Player(new Coordinates(-2000, -2000), 200, 80, 1, "REKTangel", "Kyle", 1, "Broken Sword", 0, 0, 0, 0, 0);          //Parameters: coordinates, width, height, angle, class, name / ID, level, and 5 parameters for weapon-creation
+        player.getWeapon().setQuality("Poor");
+        player.getWeapon().setFlavortext("\"You should get rid off it fast\"");
         createGameObjects();
 
         t = new Timer(20, new ActionListener() {
@@ -773,7 +775,7 @@ public class Canvas extends JPanel implements Serializable {
         mobs = new NPC[]{mob1, mob2, mob3, mob4, mob5, mob6, mob7, mob8, mob9, mob10};
         for (NPC mob : mobs) {
             if (mob.getStats().getHP() <= 0) {
-                Chance chance = new Chance(100);
+                Chance chance = new Chance(10);
                 if (chance.getSuccess() && mob.getLevel() != 0) {
                     Weapon loot = new Weapon(mob.getLevel());
                     player.getInventar().add(loot);
@@ -1153,6 +1155,8 @@ public class Canvas extends JPanel implements Serializable {
                 g.drawString(statNumber, x, y);
                 y += 25;
             }
+            g.setColor(new Color(229, 206, 102));
+            g.drawString(player.getWeapon().getFlavortext(), 75, y+25);
 
 //            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 //            g.weaponColor(Color.BLUE);
