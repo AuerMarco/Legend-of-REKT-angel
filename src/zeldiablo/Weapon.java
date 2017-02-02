@@ -43,7 +43,7 @@ public class Weapon implements Serializable {
         randomDefence(level);
         determineQuality();
         flavortext = "";
-        worth = (int)actualStats * 20;
+        worth = (int) actualStats * 20;
     }
 
     public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
@@ -58,9 +58,9 @@ public class Weapon implements Serializable {
         quality = "Artifact";
         flavortext = "";
         actualStats = damage + weaponstats.getAttack() + weaponstats.getDexterity() + weaponstats.getStamina() + weaponstats.getDefence();
-        worth = (int)actualStats * 20;
+        worth = (int) actualStats * 20;
     }
-    
+
 //    public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
 //
 //        this.name = name;
@@ -72,7 +72,6 @@ public class Weapon implements Serializable {
 //        weaponstats.setDefence(defence);
 //        this.quality = quality;
 //    }
-
     /**
      * Method to get the name
      */
@@ -109,23 +108,23 @@ public class Weapon implements Serializable {
     public double getMaxStats() {
         return maxStats;
     }
-    
+
     public String getQuality() {
         return quality;
     }
-    
+
     public void setQuality(String quality) {
         this.quality = quality;
     }
-    
+
     public String getFlavortext() {
         return flavortext;
     }
-    
+
     public void setFlavortext(String flavortext) {
         this.flavortext = flavortext;
     }
-    
+
     public int getWorth() {
         return worth;
     }
@@ -240,7 +239,7 @@ public class Weapon implements Serializable {
     public void randomName() {
         String[] meleefirstname = {"Dusk ", "Dark ", "Burning ", "Bright ", "Light ", "Frost ", "Night ", "Gem ", "Diamond ", "War ",
             "Infernal ", "Souldraining ", "Phantom ", "Fiendish ", "Bone ", "Skull ", "Abyssal ", "Cinder ",
-            "Crystal ", "War ", "Frozen ", "Rage ", "Hunter's ", "Sanguine ", "Black ", "Blue ", "Red ",
+            "Crystal ", "War ", "Frozen ", "Hunter's ", "Sanguine ", "Black ", "Blue ", "Red ",
             "Silver ", "Golden ", "Titanic ", "Wicked ", "Ghost ", "Soul ", "Pain ", "Deadly ", "Rusty ",
             "Demon ", "Old ", "Undead ", "Living ", "Devouring ", "Blazing ", "Chrome ", "Dragon ", "Flame ",
             "Omni ", "Vortex ", "Storm ", "Void ", "Hate ", "Arcane ", "Last ", "Serrated ", "Unsealed ", "Rainbowglass ",
@@ -252,13 +251,14 @@ public class Weapon implements Serializable {
             "Shadowborn ", "Forbidden's ", "Dragonborn ", "Hurrican ", "Ancient ", "Samurai ", "Odin's ", "Nordic ",
             "Solemn ", "Envoy's ", "Emissary's ", "Yamato's ", "Arasuda's ", "Berserker's ", "Mystic ", "Armageddon ",
             "Unleashed ", "Amaterasu's ", "Odd ", "Samsara's ", "Soulreaver's ", "Constellar ", "Cursed ",
-            "Nightking's ", "Stormking's ", "Judgement ", "Blackshield ", "Dragonknight's ", "Serpentfire ", "Nightmare ",
-            "The Prophet's ", "Fate ", "Deception ", "Common ", ""};
+            "Nightking's ", "Stormking's ", "Judgement ", "Dragonknight's ", "Serpentfire ", "Nightmare ",
+            "The Prophet's ", "Fate ", "Deception ", "Common ", "",
+            "Sharp", "Shining", "Ravenous", "Raging", "Fire", "Ice"};
 
-        String[] meleesecondname = {"Blade", "Dagger", "Sword", "Edge", "Knife", "Scepter", "Wand", "Hammer", "Axe", "Twinaxe",
-            "Mallet", "Machete ", "Maw", "Scimitar ", "Rod", "Dirk", "Sabre", "Spear", "Brutalizer", "Sealbreaker",
-            "Mace", "Katana", "Tachi", "Shoto", "Two-Hander", "Scythe", "Lance", "Broadsword", "Slayer", "Kunai",
-            "Bloodthirster"};
+        String[] meleesecondname = {"Blade", "Dagger", "Sword", "Edge", "Knife", "Scepter", "Hammer", "Axe", "Twinaxe",
+            "Mallet", "Machete", "Scimitar", "Sabre", "Spear", "Sealbreaker", "Mace", "Katana", "Tachi", "Shoto", "Zweihander",
+            "Lance", "Broadsword", "Slayer", "Kunai", "Scythe", "Bloodthirster",
+            "Naginata", "Glaive", "Rapier", "Claymore", "Gladius", "Flail"};
 
 //		String [] rangedfirstname = {"Nightstalkers Bow","Rangers Bow","Long Bow","Short Bow","Shadowmist Bow","Gem Bow",
 //									 "Skull Bow","Snipers Bow","Smiting Bow","Frost Bow","Infernal Bow","Runaans Bow",
@@ -275,24 +275,20 @@ public class Weapon implements Serializable {
     public void determineQuality() {
         actualStats = damage + weaponstats.getAttack() + weaponstats.getDexterity() + weaponstats.getStamina() + weaponstats.getDefence();
         double percent = (actualStats / maxStats) * 100;
-        
+
         if (percent == 100) {
             quality = "Legendary";
-        }
-        else if (percent >= 90) {
+        } else if (percent >= 90) {
             quality = "Epic";
-        }
-        else if (percent >= 75) {
+        } else if (percent >= 75) {
             quality = "Rare";
-        }
-        else if (percent >= 50) {
+        } else if (percent >= 50) {
             quality = "Uncommon";
-        }
-        else if (percent >= 35) {
+        } else if (percent >= 35) {
             quality = "Common";
         } else {
             quality = "Poor";
-        } 
+        }
     }
 
 }
