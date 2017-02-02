@@ -1220,6 +1220,11 @@ public class Canvas extends JPanel implements Serializable {
     public void drawDialog(Graphics g) {
         if (player.getNPCdialog().getDialogVisible()) {
             dialogBox.paintIcon(null, g, 0, (780 - 140));
+            
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.WHITE);
+            RoundRectangle2D hpBar = new RoundRectangle2D.Double(27, 658, 164, 122, 3, 3);
+            g2d.fill(hpBar);
 
             if (player.getNPCdialog().getNPCsprite() != null) {
                 player.getNPCdialog().getNPCsprite().paintIcon(null, g, 88, 666);

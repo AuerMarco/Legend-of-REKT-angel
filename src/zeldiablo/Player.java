@@ -184,9 +184,6 @@ public class Player extends Character implements Serializable {
                 case "Solaire, Champion of the sun":
                     super.getNPCdialog().dialogSunbro(this, npc);
                     break;
-                case "Unknown rogue":
-                    super.getNPCdialog().dialogRogue(this, npc);
-                    break;
                 case "Intro":
                     if (choice.equalsIgnoreCase("Yes") && player.getCharacterClass() != "REKTangel") {
                         super.getNPCdialog().dialogDecission(this, npc);
@@ -231,6 +228,9 @@ public class Player extends Character implements Serializable {
                     } else {
                         super.getNPCdialog().dialogChestIntro(this, npc);
                     }
+                    break;
+                case "Ace":
+                    super.getNPCdialog().dialogSmith(this, npc);
                     break;
                 default:
                     break;

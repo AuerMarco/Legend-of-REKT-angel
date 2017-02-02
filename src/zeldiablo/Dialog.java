@@ -161,6 +161,13 @@ public class Dialog implements Serializable {
 //        dialogLogicSpecial();
     }
 
+    public void dialogSmith(Player player, Character npc) {
+        dialogVisible = true;
+        this.npc = npc.getSprite();
+        npcName = npc.getName();
+        dialogPage = new String[]{"I am Ace, the town's smith."};
+    }
+
     /**
      * The logic for switching between dialog pages and displaying 2 lines in
      * the dialog box You get the next dialog page (if there is one) by pressing

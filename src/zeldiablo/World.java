@@ -77,7 +77,7 @@ public class World {
         canvas.getPlayer().setMapID("Zone_Smith");
         canvas.createGameObjects();          
         canvas.getPlayer().setObjectPosition(new Coordinates(550, 578));
-        canvas.setNPC1(new NPC(new Coordinates(550, 450), 48, 100, 1, "Solaire", "Ace the Firefist", 1, "Ace"));
+        canvas.setNPC1(new NPC(new Coordinates(560, 480), 28, 57, 1, "Ace", "Ace the Firefist", 1, "Ace"));
         canvas.setTeleporter1(new InteractionObject(new Coordinates(517, 679), 120, 80, "nothing", "StartWeapon"));
     }
     
