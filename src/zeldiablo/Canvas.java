@@ -33,7 +33,7 @@ public class Canvas extends JPanel implements Serializable {
     private final Dimension size;
     public final String imageDirectory;
     private final String[] bgPictureList, spriteList;
-    private ImageIcon backgroundPicture, dialogBox, levelUp, inventory, stats;
+    private ImageIcon backgroundPicture, dialogBox, levelUp, inventory, stats, silver;
 
     private boolean gameOver;
     private int gameoverCounter, hpTimer;
@@ -74,7 +74,7 @@ public class Canvas extends JPanel implements Serializable {
         setPreferredSize(size);
         imageDirectory = "images/";
         bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg", "bg_arena.jpg", "bg_area1.jpg", "bg_smith.jpg", "bg_trader.jpg"};
-        spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
+        spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png", "silver.png"};
         gameOver = false;
         gameoverCounter = 0;
         wKey = false;
@@ -627,6 +627,10 @@ public class Canvas extends JPanel implements Serializable {
         imagePath = imageDirectory + spriteList[3];
         imageURL = getClass().getResource(imagePath);
         stats = new ImageIcon(imageURL);
+        
+        imagePath = imageDirectory + spriteList[4];
+        imageURL = getClass().getResource(imagePath);
+        silver = new ImageIcon(imageURL);
     }
 
     /**
@@ -1147,7 +1151,14 @@ public class Canvas extends JPanel implements Serializable {
                 y += 25;
             }
             g.setColor(new Color(229, 206, 102));
-            g.drawString(player.getWeapon().getFlavortext(), 75, y+25);
+            g.drawString(player.getWeapon().getFlavortext(), 75, y);
+            g.setColor(Color.WHITE);
+            g.drawString("Worth: "+player.getWeapon().getWorth(), 75, y+25);
+            x = 178;
+            for (int i = 1; i < (Integer.toString(player.getWeapon().getWorth())).length()-1; i++) {
+                x += 16;
+            }
+            silver.paintIcon(null, g, x, y+5);
 
 //            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 //            g.weaponColor(Color.BLUE);
@@ -1399,7 +1410,7 @@ public class Canvas extends JPanel implements Serializable {
                     g.drawString("" + player.getInventar().get(inventoryCounter - 1).getName(), x, 373);
                     g.setColor(Color.WHITE);
                     g.drawString("Damage:" + player.getInventar().get(inventoryCounter - 1).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getDexterity(), x, 398);
-                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getDefence(), x, 423);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter - 1).getStats().getDefence() + " Worth:"+player.getInventar().get(inventoryCounter - 1).getWorth()+"S", x, 423);
                 }
             }
             if (player.getInventar().size() != 0) {
@@ -1409,7 +1420,7 @@ public class Canvas extends JPanel implements Serializable {
                     g.drawString("" + player.getInventar().get(inventoryCounter).getName(), x, 490);
                     g.setColor(Color.WHITE);
                     g.drawString("Damage:" + player.getInventar().get(inventoryCounter).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter).getStats().getDexterity(), x, 515);
-                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter).getStats().getDefence(), x, 540);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter).getStats().getDefence() + " Worth:"+player.getInventar().get(inventoryCounter).getWorth()+"S", x, 540);
                 }
             }
             if ((inventoryCounter < player.getInventar().size() - 1)) {
@@ -1419,7 +1430,7 @@ public class Canvas extends JPanel implements Serializable {
                     g.drawString("" + player.getInventar().get(inventoryCounter + 1).getName(), x, 600);
                     g.setColor(Color.WHITE);
                     g.drawString("Damage:" + player.getInventar().get(inventoryCounter + 1).getDamage() + " Strength:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getAttack() + " Dexterity:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getDexterity(), x, 625);
-                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getDefence(), x, 650);
+                    g.drawString("Stamina:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getStamina() + " Defence:" + (int) player.getInventar().get(inventoryCounter + 1).getStats().getDefence() + " Worth:"+player.getInventar().get(inventoryCounter + 1).getWorth()+"S", x, 650);
                 }
             }
 
@@ -1460,14 +1471,15 @@ public class Canvas extends JPanel implements Serializable {
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
             g.setColor(new Color(255, 220, 70));
             g.drawString("Press [ESC] to close", 800, 695);
-            g.drawString("You got loot!", 230, 695);            
+            g.drawString("You got loot!", 230, 695);               
+            g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
             g.setColor(Color.WHITE);
             g.drawString("Weapon name: ", 230, 725);
             weaponColor(player.getLoot());
             g.setColor(new Color(color1, color2, color3));
             g.drawString(player.getLoot().getName(), 415, 725);
             g.setColor(Color.WHITE);
-            g.drawString("Damage:" + player.getLoot().getDamage() + " Strength:" + (int) player.getLoot().getStats().getAttack() + " Dexterity:" + (int) player.getLoot().getStats().getDexterity() + " Stamina:" + (int) player.getLoot().getStats().getStamina() + " Defence:" + (int) player.getLoot().getStats().getDefence(), 230, 750);
+            g.drawString("Damage:" + player.getLoot().getDamage() + " Strength:" + (int) player.getLoot().getStats().getAttack() + " Dexterity:" + (int) player.getLoot().getStats().getDexterity() + " Stamina:" + (int) player.getLoot().getStats().getStamina() + " Defence:" + (int) player.getLoot().getStats().getDefence() + " Worth:" + player.getLoot().getWorth(), 230, 750);
         }
     }
 

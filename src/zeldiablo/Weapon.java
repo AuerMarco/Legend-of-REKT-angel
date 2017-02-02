@@ -22,7 +22,8 @@ public class Weapon implements Serializable {
     private Stats weaponstats;
     private double actualStats, maxStats;
     private String quality;
-    private String flavortext, special;
+    private String flavortext;
+    private int worth;
 
     /**
      * This Class got two constructors, one for the random generated weapons and
@@ -42,7 +43,7 @@ public class Weapon implements Serializable {
         randomDefence(level);
         determineQuality();
         flavortext = "";
-        special = "";
+        worth = (int)actualStats * 20;
     }
 
     public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
@@ -54,9 +55,10 @@ public class Weapon implements Serializable {
         weaponstats.setDexterity(dexterity);
         weaponstats.setStamina(stamina);
         weaponstats.setDefence(defence);
-        quality = "";
+        quality = "Artifact";
         flavortext = "";
-        special = "";
+        actualStats = damage + weaponstats.getAttack() + weaponstats.getDexterity() + weaponstats.getStamina() + weaponstats.getDefence();
+        worth = (int)actualStats * 20;
     }
     
 //    public Weapon(String name, int damage, double attack, double dexterity, double stamina, double defence) {
@@ -124,12 +126,8 @@ public class Weapon implements Serializable {
         this.flavortext = flavortext;
     }
     
-    public String getSpecial() {
-        return special;
-    }
-    
-    public void setSpecial(String special) {
-        this.special = special;
+    public int getWorth() {
+        return worth;
     }
 
     /**
@@ -251,7 +249,7 @@ public class Weapon implements Serializable {
             "Vow's ", "Age ", "Iceborn ", "Thunderborn ", "Lightborn ", "Stormborn ", "Darkborn ", "Lightsworn ",
             "Valkyrie's ", "Archfiend's ", "Salamandra's ", "Starborn ", "Shadowmist's ", "Toxic ", "Darkworld's ",
             "Keeper's ", "Luster ", "Ritual ", "Necro ", "Dust ", "Tormentor's ", "Buster ", "Nova ", "Tigerking's ",
-            "Shdowborn ", "Forbidden's ", "Dragonborn ", "Hurrican ", "Ancient ", "Samurai ", "Odin's ", "Nordic ",
+            "Shadowborn ", "Forbidden's ", "Dragonborn ", "Hurrican ", "Ancient ", "Samurai ", "Odin's ", "Nordic ",
             "Solemn ", "Envoy's ", "Emissary's ", "Yamato's ", "Arasuda's ", "Berserker's ", "Mystic ", "Armageddon ",
             "Unleashed ", "Amaterasu's ", "Odd ", "Samsara's ", "Soulreaver's ", "Constellar ", "Cursed ",
             "Nightking's ", "Stormking's ", "Judgement ", "Blackshield ", "Dragonknight's ", "Serpentfire ", "Nightmare ",
@@ -277,7 +275,6 @@ public class Weapon implements Serializable {
     public void determineQuality() {
         actualStats = damage + weaponstats.getAttack() + weaponstats.getDexterity() + weaponstats.getStamina() + weaponstats.getDefence();
         double percent = (actualStats / maxStats) * 100;
-//        System.out.println(percent);
         
         if (percent == 100) {
             quality = "Legendary";
