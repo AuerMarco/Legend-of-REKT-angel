@@ -73,7 +73,7 @@ public class Canvas extends JPanel implements Serializable {
         size = new Dimension(1180, 780);
         setPreferredSize(size);
         imageDirectory = "images/";
-        bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg", "bg_arena.jpg", "bg_area1.jpg"};
+        bgPictureList = new String[]{"bg_matrix.jpg", "bg_town.jpg", "bg_arena.jpg", "bg_area1.jpg", "bg_smith.jpg", "bg_trader.jpg"};
         spriteList = new String[]{"dialogbox.png", "LevelUp.png", "inventory.png", "stats.png"};
         gameOver = false;
         gameoverCounter = 0;
@@ -421,31 +421,14 @@ public class Canvas extends JPanel implements Serializable {
 
                         break;
                     case VK_ENTER:
-//                        System.out.println(mob1.getAngle());
-//                        System.out.println("---");
-//                        DamageCalculation damage = new DamageCalculation();
-//                        double dmg = damage.damageCalculation(player, mob1, false);
-//                        double hits = mob1.getStats().getHP() / dmg;
-//                        System.out.println("Player to mob DMG: " + dmg + ". Hits: " + hits);
-//                        
-//                        dmg = damage.damageCalculation(mob1, player, false);
-//                        hits = player.getStats().getHP() / dmg;
-//                        System.out.println("Mob to player DMG: " + dmg + ". Hits: " + hits);
-
-//                        int x = 0;
-//                        while (x < player.getLevel()) {
-//                            player.getCurrency().changeValue(10);
-//                            x++;
-//                        }
-//                        player.getStats().setHP(player.getStats().getHP() - 10);
-//                        player.increaseXP(10);
 //                        System.out.println("Equiped weapon: Damage: " + player.getWeapon().getDamage() + " Str:" + (int) player.getWeapon().getStats().getAttack() + " Dex:" + (int) player.getWeapon().getStats().getDexterity() + " Stam:" + (int) player.getWeapon().getStats().getStamina() + " Def:" + (int) player.getWeapon().getStats().getDefence());
 //                        int posi = 1;
 //                        for (Weapon weapon : player.getInventar()) {
 //                            System.out.println("Position: " + posi + ", " + weapon.getDamage());
 //                            posi++;
 //                        }
-                        changeScreen();
+//                        changeScreen();
+                        System.out.println(""+player.getObjectPosition().getX()+", "+player.getObjectPosition().getY());
                         break;
                     case VK_C:
                         if (!startScreen) {
@@ -1007,6 +990,14 @@ public class Canvas extends JPanel implements Serializable {
             } else if (player.getMapID().equals("Zone_Area1")) {
                 world.town(this);
                 player.setObjectPosition(new Coordinates(1060, 362));
+            } else if (player.getMapID().equals("Zone_Smith")) {
+                world.town(this);
+                player.setObjectPosition(new Coordinates(856, 362));
+            }
+        }
+        if (player.touches(tele2)) {
+            if (player.getMapID().equals("Zone_Town")) {
+                world.smith(this);
             }
         }
     }

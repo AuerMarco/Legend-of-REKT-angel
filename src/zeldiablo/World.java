@@ -61,8 +61,9 @@ public class World {
         canvas.getPlayer().setMapID("Zone_Town");
         canvas.createGameObjects();
         canvas.getPlayer().setObjectPosition(new Coordinates(600, 550));
-        canvas.setNPC1(new NPC(new Coordinates(600, 400), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, "Solaire, Champion of the sun"));
-        canvas.setTeleporter1(new InteractionObject(new Coordinates(1120, 362), 40, 115, "nothing", "StartWeapon"));
+        canvas.setNPC1(new NPC(new Coordinates(600, 450), 48, 100, 1, "Solaire", "Solaire, Champion of the sun", 1, "Solaire, Champion of the sun"));
+        canvas.setTeleporter1(new InteractionObject(new Coordinates(1120, 362), 40, 120, "nothing", "StartWeapon"));
+        canvas.setTeleporter2(new InteractionObject(new Coordinates(839, 280), 80, 80, "nothing", "StartWeapon"));
     }
     
     public void arena(Canvas canvas) {        
@@ -71,12 +72,21 @@ public class World {
         canvas.createGameObjects();
     }
     
+    public void smith(Canvas canvas) {     
+        canvas.setBackground(4);
+        canvas.getPlayer().setMapID("Zone_Smith");
+        canvas.createGameObjects();          
+        canvas.getPlayer().setObjectPosition(new Coordinates(550, 578));
+        canvas.setNPC1(new NPC(new Coordinates(550, 450), 48, 100, 1, "Solaire", "Ace the Firefist", 1, "Ace"));
+        canvas.setTeleporter1(new InteractionObject(new Coordinates(517, 679), 120, 80, "nothing", "StartWeapon"));
+    }
+    
     public void area1(Canvas canvas) {
         canvas.setBackground(3);        
         canvas.getPlayer().setObjectPosition(new Coordinates(80, 370));
         canvas.getPlayer().setMapID("Zone_Area1");        
         canvas.createGameObjects();
-        canvas.setTeleporter1(new InteractionObject(new Coordinates(40, 362), 40, 115, "nothing", "StartWeapon"));
+        canvas.setTeleporter1(new InteractionObject(new Coordinates(40, 362), 40, 120, "nothing", "StartWeapon"));
         canvas.setMob1(new NPC(new Coordinates(400, 150), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()));
         canvas.setMob2(new NPC(new Coordinates(900, 360), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()+1));
         canvas.setMob3(new NPC(new Coordinates(200, 600), 80, 70, 1, "Mob", "Orc", canvas.getPlayer().getLevel()));
